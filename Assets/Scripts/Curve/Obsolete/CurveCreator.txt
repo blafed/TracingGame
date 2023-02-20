@@ -1,0 +1,13 @@
+// using UnityEngine;
+
+// public class CurveCreator : MonoBehaviour
+// {
+//     public Curve curve = new();
+//     public float debugT = .5f;
+//     public float debugLength;
+//     private void OnDrawGizmos()
+//     {
+//         Gizmos.DrawWireSphere(Curve.evaluate(curve.anchors[0], curve.anchors[1].o, debugT), .2f);
+//         debugLength = Curve.getLength(curve.anchors[0], curve.anchors[1].o);
+//     }
+// }

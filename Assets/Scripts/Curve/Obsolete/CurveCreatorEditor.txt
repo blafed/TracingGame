@@ -1,0 +1,40 @@
+// using UnityEngine;
+// using UnityEditor;
+
+// [CustomEditor(typeof(CurveCreator))]
+// public class CurveCreatorEditor : Editor
+// {
+//     public override void OnInspectorGUI()
+//     {
+//         base.OnInspectorGUI();
+//     }
+
+//     void OnSceneGUI()
+//     {
+//         draw();
+//     }
+
+
+//     Curve curve => (target as CurveCreator).curve;
+
+
+//     void draw()
+//     {
+//         for (int i = 0; i < curve.anchorCount; i++)
+//         {
+//             var a = curve[i];
+//             var newPos = Handles.FreeMoveHandle(a.o, default, .2f, default, Handles.CylinderHandleCap);
+//             a.o = newPos;
+
+//             if (i == curve.anchorCount - 1)
+//                 return;
+
+//             var b = curve.anchors[i + 1];
+
+//             Handles.color = Color.black;
+//             Handles.DrawLine(a.p1, a.p2);
+//             Handles.DrawLine(a.p2, b.o);
+//             Handles.DrawBezier(a.o, b.o, a.p1, a.p2, Color.white, null, 2f);
+//         }
+//     }
+// }

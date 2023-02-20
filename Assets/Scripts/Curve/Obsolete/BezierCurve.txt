@@ -1,0 +1,41 @@
+// using UnityEngine;
+// using System.Collections;
+// using System.Collections.Generic;
+
+// [System.Serializable]
+// public class BezierCurve
+// {
+//     public List<Anchor> anchors = new();
+//     public Transform target;
+
+
+//     public static Vector2 quadraticCurve(Vector2 a, Vector2 b, Vector2 c, float t)
+//     {
+//         var p0 = Vector2.Lerp(a, b, t);
+//         var p1 = Vector2.Lerp(b, c, t);
+//         return Vector2.Lerp(p0, p1, t);
+//     }
+//     public static Vector2 cubicCurveEvaluate(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t)
+//     {
+//         var p0 = quadraticCurve(a, b, c, t);
+//         var p1 = quadraticCurve(b, c, d, t);
+//         return Vector2.Lerp(p0, p1, t);
+//     }
+
+
+
+//     [System.Serializable]
+//     public class Anchor
+//     {
+//         public Vector2 center;
+//         Vector2[] points = new Vector2[4];
+
+
+//         public Vector2 this[int index]
+//         {
+//             get => points[index] + center;
+//             set => points[index] = value - center;
+//         }
+//     }
+
+// }
