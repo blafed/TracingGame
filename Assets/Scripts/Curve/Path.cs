@@ -6,6 +6,7 @@ using UnityEngine;
 public class Path
 {
 
+    [System.Obsolete]
     public Vector2 center;
     [SerializeField]
     public List<Vector2> points;
@@ -24,6 +25,18 @@ public class Path
             (Vector2.left+Vector2.up)*.5f,
              (Vector2.right+Vector2.down)*.5f,
              Vector2.right
+        };
+    }
+
+
+    public Path clone()
+    {
+        return new Path
+        {
+            points = new List<Vector2>(points),
+            isClosed = isClosed,
+            autoSetControlPoints = autoSetControlPoints,
+            center = center,
         };
     }
 
@@ -59,6 +72,108 @@ public class Path
         return center + BezierHelper.EvaluateCubic(points[j], points[j + 1], points[j + 2], points[j + 3], r);
 
     }
+    public void lerpFast(float moved, Path other)
+    {
+        moved = Mathf.Max(moved, 0);
+
+        int seg = 0;
+        float len = 0;
+        float est = 0;
+
+
+        for (int i = 0; i < NumSegments; i++)
+        {
+            seg = i;
+            est += len;
+            len = getSegmentLength(i);
+            var total = len + est;
+
+            if (moved >= est && moved <= total)
+                break;
+        }
+        var delta = len;
+        var r = (moved - est) / delta;
+
+        var j = seg * 3;
+
+        var p = other;
+        p.center = this.center;
+
+        var totalCount = j + 4;
+
+        if (p.points.Count > totalCount)
+        {
+            try
+            {
+                p.points.RemoveRange(totalCount, p.points.Count - totalCount);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"{totalCount} {p.points.Count} {p.points.Count - totalCount}");
+                throw e;
+            }
+        }
+        p.points.Capacity = totalCount;
+
+
+
+        for (int i = 0; i < totalCount; i++)
+        {
+            if (i >= p.points.Count)
+                p.points.Add(points[i]);
+            else
+                p.points[i] = points[i];
+        }
+
+        Vector2 newB, newC;
+        p.points[p.points.Count - 1] = BezierHelper.EvaluateCubicWithControls(points[j], points[j + 1], points[j + 2], points[j + 3], r, out newB, out newC);
+        p.points[p.points.Count - 3] = newB;
+        p.points[p.points.Count - 2] = newC;
+    }
+    [System.Obsolete("slow, use the other")]
+    public Path lerp(float moved)
+    {
+        moved = Mathf.Max(moved, 0);
+
+        int seg = 0;
+        float len = 0;
+        float est = 0;
+
+
+        for (int i = 0; i < NumSegments; i++)
+        {
+            seg = i;
+            est += len;
+            len = getSegmentLength(i);
+            var total = len + est;
+
+            if (moved >= est && moved <= total)
+                break;
+        }
+        var delta = len;
+        var r = (moved - est) / delta;
+
+        var j = seg * 3;
+
+        Path p = new Path();
+        p.center = this.center;
+        p.points.Clear();
+        p.points.Capacity = j + 4;
+
+        for (int i = 0; i < j + 4; i++)
+        {
+            p.points.Add(points[i]);
+        }
+
+
+        Vector2 newB, newC;
+        p.points[p.points.Count - 1] = BezierHelper.EvaluateCubicWithControls(points[j], points[j + 1], points[j + 2], points[j + 3], r, out newB, out newC);
+        p.points[p.points.Count - 3] = newB;
+        p.points[p.points.Count - 2] = newC;
+        return p;
+
+    }
+
 
 
     public float totalLength

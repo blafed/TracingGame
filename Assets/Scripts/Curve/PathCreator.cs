@@ -18,8 +18,13 @@ public class PathCreator : MonoBehaviour, IPathProvider
 
     [Header("Debug")]
     [SerializeField] float totalLength;
-    [SerializeField] float debugPointEv = .5f;
     [SerializeField] float debugPointLength = .5f;
+    [Range(0, 1)]
+    [SerializeField] float debugPointEv = .5f;
+    [Space]
+    [SerializeField] PathCreator lerpFrom;
+    [Range(0, 1)]
+    [SerializeField] float lerpAmount = .5f;
 
     public void CreatePath()
     {
@@ -44,5 +49,10 @@ public class PathCreator : MonoBehaviour, IPathProvider
 
 
         totalLength = path.totalLength;
+        if (lerpFrom)
+        {
+            lerpFrom.path.lerpFast(lerpAmount * lerpFrom.path.totalLength, path);
+            // path = lerpFrom.path.lerp(lerpAmount * lerpFrom.path.totalLength);
+        }
     }
 }

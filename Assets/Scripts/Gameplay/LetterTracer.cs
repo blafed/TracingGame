@@ -3,10 +3,18 @@ using UnityEngine;
 
 public class LetterTracer : MonoBehaviour
 {
-    public Letter letter;
-    public TracingData data;
-    public Transform obj;
     public float speed = 2;
+    public bool autoProgress = true;
+    public GameObject patternPrefab;
+    public Letter letter;
+
+    public int segmentIndex { get; set; }
+    public float progress { get; set; }
+
+    Pattern currentPattern { get; set; }
+
+
+    public LetterSegment segment => letter.get(segmentIndex);
 
 
 
@@ -18,44 +26,51 @@ public class LetterTracer : MonoBehaviour
     {
         if (letter != null)
         {
-            var splineCount = letter;
+            if (segmentIndex < letter.segmentCount)
+            {
+                if (!currentPattern)
+                {
+                    beginSegmentTracing();
+                }
+                whileSegmentTracing();
 
-            // if (data.splineIndex < splineCount)
-            // {
-            //     if (data.completed < 1)
-            //     {
-            //         traceInput();
-            //         moveObjAlongPath();
-            //     }
-            //     else
-            //     {
-            //         data.splineIndex++;
-            //     }
-            // }
+                if (autoProgress)
+                    progress += speed / segment.totalLength * Time.deltaTime;
+                if (progress >= 1)
+                {
+                    progress = 0;
+                    segmentIndex++;
+                    currentPattern = null;
+                    // Destroy(currentPattern.gameObject);
+                }
+            }
         }
     }
 
 
-    void traceInput()
+    void beginSegmentTracing()
     {
+        currentPattern = Instantiate(patternPrefab).GetComponent<Pattern>();
+        currentPattern.transform.position = letter.transform.position;
+        currentPattern.segment = segment;
+        currentPattern.progress = 0;
+        // currentPattern.initSegment(segment);
+
 
     }
-    void moveObjAlongPath()
+    void whileSegmentTracing()
     {
+        currentPattern.progress = progress;
+        // currentPattern.setTrail(segment, progress);
     }
 
 
     public void startTracing(Letter target)
     {
         this.letter = target;
-        data = new();
+        this.segmentIndex = 0;
+        this.progress = 0;
+        target.setTextEnabled(value: false);
     }
 
-}
-
-[System.Serializable]
-public class TracingData
-{
-    public int splineIndex;
-    public float completed;
 }

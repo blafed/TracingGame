@@ -29,40 +29,14 @@ public static class BezierHelper
         return (chord + contNet) / 2;
     }
 
-
-
-
-    internal static float BezierLength(IList<ShapeControlPoint> shapePoints, int splineDetail, ref float smallestSegment)
+    public static Vector2 EvaluateCubicWithControls(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t
+    , out Vector2 newB, out Vector2 newC
+    )
     {
-        // Expand the Bezier.
-        int controlPointContour = shapePoints.Count - 1;
-        float spd = 0;
-        float fmax = (float)(splineDetail - 1);
-        for (int i = 0; i < controlPointContour; ++i)
-        {
-            int j = i + 1;
-            ShapeControlPoint cp = shapePoints[i];
-            ShapeControlPoint pp = shapePoints[j];
-
-            Vector3 p0 = cp.position;
-            Vector3 p1 = pp.position;
-            Vector3 sp = p0;
-            Vector3 rt = p0 + cp.rightTangent;
-            Vector3 lt = p1 + pp.leftTangent;
-
-            for (int n = 1; n < splineDetail; ++n)
-            {
-                float t = (float)n / fmax;
-                Vector3 bp = BezierUtility.BezierPoint(rt, p0, p1, lt, t);
-                float d = math.distance(bp, sp);
-                spd += d;
-                sp = bp;
-            }
-        }
-
-        float ssc = fmax * controlPointContour;
-        float ssl = spd / (ssc * 1.08f);
-        smallestSegment = math.min(ssl, smallestSegment);
-        return spd;
+        Vector2 p0 = EvaluateQuadratic(a, b, c, t);
+        Vector2 p1 = EvaluateQuadratic(b, c, d, t);
+        newB = Vector2.Lerp(a, b, t);
+        newC = p0;
+        return Vector2.Lerp(p0, p1, t);
     }
 }
