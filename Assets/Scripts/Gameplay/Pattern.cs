@@ -9,11 +9,24 @@ public class Pattern : MonoBehaviour
     // public EdgePoint startEdgePoint { get; set; }
     // public EdgePoint endEdgePoint { get; set; }
 
-
-
     public LetterSegment segment { get; set; }
+    /// <summary>
+    /// ranges from 0 to 1 usually, can be > 1
+    /// </summary>
     public float progress { get; set; }
+    public bool isPostProgress { get; set; }
+    /// <summary>
+    /// the absolute moved distance
+    /// </summary>
+    protected float movedDistance => progress.clamp01() * segment.totalLength;
 
+    protected virtual Path targetPath => segment.path;
+    protected virtual float pathScale => 1;
+    public virtual bool isFinished => progress >= 1;
+
+
+    public virtual void onPostProgressStart() { }
+    public virtual void onPostProgressEnd() { }
 
 
     // protected virtual void OnDestroy()
@@ -21,6 +34,38 @@ public class Pattern : MonoBehaviour
     //     Destroy(startEdgePoint.gameObject);
     //     Destroy(endEdgePoint.gameObject);
     // }
+    protected Vector2 getPoint(float movedDistance)
+    {
+        movedDistance /= pathScale;
+        return transform.position + targetPath.evaluate(movedDistance).toVector3() * pathScale;
+    }
+    protected void moveObjectAlong(Transform obj, float movedDistance)
+    {
+        obj.transform.position = getPoint(movedDistance);
+        // transform.position + currentPath.evaluate(movedDistance / splineHeight).toVector3() * splineHeight;
+        //(Vector2)transform.position + (currentPath.endPoint * splineHeight);
+        var dir = getDirectionOfPoint(movedDistance);
+        //-targetPath.simpleNormal(movedDistance, .01f).getNormal().normalized;
+        obj.right = dir;
+    }
+    protected virtual Vector2 getDirectionOfPoint(float movedDistance)
+    {
+        // movedDistance /= pathScale;
+        var a = getPoint(movedDistance);
+        var t = movedDistance * 1.01f;
+        bool isInverse = false;
+        if (t > segment.totalLength)
+        {
+            t = movedDistance / 1.01f;
+            isInverse = true;
+        }
+        var b = getPoint(t);
+        var d = b - a;
+        if (isInverse)
+            d = a - b;
+        return d.normalized;
+    }
+
 
 
     protected List<EdgePoint> createEdgePoints(LetterSegment segment, GameObject prefab)
@@ -82,5 +127,17 @@ public class Pattern : MonoBehaviour
     // {
 
     // }
+
+}
+
+
+public enum PatternCode
+{
+    none,
+    chains,
+    road,
+    rainbow,
+    butterfly,
+    candy
 
 }

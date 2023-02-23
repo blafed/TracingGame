@@ -4,34 +4,46 @@ using UnityEngine.U2D;
 public class SplinePattern : Pattern
 {
 
-    public float splineHeight = .5f;
+    [SerializeField]
+    protected float splineHeight = .5f;
     protected Spline spline => shapeController.spline;
 
     [SerializeField]
     protected SpriteShapeController shapeController;
+    [SerializeField]
+    protected Transform followObject;
 
-    Path currentPath = new();
-    Path targetPath;
+    protected Path currentPath = new();
+    protected override Path targetPath => _targetPath;
 
-    private void Awake()
+
+    protected override float pathScale => splineHeight;
+
+
+    Path _targetPath;
+
+
+    protected virtual void Start()
     {
-        shapeController.gameObject.SetActive(false);
+        shapeController.transform.localScale = Vector3.one * splineHeight;
+        _targetPath = segment.path.clone();
+
+        shapeController.splineDetail = 64;
+
+
+        for (int i = 0; i < targetPath.points.Count; i++)
+        {
+            targetPath.points[i] /= splineHeight;
+        }
     }
 
-    private void Start()
+    protected virtual void Update()
     {
-        shapeController.gameObject.SetActive(true);
-        // SplinePathHelper.pathToSpline(targetPath, segment.);
-    }
-
-
-    // float moved
-
-    private void Update()
-    {
-        targetPath = segment.path;
-        var movedDistance = progress * segment.totalLength;
-        targetPath.lerpFast(movedDistance, currentPath);
+        targetPath.lerpFast(movedDistance / splineHeight, currentPath);
+        // for (int i = 0; i < currentPath.points.Count; i++)
+        // {
+        //     currentPath.points[i] /= splineHeight;
+        // }
         SplinePathHelper.pathToSpline(currentPath, spline, factory);
         // if(movedDistance > currentPath.getSegmentLength(segmentIndex))
     }
@@ -41,13 +53,11 @@ public class SplinePattern : Pattern
     {
         return new SplineControlPoint
         {
-            height = splineHeight,
+            height = 1,
             corner = true,
-            mode = ShapeTangentMode.Broken,
+            mode = ShapeTangentMode.Continuous,
             cornerMode = Corner.Automatic,
         };
     }
-
-
 
 }

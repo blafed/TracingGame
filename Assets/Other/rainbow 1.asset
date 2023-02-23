@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af7181f404f1447c0a7a17b3070b952b, type: 3}
-  m_Name: road
+  m_Name: rainbow 1
   m_EditorClassIdentifier: 
   m_Angles:
   - m_Start: -180
     m_End: 180
     m_Order: 0
     m_Sprites:
-    - {fileID: 21300000, guid: 0121ab99ca62c0a4f9520ee2d9649317, type: 3}
+    - {fileID: 21300000, guid: 00b52da6821aaa847ac28e521d7d46e1, type: 3}
   m_FillTexture: {fileID: 2800000, guid: 537ddfab65ed23f4b823553ced13bf26, type: 3}
   m_CornerSprites:
   - m_CornerType: 0

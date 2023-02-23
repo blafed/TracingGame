@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0618
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ using UnityEngine;
 public class Path
 {
 
-    [System.Obsolete]
+    [System.Obsolete("supposed to be used internally")]
     public Vector2 center;
     [SerializeField]
     public List<Vector2> points;
@@ -43,6 +44,15 @@ public class Path
 
     public Vector2 startPoint => points[0] + center;
     public Vector2 endPoint => points[points.Count - 1] + center;
+
+    public Vector2 simpleNormal(float tLen, float diff = .02f)
+    {
+        var a = evaluate(tLen);
+        var b = evaluate(tLen * (1 + diff));
+        var d = b - a;
+        return d.getNormal().normalized;
+
+    }
 
     public Vector2 evaluateNormalized(float t) => evaluate(t * totalLength);
     public Vector2 evaluate(float tLen)

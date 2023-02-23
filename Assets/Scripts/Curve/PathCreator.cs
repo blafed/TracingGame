@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿#pragma warning disable 0618
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,15 +32,14 @@ public class PathCreator : MonoBehaviour, IPathProvider
     {
         path = new Path(transform.position);
     }
+    private void Awake()
+    {
+        path.center = default;
+    }
 
     void Reset()
     {
         CreatePath();
-    }
-
-    private void Update()
-    {
-        path.center = transform.position;
     }
 
     private void OnDrawGizmos()
