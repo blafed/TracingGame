@@ -21,7 +21,6 @@ public class LetterItem : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             button.interactable = false;
-            EnterGamePhase.o.enter(letter, this);
         });
     }
 
