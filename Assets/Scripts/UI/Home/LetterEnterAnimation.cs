@@ -2,6 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
+using System.Collections.Generic;
 public class LetterEnterAnimation : MonoBehaviour
 {
 
@@ -13,6 +14,7 @@ public class LetterEnterAnimation : MonoBehaviour
     class InitialStage
     {
         public float duration = .5f;
+        public float audioRepeatDelay = .5f;
         public float zoom = 5;
         public Ease zoomEase = Ease.InBack;
         public Ease moveEase = Ease.OutQuad;
@@ -34,6 +36,8 @@ public class LetterEnterAnimation : MonoBehaviour
         public float zoom = 10;
         public float delay = .7f;
         public float picturePunch = .2f;
+        public float audioRepeatDelay = .5f;
+
         public Ease pictureScaleEase = Ease.OutBack;
     }
 
@@ -71,6 +75,10 @@ public class LetterEnterAnimation : MonoBehaviour
 
     public event System.Action onFinish;
 
+
+
+    List<Tween> tweens = new List<Tween>();
+
     private void Awake()
     {
         o = this;
@@ -97,13 +105,15 @@ public class LetterEnterAnimation : MonoBehaviour
         LetterContainer.o.removeAllLetters(x => x == l);
         transform.position = l.transform.position;
         var cam = CameraControl.o;
-        cam.zoom(initialFocus.zoom, initialFocus.duration).SetEase(initialFocus.zoomEase);
-        cam.move(l.transform.position, initialFocus.duration).SetEase(initialFocus.moveEase);
+        cam.zoom(initialFocus.zoom, initialFocus.duration).SetEase(initialFocus.zoomEase).add(tweens);
+        cam.move(l.transform.position, initialFocus.duration).SetEase(initialFocus.moveEase).add(tweens);
 
         yield return new WaitForSeconds(initialFocus.duration);
         yield return playAudioClip(LetterList.o.getAudioClip(l.letterId));
-        cam.zoom(otherLetters.zoom, otherLetters.delay).SetEase(otherLetters.zoomEase);
-        cam.move(wordText.transform.position, otherLetters.delay).SetEase(Ease.OutQuad);
+        yield return new WaitForSeconds(initialFocus.audioRepeatDelay);
+        yield return playAudioClip(LetterList.o.getAudioClip(l.letterId));
+        cam.zoom(otherLetters.zoom, otherLetters.delay).SetEase(otherLetters.zoomEase).add(tweens);
+        cam.move(wordText.transform.position, otherLetters.delay).SetEase(Ease.OutQuad).add(tweens);
 
 
 
@@ -112,9 +122,10 @@ public class LetterEnterAnimation : MonoBehaviour
         wordText.alpha = 0;
         wordText.text = word.word;
         wordText.color = unhighlightColor;
-        l.text.DOFade(0, otherLetters.fadeDuration);
+        wordText.alpha = 0;
+        l.text.DOFade(0, otherLetters.fadeDuration).add(tweens);
 
-        yield return wordText.DOFade(1, otherLetters.fadeDuration).WaitForCompletion();
+        yield return wordText.DOFade(1, otherLetters.fadeDuration).add(tweens).WaitForCompletion();
         wordText.color = Color.white;
         for (int i = 0; i < word.letterCount; i++)
         {
@@ -131,23 +142,41 @@ public class LetterEnterAnimation : MonoBehaviour
         picture.sprite = word.picture;
         pictureContainer.gameObject.SetActive(true);
         pictureContainer.localScale = default;
-        pictureContainer.DOScale(1f.vector(), fullWord.delay).SetEase(fullWord.pictureScaleEase);
-        cam.zoom(fullWord.zoom, fullWord.delay);
+        pictureContainer.DOScale(1f.vector(), fullWord.delay).SetEase(fullWord.pictureScaleEase).add(tweens);
+        cam.zoom(fullWord.zoom, fullWord.delay).add(tweens);
         yield return new WaitForSeconds(fullWord.delay);
         if (word.clip)
+        {
             yield return playAudioClip(word.clip);
+            yield return new WaitForSeconds(fullWord.audioRepeatDelay);
+            yield return playAudioClip(word.clip);
+        }
 
         // yield return pictureContainer.DOPunchScale(.2f.vector(), fullWord.picturePunch);
         yield return new WaitForSeconds(terminate.delay);
-        pictureContainer.DOScale(0, terminate.duration);
-        wordText.DOFade(0, terminate.duration);
-        cam.zoom(terminate.zoom, terminate.duration);
+        pictureContainer.DOScale(0, terminate.duration).add(tweens);
+        wordText.DOFade(0, terminate.duration).add(tweens);
+        cam.zoom(terminate.zoom, terminate.duration).add(tweens);
         yield return new WaitForSeconds(terminate.duration);
-        l.text.DOFade(1, terminate.duration);
-        cam.move(l.transform.position, terminate.duration);
+        l.text.DOFade(1, terminate.duration).add(tweens);
+        cam.move(l.transform.position, terminate.duration).add(tweens);
         yield return new WaitForSeconds(terminate.duration);
         onFinish?.Invoke();
 
+    }
+
+    public void stop()
+    {
+        foreach (var x in tweens)
+        {
+            x.Kill();
+        }
+        StopAllCoroutines();
+    }
+    public void complete()
+    {
+        stop();
+        onFinish?.Invoke();
     }
 
 }

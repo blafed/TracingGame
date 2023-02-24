@@ -465,6 +465,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialFocus:
     duration: 1
+    audioRepeatDelay: 1
     zoom: 5
     zoomEase: 26
     moveEase: 5
@@ -478,6 +479,7 @@ MonoBehaviour:
     zoom: 10
     delay: 1
     picturePunch: 0.2
+    audioRepeatDelay: 1
     pictureScaleEase: 27
   terminate:
     delay: 2
