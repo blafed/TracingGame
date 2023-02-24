@@ -8,6 +8,10 @@ using TMPro;
 public class Letter : MonoBehaviour
 {
 
+    public event System.Action onClick;
+    public Rect rect => Extensions2.rectFromCenter(transform.position, size);
+    public Vector2 size => _size;
+    [SerializeField] Vector2 _size;
     public int letterId => LetterUtility.charToLetterId(_letterId);
 
     public int segmentCount => segments.Count;
@@ -40,4 +44,16 @@ public class Letter : MonoBehaviour
     {
         text.gameObject.SetActive(value);
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        rect.drawGizmos(Color.cyan);
+    }
+
+    private void OnMouseEnter()
+    {
+        onClick?.Invoke();
+    }
+
+
 }

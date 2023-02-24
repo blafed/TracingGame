@@ -138,6 +138,6 @@ public enum PatternCode
     road,
     rainbow,
     butterfly,
-    candy
+    candy,
 
 }

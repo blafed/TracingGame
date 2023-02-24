@@ -50,6 +50,7 @@ public class AnyButton : MonoBehaviour
 public enum CommandCode
 {
     NONE,
+    back,
     closeCurrentPopup,
     playEndless,
     playLevel,

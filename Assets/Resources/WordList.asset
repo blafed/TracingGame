@@ -15,4 +15,5 @@ MonoBehaviour:
   wordInfos:
   - word: cat
     prefab: {fileID: 0}
-    letterIds: 630000006100000074000000
+    picture: {fileID: 21300000, guid: 92556eae618572147890b8f40a776542, type: 3}
+    clip: {fileID: 8300000, guid: d890d560c44dae343821588658f85178, type: 3}

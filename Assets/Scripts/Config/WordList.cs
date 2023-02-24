@@ -39,11 +39,27 @@ public class WordInfo
 {
     public string word;
     public GameObject prefab;
+    public Sprite picture;
+    public AudioClip clip;
 
 
+
+    public override string ToString()
+    {
+        return word;
+    }
+
+    public int letterCount => word.Length;
     public bool containsLetter(int letterId)
     {
         var c = LetterUtility.letterToChar(letterId);
         return word.Contains(c);
+    }
+
+    public int getLetterId(int index) => LetterUtility.charToLetterId(word[index]);
+
+    public int indexOfLetter(int letterId)
+    {
+        return word.IndexOf(LetterUtility.letterToChar(letterId));
     }
 }

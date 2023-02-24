@@ -23,8 +23,9 @@ public static class LetterUtility
     public static int charToLetterId(char c)
     {
         if (char.IsUpper(c))
-            return (int)c - upperMin;
+            return (int)c - 'A' + upperMin;
         else
-            return (int)c - lowerMin;
+            return (int)c - 'a' + lowerMin;
     }
+
 }
