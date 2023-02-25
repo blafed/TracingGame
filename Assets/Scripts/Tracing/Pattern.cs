@@ -1,54 +1,150 @@
+using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine.U2D;
 using UnityEngine;
 
+public enum PatternState
+{
+    unknown,
+    tracing,
+    animation,
+    done
+
+}
+
+static partial class Extensions
+{
+    public static bool isAnimation(this PatternState s) => s == PatternState.animation;
+    public static bool isTracingDone(this PatternState s) => s.isAnimation() || s.isDone();
+    public static bool isTracing(this PatternState s) => s == PatternState.tracing;
+    public static bool isDone(this PatternState s) => s == PatternState.done;
+
+}
 public class Pattern : MonoBehaviour
 {
     public PatternCode code;
 
-    // public EdgePoint startEdgePoint { get; set; }
-    // public EdgePoint endEdgePoint { get; set; }
+    EdgePoint[] edgePoints = new EdgePoint[2];
+    public EdgePoint startEdgePoint => edgePoints[0];
+    public EdgePoint endEdgePoint => edgePoints[1];
+    public LetterSegment segment { get; private set; }
 
-    public LetterSegment segment { get; set; }
-    /// <summary>
-    /// ranges from 0 to 1 usually, can be > 1
-    /// </summary>
-    public float progress { get; set; }
-    public bool isPostProgress { get; set; }
-    /// <summary>
-    /// the absolute moved distance
-    /// </summary>
-    protected float movedDistance => progress.clamp01() * segment.totalLength;
 
+    public bool isDone => state == PatternState.done;
+    public bool isAnimation => state == PatternState.animation;
+    public bool isTracing => state == PatternState.tracing;
+    public bool isTracingDone => isDone || isAnimation;
+
+
+
+
+
+
+
+
+    public PatternState state
+    {
+        get => _state;
+        set
+        {
+
+            var old = _state;
+            _state = value;
+            if (old != value)
+                onStageChanged(old);
+        }
+    }
+
+    PatternState _state = PatternState.unknown;
+
+
+    float _movedDistance;
+
+    /// <summary>
+    /// progress from 0 to 1
+    /// </summary>
+    public float progress
+    {
+        get => (_movedDistance / pathLength).clamp01();
+        set => _movedDistance = value.clamp01() * pathLength;
+    }
+
+    /// <summary>
+    /// setup the pattern instance with required fields (call this after instantiate)
+    /// </summary>
+    /// <param name="segment"></param>
+    public virtual void setup(LetterSegment segment)
+    {
+        this.segment = segment;
+    }
+    /// <summary>
+    /// amount of unscaled distance
+    /// </summary>
+    public float movedDistance
+    {
+        get => _movedDistance;
+        set => _movedDistance = value;
+    }
+    /// <summary>
+    /// the target path that pattern should follow (scaled)
+    /// </summary>
     protected virtual Path targetPath => segment.path;
+    /// <summary>
+    /// how much does the targetPath scale
+    /// </summary>
     protected virtual float pathScale => 1;
-    public virtual bool isFinished => progress >= 1;
+    /// <summary>
+    /// path absolute length
+    /// </summary>
+    protected float pathLength => segment.totalLength;
 
 
-    public virtual void onPostProgressStart() { }
-    public virtual void onPostProgressEnd() { }
+
+    protected virtual void Update()
+    {
+
+    }
 
 
-    // protected virtual void OnDestroy()
-    // {
-    //     Destroy(startEdgePoint.gameObject);
-    //     Destroy(endEdgePoint.gameObject);
-    // }
+
+    /// <summary>
+    /// once stage get chagned, this will be called instantly with paramter of the old stage
+    /// </summary>
+    /// <param name="old"></param>
+    protected virtual void onStageChanged(PatternState old)
+    {
+        if (state.isTracing())
+            createEdgePoints();
+    }
+
+
+    /// <summary>
+    /// evaluate the point at absolute moved distancec
+    /// </summary>
+    /// <param name="movedDistance"></param>
+    /// <returns></returns>
     protected Vector2 getPoint(float movedDistance)
     {
         movedDistance /= pathScale;
         return transform.position + targetPath.evaluate(movedDistance).toVector3() * pathScale;
     }
+    /// <summary>
+    /// move the object and the same time make it takes the same direction of path
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="movedDistance"></param>
     protected void moveObjectAlong(Transform obj, float movedDistance)
     {
         obj.transform.position = getPoint(movedDistance);
-        // transform.position + currentPath.evaluate(movedDistance / splineHeight).toVector3() * splineHeight;
-        //(Vector2)transform.position + (currentPath.endPoint * splineHeight);
-        var dir = getDirectionOfPoint(movedDistance);
-        //-targetPath.simpleNormal(movedDistance, .01f).getNormal().normalized;
+        var dir = getDirection(movedDistance);
         obj.right = dir;
     }
-    protected virtual Vector2 getDirectionOfPoint(float movedDistance)
+    /// <summary>
+    /// gets the direction at moved distance
+    /// </summary>
+    /// <param name="movedDistance"></param>
+    /// <returns></returns>
+    protected virtual Vector2 getDirection(float movedDistance)
     {
         // movedDistance /= pathScale;
         var a = getPoint(movedDistance);
@@ -67,10 +163,11 @@ public class Pattern : MonoBehaviour
     }
 
 
+    protected virtual GameObject edgePointPrefab => TracingManager.o.options.edgePointPrefab;
 
-    protected List<EdgePoint> createEdgePoints(LetterSegment segment, GameObject prefab)
+    protected void createEdgePoints(System.Action<EdgePoint> callback = null)
     {
-        List<EdgePoint> edges = new List<EdgePoint>();
+        var prefab = edgePointPrefab;
         for (int j = 0; j < 2; j++)
         {
             var p = segment.path.startPoint;
@@ -78,55 +175,23 @@ public class Pattern : MonoBehaviour
                 p = segment.path.endPoint;
 
             var x = Instantiate(prefab, p, default);
-            var edge = x.GetComponent<EdgePoint>();
-            edges.Add(edge);
+            var edgePoint = x.GetComponent<EdgePoint>();
+            edgePoint.pattern = this;
+            edgePoints[j] = edgePoint;
+            x.transform.parent = transform;
             if (j == 1)
             {
-                x.transform.position = segment.path.endPoint;
+                x.transform.localPosition = segment.path.endPoint;
             }
             else
             {
-                x.transform.position = segment.path.startPoint;
+                x.transform.localPosition = segment.path.startPoint;
             }
-            x.transform.parent = segment.transform;
+
+            callback?.Invoke(edgePoint);
         }
-        return edges;
     }
 
-
-
-
-    // public virtual void initSegment(LetterSegment segment)
-    // {
-    //     this.segment = segment;
-    //     transform.parent = segment.transform;
-    //     transform.localPosition = default;
-    //     for (int j = 0; j < 2; j++)
-    //     {
-    //         var p = segment.path.startPoint;
-    //         if (j == 1)
-    //             p = segment.path.endPoint;
-
-    //         var x = Instantiate(edgePointPrefab, p, default);
-    //         var edge = x.GetComponent<EdgePoint>();
-    //         if (j == 1)
-    //         {
-    //             endEdgePoint = edge;
-    //             x.transform.position = segment.path.endPoint;
-    //         }
-    //         else
-    //         {
-    //             startEdgePoint = edge;
-    //             x.transform.position = segment.path.startPoint;
-    //         }
-    //         x.transform.parent = segment.transform;
-    //     }
-    // }
-
-    // public virtual void setTrail(LetterSegment segment, float t)
-    // {
-
-    // }
 
 }
 

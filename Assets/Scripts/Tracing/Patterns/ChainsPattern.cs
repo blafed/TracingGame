@@ -7,7 +7,6 @@ public class ChainsPattern : SplinePattern
     float hookRotation = 5;
     [SerializeField]
     float hookDuration = .7f;
-    public override bool isFinished => base.isFinished && isHookAnimationDone;
 
 
     bool isHookAnimationDone;
@@ -21,17 +20,21 @@ public class ChainsPattern : SplinePattern
         followObject.localScale = splineHeight.vector();
     }
 
+
+    protected override void onStageChanged(PatternState old)
+    {
+        if (old == PatternState.tracing)
+        {
+            hookAnimate();
+        }
+    }
+
     protected override void Update()
     {
-        if (base.isFinished)
+        base.Update();
+        if (isTracing)
         {
-            if (!isHookAnimationStarted)
-                hookAnimate();
-            isHookAnimationStarted = true;
-        }
-        else if (!isPostProgress)
-        {
-            base.Update();
+            moveSpline();
             moveObjectAlong(followObject, movedDistance);
             followObject.localEulerAngles += Vector3.forward * hookRotation * Random.Range(-1, 1f);
         }
@@ -44,8 +47,5 @@ public class ChainsPattern : SplinePattern
             followObject.DOLocalRotate(Vector3.forward * (rot - 90), hookDuration / 2).SetEase(Ease.OutBack)
             .OnComplete(() => isHookAnimationDone = true)
         );
-
-
-
     }
 }

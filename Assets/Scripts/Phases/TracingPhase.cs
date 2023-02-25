@@ -4,15 +4,15 @@ using UnityEngine;
 public class TracingPhase : Phase<TracingPhase>
 {
     Letter argLetter;
-    LetterTracer tracer;
 
     PatternCode[] patternArray = new PatternCode[3];
     int nextPlayPatternIndex = 0;
 
 
-    public LetterTracer playCustomPattern(PatternCode pattern)
+    public void playCustomPattern(PatternCode pattern)
     {
-        return TracingManager.o.startTracing(argLetter, pattern);
+        TracingManager.o.startTracing(argLetter);
+        TracingManager.o.setTracingPattern(pattern);
 
     }
     public void playPattern(int index)
@@ -60,8 +60,11 @@ public class TracingPhase : Phase<TracingPhase>
 
     IEnumerator cycle()
     {
-        tracer = TracingManager.o.startTracing(argLetter, PatternCode.sketch);
-        yield return new WaitUntil(() => tracer.isDone);
+
+        //TODO
+        yield break;
+        // tracer = TracingManager.o.startTracing(argLetter, PatternCode.sketch);
+        // yield return new WaitUntil(() => tracer.isDone);
     }
 
 }

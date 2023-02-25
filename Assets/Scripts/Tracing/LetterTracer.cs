@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete]
 public class LetterTracer : MonoBehaviour
 {
 
@@ -44,127 +45,125 @@ public class LetterTracer : MonoBehaviour
 
     bool isEdgePointsCreated;
 
-    private void Start()
-    {
-        transform.position = letter.transform.position;
-        letter.text.DOFade(0, edgePointAnimation.duration);
-        // letter.setTextEnabled(false);
-        var edgePointNum = 2 * letter.segmentCount;
-        for (int i = 0; i < letter.segmentCount; i++)
-        {
-            var seg = letter.get(i);
-            for (int j = 0; j < 2; j++)
-            {
-                var e = Instantiate(this.edgePointPrefab).GetComponent<EdgePoint>();
-                e.transform.parent = transform;
-                var pos = seg.position + (j == 0 ? seg.path.startPoint : seg.path.endPoint);
-                e.transform.position = starterPosition;
-                var tw = e.transform.DOMove(pos, edgePointAnimation.duration).SetDelay(edgePointAnimation.delay)
-                .SetEase(Ease.OutCubic);
-                if (i == letter.segmentCount - 1 && j == 1)
-                    tw.OnComplete(() => isEdgePointsCreated = true);
-                edgePoints.Add(e);
-                e.setPlaying(false);
-            }
-        }
+    // private void Start()
+    // {
+    //     transform.position = letter.transform.position;
+    //     letter.text.DOFade(0, edgePointAnimation.duration);
+    //     // letter.setTextEnabled(false);
+    //     var edgePointNum = 2 * letter.segmentCount;
+    //     for (int i = 0; i < letter.segmentCount; i++)
+    //     {
+    //         var seg = letter.get(i);
+    //         for (int j = 0; j < 2; j++)
+    //         {
+    //             var e = Instantiate(this.edgePointPrefab).GetComponent<EdgePoint>();
+    //             e.transform.parent = transform;
+    //             var pos = seg.position + (j == 0 ? seg.path.startPoint : seg.path.endPoint);
+    //             e.transform.position = starterPosition;
+    //             var tw = e.transform.DOMove(pos, edgePointAnimation.duration).SetDelay(edgePointAnimation.delay)
+    //             .SetEase(Ease.OutCubic);
+    //             if (i == letter.segmentCount - 1 && j == 1)
+    //                 tw.OnComplete(() => isEdgePointsCreated = true);
+    //             edgePoints.Add(e);
+    //             e.setPlaying(false);
+    //         }
+    //     }
 
-    }
-    private void Update()
-    {
-        if (isEdgePointsCreated)
-        {
-            if (!isPostProgress)
-            {
-                updateProgress();
-            }
-            else
-            {
-                updatePostProgress();
-            }
-        }
-    }
+    // }
+    // private void Update()
+    // {
+    //     if (isEdgePointsCreated)
+    //     {
+    //         if (!isPostProgress)
+    //         {
+    //             updateProgress();
+    //         }
+    //         else
+    //         {
+    //             updatePostProgress();
+    //         }
+    //     }
+    // }
 
-    void updateProgress()
-    {
-        if (!currentPattern)
-        {
-            beginSegmentTracing();
-        }
-        else
-        {
-            currentPattern.transform.position = letter.transform.position;
-        }
+    // void updateProgress()
+    // {
+    //     if (!currentPattern)
+    //     {
+    //         beginSegmentTracing();
+    //     }
+    //     else
+    //     {
+    //         currentPattern.transform.position = letter.transform.position;
+    //     }
 
-        // progress +=  progressIncrement * Time.deltaTime;
-        if (autoProgress)
-            currentPattern.progress += progressIncrement * Time.deltaTime;
-        if (currentPattern.isFinished)
-        {
-            // progress = 0;
+    //     // progress +=  progressIncrement * Time.deltaTime;
+    //     if (autoProgress)
+    //         currentPattern.progress += progressIncrement * Time.deltaTime;
+    //     if (currentPattern.isFinished)
+    //     {
+    //         // progress = 0;
 
-            setEdgePointsPlaying(segmentIndex, false);
+    //         setEdgePointsPlaying(segmentIndex, false);
 
-            segmentIndex++;
-            currentPattern = null;
-            if (segmentIndex >= letter.segmentCount)
-                beginPostProgress();
+    //         segmentIndex++;
+    //         currentPattern = null;
+    //         if (segmentIndex >= letter.segmentCount)
+    //             beginPostProgress();
 
-            // Destroy(currentPattern.gameObject);
-        }
-    }
-    void beginPostProgress()
-    {
-        segmentIndex = 0;
-        isPostProgress = true;
+    //         // Destroy(currentPattern.gameObject);
+    //     }
+    // }
+    // void beginPostProgress()
+    // {
+    //     segmentIndex = 0;
+    //     isPostProgress = true;
 
-    }
-    void updatePostProgress()
-    {
-        if (segmentIndex >= segmentPatterns.Count)
-            return;
-        currentPattern = segmentPatterns[segmentIndex];
-        if (!currentPattern.isPostProgress)
-        {
-            currentPattern.progress = 0;
-            currentPattern.isPostProgress = true;
-            setEdgePointsPlaying(segmentIndex, true);
-            currentPattern.onPostProgressStart();
-        }
-        currentPattern.progress += progressIncrement * Time.deltaTime;
-        if (currentPattern.isFinished)
-        {
-            currentPattern.onPostProgressEnd();
-            setEdgePointsPlaying(segmentIndex, false);
-            segmentIndex++;
-        }
-    }
-
-
-    void setEdgePointsPlaying(int segmentIndex, bool value)
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            var index = i + segmentIndex * 2;
-            edgePoints[index].setPlaying(value);
-        }
-    }
+    // }
+    // void updatePostProgress()
+    // {
+    //     if (segmentIndex >= segmentPatterns.Count)
+    //         return;
+    //     currentPattern = segmentPatterns[segmentIndex];
+    //     if (!currentPattern.isPostProgress)
+    //     {
+    //         currentPattern.progress = 0;
+    //         currentPattern.isPostProgress = true;
+    //         setEdgePointsPlaying(segmentIndex, true);
+    //         currentPattern.onPostProgressStart();
+    //     }
+    //     currentPattern.progress += progressIncrement * Time.deltaTime;
+    //     if (currentPattern.isFinished)
+    //     {
+    //         currentPattern.onPostProgressEnd();
+    //         setEdgePointsPlaying(segmentIndex, false);
+    //         segmentIndex++;
+    //     }
+    // }
 
 
-    void beginSegmentTracing()
-    {
-        currentPattern = Instantiate(patternPrefab).GetComponent<Pattern>();
-        currentPattern.transform.position = letter.transform.position;
-        currentPattern.segment = segment;
-        currentPattern.progress = 0;
-        currentPattern.transform.parent = transform;
-        currentPattern.transform.position = Vector3.one * 10000;
-        segmentPatterns.Add(currentPattern);
-
-        setEdgePointsPlaying(segmentIndex, true);
-        // currentPattern.initSegment(segment);
+    // void setEdgePointsPlaying(int segmentIndex, bool value)
+    // {
+    //     for (int i = 0; i < 2; i++)
+    //     {
+    //         var index = i + segmentIndex * 2;
+    //         edgePoints[index].setPlaying(value);
+    //     }
+    // }
 
 
-    }
+    // void beginSegmentTracing()
+    // {
+    //     currentPattern = Instantiate(patternPrefab).GetComponent<Pattern>();
+    //     currentPattern.transform.position = letter.transform.position;
+    //     currentPattern.segment = segment;
+    //     currentPattern.progress = 0;
+    //     currentPattern.transform.parent = transform;
+    //     currentPattern.transform.position = Vector3.one * 10000;
+    //     segmentPatterns.Add(currentPattern);
+
+    //     setEdgePointsPlaying(segmentIndex, true);
+    //     // currentPattern.initSegment(segment);
+    // }
 
 
 }

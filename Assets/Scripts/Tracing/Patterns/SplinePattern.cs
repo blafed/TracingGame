@@ -37,15 +37,15 @@ public class SplinePattern : Pattern
         }
     }
 
-    protected virtual void Update()
+
+    protected void moveSpline()
+    {
+        moveSpline(this.shapeController);
+    }
+    protected void moveSpline(SpriteShapeController shapeController)
     {
         targetPath.lerpFast(movedDistance / splineHeight, currentPath);
-        // for (int i = 0; i < currentPath.points.Count; i++)
-        // {
-        //     currentPath.points[i] /= splineHeight;
-        // }
-        SplinePathHelper.pathToSpline(currentPath, spline, factory);
-        // if(movedDistance > currentPath.getSegmentLength(segmentIndex))
+        SplinePathHelper.pathToSpline(currentPath, shapeController.spline, factory);
     }
 
 

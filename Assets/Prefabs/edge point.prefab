@@ -215,13 +215,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5def1eb44fcaf214492a6f2985e0ad84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationPerDistance: 90
   transitionDuration: 0.4
-  states:
+  stateRenderers:
     items:
-    - key: 0
-      value: {fileID: 5991077013671323614}
     - key: 1
       value: {fileID: 5991077012595190469}
+    - key: 2
+      value: {fileID: 5991077012595190469}
+    - key: 0
+      value: {fileID: 5991077013671323614}
+    - key: 3
+      value: {fileID: 5991077013671323614}
 --- !u!210 &5991077014488870958
 SortingGroup:
   m_ObjectHideFlags: 0

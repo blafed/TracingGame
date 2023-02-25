@@ -9,24 +9,33 @@ public class RoadPattern : SplinePattern
     }
     protected override void Update()
     {
-        if (!isPostProgress)
-            base.Update();
-        else
+        base.Update();
+        if (isTracing)
+            moveSpline();
+        if (isAnimation)
         {
             followObject.gameObject.SetActive(true);
             moveObjectAlong(followObject, movedDistance);
         }
     }
 
-    public override void onPostProgressStart()
+
+    protected override void onStageChanged(PatternState old)
     {
-        followObject.gameObject.SetActive(true);
-        followObject.localScale = Vector3.zero;
-        followObject.DOScale(1, .25f);
-    }
-    public override void onPostProgressEnd()
-    {
-        followObject.localScale = Vector3.one;
-        followObject.DOScale(0, .25f);
+        if (state.isAnimation())
+        {
+            followObject.gameObject.SetActive(true);
+            followObject.localScale = Vector3.zero;
+            followObject.DOScale(1, .25f);
+        }
+        else if (state.isDone())
+        {
+            followObject.localScale = Vector3.one;
+            followObject.DOScale(0, .25f);
+        }
+        else
+        {
+            followObject.gameObject.SetActive(false);
+        }
     }
 }

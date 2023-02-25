@@ -24,11 +24,12 @@ public class RainbowPattern : SplinePattern
     }
     protected override void Update()
     {
-        if (!isPostProgress)
+        base.Update();
+        if (state == PatternState.tracing)
         {
-            base.Update();
+            moveSpline();
         }
-        else
+        else if (state == PatternState.animation)
         {
             moveObjectAlong(followObject, movedDistance);
             shineTimer -= Time.deltaTime;
@@ -46,16 +47,23 @@ public class RainbowPattern : SplinePattern
         }
     }
 
-    public override void onPostProgressStart()
+    protected override void onStageChanged(PatternState old)
     {
-        followObject.gameObject.SetActive(true);
-        followObject.localScale = Vector3.zero;
-        followObject.DOScale(1, .25f);
-    }
-    public override void onPostProgressEnd()
-    {
-        followObject.localScale = Vector3.one;
-        followObject.DOScale(0, .25f);
+        switch (old)
+        {
+            case PatternState.animation:
+                followObject.localScale = Vector3.one;
+                followObject.DOScale(0, .25f);
+                break;
+        }
+        switch (state)
+        {
+            case PatternState.animation:
+                followObject.gameObject.SetActive(true);
+                followObject.localScale = Vector3.zero;
+                followObject.DOScale(1, .25f);
+                break;
+        }
     }
 
     void tweenShine(Transform shine)

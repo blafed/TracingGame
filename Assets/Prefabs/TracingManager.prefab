@@ -44,6 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469d6940bef27344eaec5cf280829af0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  options:
+    speed: 2
+    cameraZoom: 5
+    edgePointPrefab: {fileID: 5991077014488870945, guid: c58b6b0e83656a14282f95b6ec514807, type: 3}
+    patternObjects:
+    - {fileID: 341075784391559614, guid: fffb23617a5a98d45ba8f8564458f141, type: 3}
+    - {fileID: 341075784391559614, guid: fb70df8ed529e4844bdc9df7c256ab86, type: 3}
+    - {fileID: 7811810815110988914, guid: 61a31fb3b2e32754b9d914086aaa9b00, type: 3}
+    - {fileID: 7605648207159524934, guid: 6732d28aef6a3f045a691250bcd4285d, type: 3}
+    - {fileID: 8877065510831761988, guid: 03383a876bf0dac4ab5ba8bbb1892d93, type: 3}
+    - {fileID: 7811810815110988914, guid: 05bd48c52b2c29146b8cccb4f2959541, type: 3}
+  manualProgress: 0
   patternInfos:
   - {fileID: 341075784391559614, guid: fffb23617a5a98d45ba8f8564458f141, type: 3}
   - {fileID: 341075784391559614, guid: fb70df8ed529e4844bdc9df7c256ab86, type: 3}
@@ -51,4 +63,3 @@ MonoBehaviour:
   - {fileID: 7605648207159524934, guid: 6732d28aef6a3f045a691250bcd4285d, type: 3}
   - {fileID: 8877065510831761988, guid: 03383a876bf0dac4ab5ba8bbb1892d93, type: 3}
   - {fileID: 7811810815110988914, guid: 05bd48c52b2c29146b8cccb4f2959541, type: 3}
-  tracerPrefab: {fileID: 4287112036970122170, guid: a02899ce9d3dddf47936e2efa1cda55f, type: 3}

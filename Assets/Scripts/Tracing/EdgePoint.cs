@@ -4,47 +4,62 @@ public class EdgePoint : MonoBehaviour
 {
 
 
-    enum State
-    {
-        paused,
-        playing,
-    }
 
+
+    public Pattern pattern { get; set; }
+    PatternState state => pattern.state;
+
+    [SerializeField] float rotationPerDistance = 30;
     [SerializeField] float transitionDuration = .4f;
-    [SerializeField] PairList<State, SpriteRenderer> states = new PairList<State, SpriteRenderer>();
+    [SerializeField] PairList<PatternState, SpriteRenderer> stateRenderers = new PairList<PatternState, SpriteRenderer>();
 
-    State state;
     Tween currentTween;
 
+    float diffMovement;
+    float movedOnRotation;
 
-    void changeState(State state)
+    PatternState oldState;
+
+    Tween transitRenderer(PatternState state)
     {
-        if (state != this.state)
+        var seq = DOTween.Sequence();
+        foreach (var x in stateRenderers)
         {
-            var old = this.state;
-            this.state = state;
-            if (currentTween != null)
-                currentTween.Complete();
+            seq.Join(x.value.transform.DOScale(x.key == state ? 0 : 1, transitionDuration).SetEase(Ease.OutQuad));
+        }
+        return seq;
+    }
+    void onPatternStateChange()
+    {
+        if (currentTween != null)
+            currentTween.Kill();
+        var seq = DOTween.Sequence();
+        seq.Join(transitRenderer(state));
+        currentTween = seq;
+    }
 
-            var oldRenderer = states.get(old);
-            var newRenderer = states.get(state);
+    private void Update()
+    {
+        oldState = pattern.state;
+        if (pattern.isTracing)
+        {
+            currentTween = null;
+            diffMovement += pattern.movedDistance - movedOnRotation;
+            movedOnRotation = pattern.movedDistance;
 
-            oldRenderer.transform.localScale = Vector3.one;
-            newRenderer.transform.localScale = Vector3.zero;
+            var rotationSpeed = Time.deltaTime * this.rotationPerDistance * Mathf.Min(1, diffMovement);
+            transform.Rotate(Vector3.forward * rotationSpeed);
 
-            var seq = DOTween.Sequence();
-            seq.Join(oldRenderer.transform.DOScale(0, transitionDuration).SetEase(Ease.OutQuad));
-            seq.Join(newRenderer.transform.DOScale(1, transitionDuration)).SetEase(Ease.OutQuad);
-            seq.AppendInterval(transitionDuration);
-            currentTween = seq;
-
-
+            diffMovement -= Time.deltaTime;
+            diffMovement = Mathf.Max(0, diffMovement);
+        }
+        else
+        {
+            transform.localEulerAngles = default;
         }
     }
 
-    public void setPlaying(bool value)
-    {
-        changeState(value ? State.playing : State.paused);
-    }
+
+
 
 }

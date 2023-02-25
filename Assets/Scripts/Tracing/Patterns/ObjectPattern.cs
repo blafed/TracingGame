@@ -43,7 +43,7 @@ public class ObjectPattern : Pattern
 
     private void FixedUpdate()
     {
-        if (isPostProgress)
+        if (isAnimation)
         {
             foreach (var x in objects)
             {
@@ -51,7 +51,7 @@ public class ObjectPattern : Pattern
                 // x.transform.position = transform.position.toVector2() + ((x.delay + progress).clamp01() * segment.totalLength);
             }
         }
-        else
+        else if (isTracing)
         {
 
             if ((movedDistance / spacing).floor() > objects.Count)
@@ -70,9 +70,4 @@ public class ObjectPattern : Pattern
         obj.transform.DOScale(s, .5f);
     }
 
-    protected virtual void Update()
-    {
-
-
-    }
 }
