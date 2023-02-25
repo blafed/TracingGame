@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 312244203612791115}
   - component: {fileID: 2114460401}
-  - component: {fileID: 2114460402}
   m_Layer: 0
   m_Name: LetterContainer
   m_TagString: Untagged
@@ -48,25 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9cdd6696e456244bbf781761ba0447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leavingPosition:
+    distance: 20
+    duration: 1
+    ease: 7
   cameraSize: 15
---- !u!114 &2114460402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 312244203612791124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a8a025e893a5fe4385fe0d0de428d0b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  wordDuration: 3
-  targetCameraSize: 5
-  focusTime: 1
-  initialGlowDelay: 1
-  cameraRepeatlyDeltaSize: 0.5
-  glowTimeRate: 0.5
 --- !u!1001 &312244203032429031
 PrefabInstance:
   m_ObjectHideFlags: 0

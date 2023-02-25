@@ -473,6 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bedf435b3534cc4bbe77034dbbb0d32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  code: 3
   splineHeight: 0.5
   shapeController: {fileID: 1273902072224175926}
   followObject: {fileID: 6824755923365370796}

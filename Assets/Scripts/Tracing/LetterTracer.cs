@@ -11,6 +11,10 @@ public class LetterTracer : MonoBehaviour
         public float duration = .5f;
         public float delay = .2f;
     }
+
+    public bool isDone => isPostProgress && segmentIndex >= letter.segmentCount;
+
+
     public float speed = 2;
     public bool autoProgress = true;
 
@@ -42,7 +46,9 @@ public class LetterTracer : MonoBehaviour
 
     private void Start()
     {
-        letter.setTextEnabled(false);
+        transform.position = letter.transform.position;
+        letter.text.DOFade(0, edgePointAnimation.duration);
+        // letter.setTextEnabled(false);
         var edgePointNum = 2 * letter.segmentCount;
         for (int i = 0; i < letter.segmentCount; i++)
         {
@@ -51,9 +57,9 @@ public class LetterTracer : MonoBehaviour
             {
                 var e = Instantiate(this.edgePointPrefab).GetComponent<EdgePoint>();
                 e.transform.parent = transform;
-                var pos = transform.position.toVector2() + (j == 0 ? seg.path.startPoint : seg.path.endPoint);
+                var pos = seg.position + (j == 0 ? seg.path.startPoint : seg.path.endPoint);
                 e.transform.position = starterPosition;
-                var tw = e.transform.DOLocalMove(pos, edgePointAnimation.duration).SetDelay(edgePointAnimation.delay)
+                var tw = e.transform.DOMove(pos, edgePointAnimation.duration).SetDelay(edgePointAnimation.delay)
                 .SetEase(Ease.OutCubic);
                 if (i == letter.segmentCount - 1 && j == 1)
                     tw.OnComplete(() => isEdgePointsCreated = true);

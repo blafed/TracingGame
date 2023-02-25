@@ -6,11 +6,6 @@ public class LetterContainer : MonoBehaviour
 {
     public static LetterContainer o;
 
-    [SerializeField] float cameraSize = 15;
-
-    new Camera camera => Extensions2.mainCamera;
-
-
     [System.Serializable]
     class LeavingPosition
     {
@@ -18,18 +13,6 @@ public class LetterContainer : MonoBehaviour
         public float duration = 1;
         public Ease ease = Ease.InQuad;
     }
-
-    [SerializeField]
-    LeavingPosition leavingPosition = new LeavingPosition();
-
-
-    // [SerializeField] float columnHeight = 7;
-    // [SerializeField] int columnCount = 5;
-
-    // [SerializeField] Letter[] allLetters;
-    // public FlowList<LetterItem> letters;
-
-
     [System.Serializable]
     class LetterData
     {
@@ -38,9 +21,15 @@ public class LetterContainer : MonoBehaviour
         public Vector2 startPosition;
     }
 
+    [SerializeField]
+    LeavingPosition leavingPosition = new LeavingPosition();
+    [SerializeField] float cameraSize = 15;
+
+
     List<LetterData> letters = new();
 
 
+    new Camera camera => Extensions2.mainCamera;
 
     private void Awake()
     {
@@ -63,32 +52,6 @@ public class LetterContainer : MonoBehaviour
                 leavingPosition = x.transform.localPosition.normalized * leavingPosition.distance
             });
         }
-
-
-
-        // System.Array.Sort(allLetters, (a, b) => a.letterId.CompareTo(b.letterId));
-
-        // int i = 0;
-        // Vector2 p = new Vector2();
-        // var rowCount = Mathf.Ceil(allLetters.Length / (float)columnCount);
-
-
-        // foreach (var x in allLetters)
-        // {
-        //     var leftCount = allLetters.Length - i;
-        //     var letter = Instantiate(x.gameObject).GetComponent<Letter>();
-        //     var collider = letter.gameObject.AddComponent<BoxCollider>();
-        //     letter.onClick += () => onLetterClick(letter);
-        //     letter.transform.parent = transform;
-
-
-        //     var inThisRow = i % columnCount;
-        //     var rowSize = Mathf.Min(leftCount, columnCount);
-
-        //     var f = inThisRow / (float)rowSize + .5f;
-
-        //     i++;
-        // }
     }
 
     Letter selectedLetter;
@@ -101,9 +64,15 @@ public class LetterContainer : MonoBehaviour
 
     private void onLetterClick(Letter letter)
     {
-        if (selectedLetter)
+        if (LetterContainerPhase.o != Phase.current)
             return;
+        if (!LetterContainerPhase.o.onSelectLetter(letter))
+        {
+            return;
+        }
         letter.transform.DOPunchScale(.2f.vector(), .2f);
+
+        return;
         var word = WordList.o.getRandomContains(letter.letterId);
         if (word == null)
         {
@@ -115,7 +84,25 @@ public class LetterContainer : MonoBehaviour
     }
 
 
-    public void removeAllLetters(System.Predicate<Letter> exclude = null)
+    public void hideAllNoTween(System.Predicate<Letter> exclude = null)
+    {
+        foreach (var x in letters)
+        {
+            if (exclude != null && exclude(x.letter))
+                continue;
+            x.letter.transform.localPosition = x.leavingPosition;
+        }
+    }
+    public void showAllNoTween(System.Predicate<Letter> exclude = null)
+    {
+        foreach (var x in letters)
+        {
+            if (exclude != null && exclude(x.letter))
+                continue;
+            x.letter.transform.localPosition = x.startPosition;
+        }
+    }
+    public Tween hideAll(System.Predicate<Letter> exclude = null)
     {
         foreach (var x in letters)
         {
@@ -125,15 +112,20 @@ public class LetterContainer : MonoBehaviour
             x.letter.transform.DOLocalMove(x.leavingPosition, leavingPosition.duration)
             .SetEase(leavingPosition.ease);
         }
+
+        return DOTween.Sequence().PrependInterval(leavingPosition.duration);
     }
-    public void showAllLetters()
+    public Tween showAll(System.Predicate<Letter> exclude = null)
     {
         foreach (var x in letters)
         {
+            if (exclude != null && exclude(x.letter))
+                continue;
             x.letter.transform.localPosition = x.leavingPosition;
             x.letter.transform.DOLocalMove(x.startPosition, leavingPosition.duration)
             .SetEase(leavingPosition.ease);
         }
+        return DOTween.Sequence().PrependInterval(leavingPosition.duration);
     }
 
 

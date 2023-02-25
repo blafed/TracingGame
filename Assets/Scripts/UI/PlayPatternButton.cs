@@ -13,7 +13,7 @@ public class PlayPatternButton : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             transform.DOPunchScale(.2f.vector(), .2f);
-            TracingManager.o.startTracing(code);
+            TracingPhase.o.playCustomPattern(code);
         });
     }
 }

@@ -1,17 +1,18 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class TracingManager : MonoBehaviour
 {
     public static TracingManager o { get; private set; }
 
-    [SerializeField]
-    GameObject edgePointPrefab;
+    [SerializeField] List<Pattern> patternInfos;
+
     [SerializeField]
     GameObject tracerPrefab;
     LetterTracer currentTracer;
+    Letter currentLetter;
 
 
-    public Letter letter;
+    // public Letter letter;
 
     private void Awake()
     {
@@ -20,17 +21,20 @@ public class TracingManager : MonoBehaviour
 
     GameObject getPatternPrefab(PatternCode code)
     {
-        return Resources.Load<GameObject>("Patterns/" + code.ToString().capitalize() + "Pattern");
+        return patternInfos.Find(x => x.code == code).gameObject;
+        // return Resources.Load<GameObject>("Patterns/" + code.ToString().capitalize() + "Pattern");
     }
 
 
-    public void startTracing(PatternCode pattern)
+
+    public LetterTracer startTracing(Letter letter, PatternCode pattern)
     {
         if (currentTracer)
             Destroy(currentTracer.gameObject);
+        currentLetter = letter;
         currentTracer = Instantiate(tracerPrefab).GetComponent<LetterTracer>();
         currentTracer.patternPrefab = getPatternPrefab(pattern);
-        currentTracer.edgePointPrefab = edgePointPrefab;
         currentTracer.letter = letter;
+        return currentTracer;
     }
 }

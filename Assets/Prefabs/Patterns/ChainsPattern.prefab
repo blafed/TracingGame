@@ -557,9 +557,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d65cf1361a1e3d44a029bd98e9a8beb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  code: 1
   splineHeight: 0.5
   shapeController: {fileID: 6226746705933901862}
   followObject: {fileID: 2997853876203891718}
+  hookRotation: 5
+  hookDuration: 0.7
 --- !u!1 &7916280533875459109
 GameObject:
   m_ObjectHideFlags: 0

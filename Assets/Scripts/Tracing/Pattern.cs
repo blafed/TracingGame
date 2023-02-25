@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Pattern : MonoBehaviour
 {
-
+    public PatternCode code;
 
     // public EdgePoint startEdgePoint { get; set; }
     // public EdgePoint endEdgePoint { get; set; }
@@ -139,5 +139,6 @@ public enum PatternCode
     rainbow,
     butterfly,
     candy,
-
+    sketch,
+    COUNT,
 }

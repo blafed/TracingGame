@@ -102,7 +102,7 @@ public class LetterEnterAnimation : MonoBehaviour
     }
     IEnumerator playCycle(Letter l, WordInfo word)
     {
-        LetterContainer.o.removeAllLetters(x => x == l);
+        LetterContainer.o.hideAll(x => x == l);
         transform.position = l.transform.position;
         var cam = CameraControl.o;
         cam.zoom(initialFocus.zoom, initialFocus.duration).SetEase(initialFocus.zoomEase).add(tweens);
