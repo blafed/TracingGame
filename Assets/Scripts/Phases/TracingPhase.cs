@@ -47,10 +47,12 @@ public class TracingPhase : Phase<TracingPhase>
             patternArray[i] = (PatternCode)Random.Range(1, (int)PatternCode.COUNT);
         }
         StartCoroutine(cycle());
+        TracingPanelUI.o.show();
     }
     protected override void onExit()
     {
         StopAllCoroutines();
+        TracingPanelUI.o.hide();
     }
 
 
