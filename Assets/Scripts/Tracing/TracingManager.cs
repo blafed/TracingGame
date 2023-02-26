@@ -1,5 +1,14 @@
 using UnityEngine;
 using System.Collections.Generic;
+
+
+public enum TracingState
+{
+    initial,
+    tracing,
+    animation,
+    done,
+}
 public class TracingManager : MonoBehaviour
 {
     [System.Serializable]
@@ -7,7 +16,7 @@ public class TracingManager : MonoBehaviour
     {
         public float speed = 2;
         public float cameraZoom = 5;
-        public GameObject edgePointPrefab;
+        public EdgePoint edgePointPrefab;
         public List<Pattern> patternObjects = new List<Pattern>();
 
     }
@@ -18,7 +27,7 @@ public class TracingManager : MonoBehaviour
 
     [SerializeField]
     public Options options = new Options();
-    public bool manualProgress = false;
+    public bool autoTracing = true;
 
     Letter currentLetter;
 
@@ -29,15 +38,13 @@ public class TracingManager : MonoBehaviour
     {
         get => segmentIndex >= segmentPatterns.Count ? null : segmentPatterns[segmentIndex];
     }
-    public bool isDone
-    {
-        get
-        {
-            return segmentPatterns.Count == 0 || segmentPatterns.TrueForAll(x => x.isDone);
-        }
-    }
+    public TracingState state { get; private set; }
 
 
+
+
+    bool hasSegmentChanged = true;
+    float initialTime = 0;
 
 
     // public Letter letter;
@@ -46,7 +53,10 @@ public class TracingManager : MonoBehaviour
     {
         o = this;
     }
-
+    Pattern getPatternPrefab(PatternCode code)
+    {
+        return options.patternObjects.Find(x => x.code == code);
+    }
     Pattern createPattern(PatternCode code)
     {
         var go = options.patternObjects.Find(x => x.code == code).gameObject;
@@ -84,6 +94,8 @@ public class TracingManager : MonoBehaviour
             Debug.LogError("Current Letter is not set", gameObject);
             return;
         }
+        state = TracingState.initial;
+        initialTime = getPatternPrefab(patternCode).waitBeforeEnableTracing;
         spawnEdgePointsFrom = null;
         hasSegmentChanged = true;
         foreach (var x in segmentPatterns)
@@ -99,32 +111,75 @@ public class TracingManager : MonoBehaviour
             pattern.transform.position = seg.transform.position;
             pattern.setup(seg);
             pattern.progress = 0;
+            pattern.onCreated();
             segmentPatterns.Add(pattern);
             pattern.gameObject.SetActive(false);
         }
     }
 
-    bool hasSegmentChanged = true;
     private void FixedUpdate()
     {
-        if (!isDone)
+        if (segmentPatterns.Count == 0)
+            return;
+        if (initialTime > 0)
         {
-            if (hasSegmentChanged)
+            initialTime -= Time.fixedDeltaTime;
+            return;
+        }
+        if (state == TracingState.initial)
+            state++;
+
+        if (hasSegmentChanged)
+        {
+            if (state == TracingState.tracing)
             {
-                currentSegmentPattern.gameObject.SetActive(true);
                 currentSegmentPattern.progress = 0;
-                currentSegmentPattern.state++;
-                hasSegmentChanged = false;
+                currentSegmentPattern.gameObject.SetActive(true);
+                currentSegmentPattern.onStartTracing();
             }
-            if (!manualProgress)
-                currentSegmentPattern.movedDistance += options.speed * Time.fixedDeltaTime;
-            if (currentSegmentPattern.progress >= 1 || currentSegmentPattern.isDone)
+            else if (state == TracingState.animation)
+            {
+                currentSegmentPattern.progress = 0;
+                currentSegmentPattern.onStartAnimation();
+            }
+            else if (state == TracingState.done)
+                foreach (var x in segmentPatterns)
+                    x.onAllDone();
+            hasSegmentChanged = false;
+        }
+        if (state == TracingState.tracing)
+        {
+
+            currentSegmentPattern.whileTracing();
+            if (currentSegmentPattern.isProgressCompleted)
             {
                 hasSegmentChanged = true;
+                currentSegmentPattern.onEndTracing();
                 segmentIndex++;
-                if (segmentIndex >= segmentPatterns.Count)
-                    segmentIndex = 0;
             }
+            else if (autoTracing)
+                currentSegmentPattern.movedDistance += options.speed * Time.fixedDeltaTime;
+        }
+        if (state == TracingState.animation)
+        {
+            currentSegmentPattern.whileAnimation();
+            if (currentSegmentPattern.isProgressCompleted)
+            {
+                hasSegmentChanged = true;
+                currentSegmentPattern.onEndAnimation();
+                currentSegmentPattern.onDone();
+                segmentIndex++;
+            }
+            else
+            {
+                currentSegmentPattern.movedDistance += options.speed * Time.fixedDeltaTime;
+            }
+        }
+
+        if (segmentIndex >= segmentPatterns.Count)
+        {
+            segmentIndex = 0;
+            state++;
         }
     }
 

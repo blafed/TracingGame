@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using UnityEngine.U2D;
 using UnityEngine;
 
-public enum PatternState
-{
-    unknown,
-    tracing,
-    animation,
-    done
+// public enum PatternState
+// {
+//     unknown,
+//     tracing,
+//     animation,
+//     done
 
-}
+// }
 
-static partial class Extensions
-{
-    public static bool isAnimation(this PatternState s) => s == PatternState.animation;
-    public static bool isTracingDone(this PatternState s) => s.isAnimation() || s.isDone();
-    public static bool isTracing(this PatternState s) => s == PatternState.tracing;
-    public static bool isDone(this PatternState s) => s == PatternState.done;
+// static partial class Extensions
+// {
+//     public static bool isAnimation(this PatternState s) => s == PatternState.animation;
+//     public static bool isTracingDone(this PatternState s) => s.isAnimation() || s.isDone();
+//     public static bool isTracing(this PatternState s) => s == PatternState.tracing;
+//     public static bool isDone(this PatternState s) => s == PatternState.done;
 
-}
+// }
 public class Pattern : MonoBehaviour
 {
     public PatternCode code;
@@ -30,35 +30,69 @@ public class Pattern : MonoBehaviour
     public LetterSegment segment { get; private set; }
 
 
-    public bool isDone => state == PatternState.done;
-    public bool isAnimation => state == PatternState.animation;
-    public bool isTracing => state == PatternState.tracing;
-    public bool isTracingDone => isDone || isAnimation;
+    public virtual float waitBeforeEnableTracing => 1;
 
-    public bool isStateCompleted => progress >= 1;
+
+    public bool isProgressCompleted => progress >= 1;
     protected virtual bool createEdgePointsByDefault => true;
 
 
-
-
-
-
-
-
-    public PatternState state
+    public virtual void onCreated()
     {
-        get => _state;
-        set
+        if (createEdgePointsByDefault)
+            createEdgePoints();
+    }
+    public virtual void onStartTracing()
+    {
+        foreach (var x in edgePoints)
+            x.setPlaying();
+    }
+    public virtual void whileTracing()
+    {
+        foreach (var x in edgePoints)
+            x.rotateByDistance();
+    }
+    public virtual void onEndTracing()
+    {
+        foreach (var x in edgePoints)
         {
-
-            var old = _state;
-            _state = value;
-            if (old != value)
-                onStageChanged(old);
+            x.rotateToOrigin();
+            x.setStopped();
         }
     }
+    public virtual void onStartAnimation()
+    {
+        foreach (var x in edgePoints)
+            x.setPlaying();
+    }
+    public virtual void whileAnimation()
+    {
+    }
+    public virtual void onEndAnimation()
+    {
 
-    PatternState _state = PatternState.unknown;
+    }
+    /// <summary>
+    /// called after animation is done
+    /// </summary>
+    public virtual void onDone()
+    {
+        foreach (var x in edgePoints)
+            x.setCompleted();
+    }
+    /// <summary>
+    /// called after all segments are completed
+    /// </summary>
+    public virtual void onAllDone() { }
+
+    protected virtual void OnDestroy()
+    {
+        foreach (var x in edgePoints)
+            if (x)
+                Destroy(x.gameObject);
+    }
+
+
 
 
     float _movedDistance;
@@ -76,7 +110,7 @@ public class Pattern : MonoBehaviour
     /// setup the pattern instance with required fields (call this after instantiate)
     /// </summary>
     /// <param name="segment"></param>
-    public virtual void setup(LetterSegment segment)
+    public void setup(LetterSegment segment)
     {
         this.segment = segment;
     }
@@ -100,27 +134,6 @@ public class Pattern : MonoBehaviour
     /// path absolute length
     /// </summary>
     protected float pathLength => segment.totalLength;
-
-
-    protected virtual void Start()
-    {
-        if (createEdgePointsByDefault)
-            createEdgePoints();
-    }
-    protected virtual void FixedUpdate()
-    {
-
-    }
-
-
-
-    /// <summary>
-    /// once stage get chagned, this will be called instantly with paramter of the old stage
-    /// </summary>
-    /// <param name="old"></param>
-    protected virtual void onStageChanged(PatternState old)
-    {
-    }
 
 
     /// <summary>
@@ -168,11 +181,10 @@ public class Pattern : MonoBehaviour
     }
 
 
-    protected virtual GameObject edgePointPrefab => TracingManager.o.options.edgePointPrefab;
 
     protected void createEdgePoints(System.Action<EdgePoint> callback = null)
     {
-        var prefab = edgePointPrefab;
+        var prefab = TracingManager.o.options.edgePointPrefab.gameObject;
         for (int j = 0; j < 2; j++)
         {
             var p = segment.path.startPoint;
@@ -183,14 +195,14 @@ public class Pattern : MonoBehaviour
             var edgePoint = x.GetComponent<EdgePoint>();
             edgePoint.pattern = this;
             edgePoints[j] = edgePoint;
-            x.transform.parent = transform;
+            x.transform.parent = transform.parent;
             if (j == 1)
             {
-                x.transform.localPosition = segment.path.endPoint;
+                x.transform.position = transform.position.toVector2() + segment.path.endPoint;
             }
             else
             {
-                x.transform.localPosition = segment.path.startPoint;
+                x.transform.position = transform.position.toVector2() + segment.path.startPoint;
             }
 
             callback?.Invoke(edgePoint);

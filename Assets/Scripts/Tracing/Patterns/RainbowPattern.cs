@@ -16,55 +16,49 @@ public class RainbowPattern : SplinePattern
     float shineTimer;
     GameObject tempFollowObject;
 
-    protected override void Start()
+    public override void onCreated()
     {
-        base.Start();
+        base.onCreated();
         shineTimer = rate.random;
         followObject.gameObject.SetActive(false);
     }
-    protected override void FixedUpdate()
+
+    public override void whileTracing()
     {
-        base.FixedUpdate();
-        if (state == PatternState.tracing)
+        base.whileTracing();
+        moveSpline();
+    }
+    public override void whileAnimation()
+    {
+        base.whileAnimation();
+        moveObjectAlong(followObject, movedDistance);
+        shineTimer -= Time.fixedDeltaTime;
+        if (shineTimer <= 0)
         {
-            moveSpline();
-        }
-        else if (state == PatternState.animation)
-        {
-            moveObjectAlong(followObject, movedDistance);
-            shineTimer -= Time.fixedDeltaTime;
-            if (shineTimer <= 0)
-            {
-                var s = Instantiate(shines.getRandom(), getPoint(movedDistance), default);
-                s.SetActive(true);
-                var normal = currentPath.simpleNormal(movedDistance);
-                var r = Random.Range(-1f, 1).signOrZero();
-                // s.transform.position += normal.toVector3() * r * splineHeight * spacing;
-                s.transform.parent = transform;
-                shineTimer = rate.random;
-                tweenShine(s.transform);
-            }
+            var s = Instantiate(shines.getRandom(), getPoint(movedDistance), default);
+            s.SetActive(true);
+            var normal = currentPath.simpleNormal(movedDistance);
+            var r = Random.Range(-1f, 1).signOrZero();
+            // s.transform.position += normal.toVector3() * r * splineHeight * spacing;
+            s.transform.parent = transform;
+            shineTimer = rate.random;
+            tweenShine(s.transform);
         }
     }
 
-    protected override void onStageChanged(PatternState old)
+
+    public override void onEndAnimation()
     {
-        base.onStageChanged(old);
-        switch (old)
-        {
-            case PatternState.animation:
-                followObject.localScale = Vector3.one;
-                followObject.DOScale(0, .25f);
-                break;
-        }
-        switch (state)
-        {
-            case PatternState.animation:
-                followObject.gameObject.SetActive(true);
-                followObject.localScale = Vector3.zero;
-                followObject.DOScale(1, .25f);
-                break;
-        }
+        base.onEndAnimation();
+        followObject.localScale = Vector3.one;
+        followObject.DOScale(0, .25f);
+    }
+    public override void onStartTracing()
+    {
+        base.onStartTracing();
+        followObject.gameObject.SetActive(true);
+        followObject.localScale = Vector3.zero;
+        followObject.DOScale(1, .25f);
     }
 
     void tweenShine(Transform shine)

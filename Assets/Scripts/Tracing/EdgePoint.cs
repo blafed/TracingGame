@@ -6,23 +6,31 @@ public class EdgePoint : MonoBehaviour
 
 
 
+    enum State
+    {
+        paused,
+        playing,
+        completed,
 
+    }
     public Pattern pattern { get; set; }
-    PatternState state => pattern.state;
 
     [SerializeField] float rotationPerDistance = 30;
     [SerializeField] float spawnAnimationDuration = .5f;
     [SerializeField] float spawnAnimationCurveHeight = 1.4f;
+    [SerializeField] float spawnAnimationScale = 1.4f;
     [SerializeField] float transitionDuration = .4f;
-    [SerializeField] PairList<PatternState, SpriteRenderer> stateRenderers = new PairList<PatternState, SpriteRenderer>();
+    [SerializeField] SpriteRenderer playingRenderer, pausedRenderer;
+    [SerializeField] PairList<State, SpriteRenderer> stateRenderers = new PairList<State, SpriteRenderer>();
 
     Tween currentTween;
 
     float diffMovement;
     float movedOnRotation;
 
-    PatternState oldState;
     bool didStateComplete;
+
+    Tween transitTween;
 
 
 
@@ -31,9 +39,7 @@ public class EdgePoint : MonoBehaviour
     {
         if (TracingManager.o.spawnEdgePointsFrom.HasValue)
         {
-            var targetPoint = transform.position;
-            transform.position = TracingManager.o.spawnEdgePointsFrom.Value;
-            transform.DOMoveCurvy(targetPoint, spawnAnimationDuration, spawnAnimationCurveHeight);
+            spawnFromPoint(TracingManager.o.spawnEdgePointsFrom.Value);
         }
         else
         {
@@ -41,54 +47,76 @@ public class EdgePoint : MonoBehaviour
             transform.DOScale(1, spawnAnimationDuration).SetEase(Ease.OutBack);
         }
 
+        setStopped();
+
         // transitRenderer(PatternState.unknown);
     }
-    Tween transitRenderer(PatternState state)
+    Tween transitRenderer(State state)
     {
+        if (transitTween != null)
+        {
+            transitTween.Kill();
+        }
         var seq = DOTween.Sequence();
         foreach (var x in stateRenderers)
         {
-            seq.Join(x.value.transform.DOScale(x.key == state ? 0 : 1, transitionDuration).SetEase(Ease.OutQuad));
+            x.value.transform.localScale = (x.key == state ? 0f : 1f).vector();
+            seq.Join(x.value.transform.DOScale(x.key == state ? 1 : 0, transitionDuration).SetEase(Ease.OutQuad));
         }
+        transitTween = seq;
+
         return seq;
     }
-    void onPatternStateChange()
+
+
+    public void setPlaying()
     {
-        onPatternStateChange(this.state);
+        transitRenderer(State.playing);
+    }
+    public void setStopped()
+    {
+        transitRenderer(State.paused);
+    }
+    public void setCompleted()
+    {
+        transitRenderer(State.completed);
     }
 
-    void onPatternStateChange(PatternState customState)
+
+
+    public Tween punch()
     {
-        if (currentTween != null)
-            currentTween.Kill();
-        var seq = DOTween.Sequence();
-        seq.Join(transitRenderer(state));
-        currentTween = seq;
+        return transform.DOPunchScale(.2f.vector(), .2f);
+    }
+    public Tween scaleFromZero()
+    {
+        return transform.DOScale(1, transitionDuration).SetEase(Ease.OutBack);
+    }
+    public Tween spawnFromPoint(Vector2 point)
+    {
+        transform.localScale = Vector3.one * spawnAnimationScale;
+        var targetPoint = transform.position;
+        transform.position = point;
+        return DOTween.Sequence().Append(transform.DOMoveCurvy(targetPoint, spawnAnimationDuration, spawnAnimationCurveHeight))
+        .Append(transform.DOScale(1, .5f));
+    }
+    public void rotateByDistance()
+    {
+        diffMovement += pattern.movedDistance - movedOnRotation;
+        movedOnRotation = pattern.movedDistance;
+
+        var rotationSpeed = Time.deltaTime * this.rotationPerDistance * Mathf.Min(1, diffMovement);
+        transform.Rotate(Vector3.forward * rotationSpeed);
+
+        diffMovement -= Time.deltaTime;
+        diffMovement = Mathf.Max(0, diffMovement);
+    }
+    public void rotateToOrigin()
+    {
+        transform.localEulerAngles = new Vector3();
     }
 
-    private void Update()
-    {
-        didStateComplete = pattern.isStateCompleted;
-        if (pattern.state != oldState)
-            onPatternStateChange();
-        oldState = pattern.state;
-        if (pattern.isTracing)
-        {
-            currentTween = null;
-            diffMovement += pattern.movedDistance - movedOnRotation;
-            movedOnRotation = pattern.movedDistance;
 
-            var rotationSpeed = Time.deltaTime * this.rotationPerDistance * Mathf.Min(1, diffMovement);
-            transform.Rotate(Vector3.forward * rotationSpeed);
-
-            diffMovement -= Time.deltaTime;
-            diffMovement = Mathf.Max(0, diffMovement);
-        }
-        else
-        {
-            transform.localEulerAngles = default;
-        }
-    }
 
 
 

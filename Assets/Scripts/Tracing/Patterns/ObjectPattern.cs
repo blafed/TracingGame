@@ -41,24 +41,23 @@ public class ObjectPattern : Pattern
         return c;
     }
 
-    protected override void FixedUpdate()
-    {
-        if (isAnimation)
-        {
-            foreach (var x in objects)
-            {
-                moveObjectAlong(x.transform, (x.delay + progress) % 1 * segment.totalLength);
-                // x.transform.position = transform.position.toVector2() + ((x.delay + progress).clamp01() * segment.totalLength);
-            }
-        }
-        else if (isTracing)
-        {
 
-            if ((movedDistance / spacing).floor() > objects.Count)
-            {
-                var obj = createObject();
-                onObjectCreated(obj);
-            }
+    public override void whileAnimation()
+    {
+        base.whileAnimation();
+        foreach (var x in objects)
+        {
+            moveObjectAlong(x.transform, (x.delay + progress) % 1 * segment.totalLength);
+            // x.transform.position = transform.position.toVector2() + ((x.delay + progress).clamp01() * segment.totalLength);
+        }
+    }
+    public override void whileTracing()
+    {
+        base.whileTracing();
+        if ((movedDistance / spacing).floor() > objects.Count)
+        {
+            var obj = createObject();
+            onObjectCreated(obj);
         }
     }
 

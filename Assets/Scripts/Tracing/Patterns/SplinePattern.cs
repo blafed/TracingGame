@@ -23,9 +23,9 @@ public class SplinePattern : Pattern
     Path _targetPath;
 
 
-    protected override void Start()
+    public override void onCreated()
     {
-        base.Start();
+        base.onCreated();
         shapeController.transform.localScale = Vector3.one * splineHeight;
         _targetPath = segment.path.clone();
 

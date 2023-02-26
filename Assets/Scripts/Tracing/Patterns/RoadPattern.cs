@@ -2,41 +2,39 @@ using UnityEngine;
 using DG.Tweening;
 public class RoadPattern : SplinePattern
 {
-    protected override void Start()
+
+    public override void onCreated()
     {
-        base.Start();
+        base.onCreated();
         followObject.gameObject.SetActive(false);
+
     }
-    protected override void FixedUpdate()
+    public override void whileTracing()
     {
-        base.FixedUpdate();
-        if (isTracing)
-            moveSpline();
-        if (isAnimation)
-        {
-            followObject.gameObject.SetActive(true);
-            moveObjectAlong(followObject, movedDistance);
-        }
+        base.whileTracing();
+        moveSpline();
+
+    }
+    public override void whileAnimation()
+    {
+        base.whileAnimation();
+        followObject.gameObject.SetActive(true);
+        moveObjectAlong(followObject, movedDistance);
     }
 
 
-    protected override void onStageChanged(PatternState old)
+    public override void onStartAnimation()
     {
-        base.onStageChanged(old);
-        if (state.isAnimation())
-        {
-            followObject.gameObject.SetActive(true);
-            followObject.localScale = Vector3.zero;
-            followObject.DOScale(1, .25f);
-        }
-        else if (state.isDone())
-        {
-            followObject.localScale = Vector3.one;
-            followObject.DOScale(0, .25f);
-        }
-        else
-        {
-            followObject.gameObject.SetActive(false);
-        }
+        base.onStartAnimation();
+        followObject.gameObject.SetActive(true);
+        followObject.localScale = Vector3.zero;
+        followObject.DOScale(1, .25f);
     }
+    public override void onEndAnimation()
+    {
+        base.onEndAnimation();
+        followObject.localScale = Vector3.one;
+        followObject.DOScale(0, .25f);
+    }
+
 }

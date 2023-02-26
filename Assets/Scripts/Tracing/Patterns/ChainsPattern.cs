@@ -14,32 +14,28 @@ public class ChainsPattern : SplinePattern
 
 
 
-    protected override void Start()
+    public override void onCreated()
     {
-        base.Start();
+        base.onCreated();
         followObject.localScale = splineHeight.vector();
     }
 
-
-    protected override void onStageChanged(PatternState old)
+    public override void onStartTracing()
     {
-        base.onStageChanged(old);
-        if (old == PatternState.tracing)
-        {
-            hookAnimate();
-        }
+        base.onStartTracing();
+    }
+    public override void onEndTracing()
+    {
+        base.onEndTracing();
+        hookAnimate();
+    }
+    public override void whileTracing()
+    {
+        moveSpline();
+        moveObjectAlong(followObject, movedDistance);
+        followObject.localEulerAngles += Vector3.forward * hookRotation * Random.Range(-1, 1f);
     }
 
-    protected override void FixedUpdate()
-    {
-        base.FixedUpdate();
-        if (isTracing)
-        {
-            moveSpline();
-            moveObjectAlong(followObject, movedDistance);
-            followObject.localEulerAngles += Vector3.forward * hookRotation * Random.Range(-1, 1f);
-        }
-    }
     void hookAnimate()
     {
         var rot = transform.localEulerAngles.z;
