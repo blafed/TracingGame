@@ -3,11 +3,16 @@ using UnityEngine;
 using System.Collections.Generic;
 public class ObjectPattern : Pattern
 {
+    [SerializeField] float _unitedTime = 2;
+    [SerializeField] protected float unitedSpeed = 2;
     [SerializeField] protected float spacing = .25f;
     [SerializeField] protected GameObject objectSource;
     [SerializeField] protected Color[] colors;
 
     protected List<CreatedObject> objects = new();
+
+
+    public override float unitedTime => _unitedTime;
 
 
     [System.Serializable]
@@ -42,14 +47,10 @@ public class ObjectPattern : Pattern
     }
 
 
-    public override void whileAnimation()
+    public override void onStartAnimation()
     {
-        base.whileAnimation();
-        foreach (var x in objects)
-        {
-            moveObjectAlong(x.transform, (x.delay + progress) % 1 * segment.totalLength);
-            // x.transform.position = transform.position.toVector2() + ((x.delay + progress).clamp01() * segment.totalLength);
-        }
+        base.onStartAnimation();
+        progress = 1;
     }
     public override void whileTracing()
     {
@@ -59,6 +60,20 @@ public class ObjectPattern : Pattern
             var obj = createObject();
             onObjectCreated(obj);
         }
+    }
+
+    protected void moveAllObjectsAlong(float distance)
+    {
+        foreach (var x in objects)
+        {
+            moveObjectAlong(x.transform, (x.delay * pathLength + distance) % pathLength);
+        }
+    }
+
+    public override void whileUnited(float time)
+    {
+        base.whileUnited(time);
+        moveAllObjectsAlong(unitedSpeed * time);
     }
 
 

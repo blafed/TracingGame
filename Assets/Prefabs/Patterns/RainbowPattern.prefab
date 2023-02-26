@@ -479,10 +479,13 @@ MonoBehaviour:
   followObject: {fileID: 6824755923365370796}
   spacing: 0.5
   rate:
-    min: 0.5
-    max: 1
+    min: 0.25
+    max: 0.5
   shines:
   - {fileID: 9082783847748526940}
+  - {fileID: 4379400118155388709}
+  - {fileID: 5291919960500661934}
+  - {fileID: 2006830830364623528}
   animScaleDuration: 0.5
 --- !u!1 &7916280533875459109
 GameObject:

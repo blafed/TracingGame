@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class ChainsPattern : SplinePattern
 {
+    [SerializeField] float _hookLength = .9f;
+    [SerializeField] float _unitedTime = 1.5f;
     [SerializeField]
     float hookRotation = 5;
     [SerializeField]
@@ -11,6 +13,9 @@ public class ChainsPattern : SplinePattern
 
     bool isHookAnimationDone;
     bool isHookAnimationStarted;
+
+    public override float unitedTime => _unitedTime;
+    protected override float addedLength => _hookLength;
 
 
 
@@ -31,10 +36,22 @@ public class ChainsPattern : SplinePattern
     }
     public override void whileTracing()
     {
+        base.whileTracing();
         moveSpline();
         moveObjectAlong(followObject, movedDistance);
         followObject.localEulerAngles += Vector3.forward * hookRotation * Random.Range(-1, 1f);
     }
+
+
+    public override void onStartAnimation()
+    {
+        base.onStartAnimation();
+        progress = 1;
+    }
+    // public override void whileUnited(float speed)
+    // {
+
+    // }
 
     void hookAnimate()
     {

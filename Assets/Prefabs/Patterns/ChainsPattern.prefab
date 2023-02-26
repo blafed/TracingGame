@@ -561,6 +561,8 @@ MonoBehaviour:
   splineHeight: 0.5
   shapeController: {fileID: 6226746705933901862}
   followObject: {fileID: 2997853876203891718}
+  _hookLength: 0.5
+  _unitedTime: 1.5
   hookRotation: 5
   hookDuration: 0.7
 --- !u!1 &7916280533875459109

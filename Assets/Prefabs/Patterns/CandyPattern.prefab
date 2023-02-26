@@ -131,6 +131,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   code: 5
+  _unitedTime: 1.4
+  unitedSpeed: 2
   spacing: 0.4
   objectSource: {fileID: 1382216309414826858}
   colors:

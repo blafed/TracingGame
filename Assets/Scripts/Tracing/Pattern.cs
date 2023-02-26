@@ -31,10 +31,14 @@ public class Pattern : MonoBehaviour
 
 
     public virtual float waitBeforeEnableTracing => 1;
+    public virtual float unitedTime => 0;
 
 
     public bool isProgressCompleted => progress >= 1;
     protected virtual bool createEdgePointsByDefault => true;
+
+
+    protected virtual float addedLength => 0;
 
 
     public virtual void onCreated()
@@ -84,6 +88,15 @@ public class Pattern : MonoBehaviour
     /// called after all segments are completed
     /// </summary>
     public virtual void onAllDone() { }
+    public virtual void onStartUnited() { }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="time"></param>
+    /// <returns>true to break the united loop, false to keep running</returns>
+    public virtual void whileUnited(float time) { }
+    public virtual void onEndUnited() { }
+
 
     protected virtual void OnDestroy()
     {
@@ -102,8 +115,8 @@ public class Pattern : MonoBehaviour
     /// </summary>
     public float progress
     {
-        get => (_movedDistance / pathLength).clamp01();
-        set => _movedDistance = value.clamp01() * pathLength;
+        get => (movedDistance / pathLength).clamp01();
+        set => movedDistance = value.clamp01() * pathLength;
     }
 
     /// <summary>
@@ -119,8 +132,8 @@ public class Pattern : MonoBehaviour
     /// </summary>
     public float movedDistance
     {
-        get => _movedDistance;
-        set => _movedDistance = value;
+        get => _movedDistance + addedLength;
+        set => _movedDistance = Mathf.Max(value - addedLength, addedLength);
     }
     /// <summary>
     /// the target path that pattern should follow (scaled)

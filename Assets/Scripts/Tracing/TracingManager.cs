@@ -7,6 +7,7 @@ public enum TracingState
     initial,
     tracing,
     animation,
+    united,
     done,
 }
 public class TracingManager : MonoBehaviour
@@ -42,9 +43,9 @@ public class TracingManager : MonoBehaviour
 
 
 
-
     bool hasSegmentChanged = true;
     float initialTime = 0;
+    float unitedTime;
 
 
     // public Letter letter;
@@ -94,6 +95,7 @@ public class TracingManager : MonoBehaviour
             Debug.LogError("Current Letter is not set", gameObject);
             return;
         }
+        unitedTime = 0;
         state = TracingState.initial;
         initialTime = getPatternPrefab(patternCode).waitBeforeEnableTracing;
         spawnEdgePointsFrom = null;
@@ -142,6 +144,14 @@ public class TracingManager : MonoBehaviour
                 currentSegmentPattern.progress = 0;
                 currentSegmentPattern.onStartAnimation();
             }
+            else if (state == TracingState.united)
+            {
+                foreach (var x in segmentPatterns)
+                {
+                    x.progress = 0;
+                    x.onStartUnited();
+                }
+            }
             else if (state == TracingState.done)
                 foreach (var x in segmentPatterns)
                     x.onAllDone();
@@ -173,6 +183,25 @@ public class TracingManager : MonoBehaviour
             else
             {
                 currentSegmentPattern.movedDistance += options.speed * Time.fixedDeltaTime;
+            }
+        }
+        if (state == TracingState.united)
+        {
+            unitedTime += Time.fixedDeltaTime;
+
+            foreach (var x in segmentPatterns)
+            {
+                x.whileUnited(unitedTime);
+                if (unitedTime > x.unitedTime)
+                {
+                    hasSegmentChanged = true;
+                    foreach (var y in segmentPatterns)
+                    {
+                        y.onEndUnited();
+                        state = TracingState.done;
+                    }
+                    break;
+                }
             }
         }
 

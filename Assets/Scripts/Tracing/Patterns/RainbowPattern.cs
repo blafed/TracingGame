@@ -39,7 +39,7 @@ public class RainbowPattern : SplinePattern
             s.SetActive(true);
             var normal = currentPath.simpleNormal(movedDistance);
             var r = Random.Range(-1f, 1).signOrZero();
-            // s.transform.position += normal.toVector3() * r * splineHeight * spacing;
+            s.transform.position += normal.toVector3() * r * splineHeight * spacing;
             s.transform.parent = transform;
             shineTimer = rate.random;
             tweenShine(s.transform);
@@ -53,9 +53,9 @@ public class RainbowPattern : SplinePattern
         followObject.localScale = Vector3.one;
         followObject.DOScale(0, .25f);
     }
-    public override void onStartTracing()
+    public override void onStartAnimation()
     {
-        base.onStartTracing();
+        base.onStartAnimation();
         followObject.gameObject.SetActive(true);
         followObject.localScale = Vector3.zero;
         followObject.DOScale(1, .25f);

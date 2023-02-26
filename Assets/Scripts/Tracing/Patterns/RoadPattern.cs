@@ -18,7 +18,6 @@ public class RoadPattern : SplinePattern
     public override void whileAnimation()
     {
         base.whileAnimation();
-        followObject.gameObject.SetActive(true);
         moveObjectAlong(followObject, movedDistance);
     }
 
