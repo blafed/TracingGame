@@ -133,7 +133,7 @@ MonoBehaviour:
   code: 5
   _unitedTime: 1.4
   unitedSpeed: 2
-  spacing: 0.4
+  spacing: 0.3
   objectSource: {fileID: 1382216309414826858}
   colors:
   - {r: 0.30588236, g: 0.5764706, b: 0.8470589, a: 1}

@@ -32,6 +32,7 @@ public class RainbowPattern : SplinePattern
     {
         base.whileAnimation();
         moveObjectAlong(followObject, movedDistance);
+        followObject.transform.localEulerAngles = Vector3.zero;
         shineTimer -= Time.fixedDeltaTime;
         if (shineTimer <= 0)
         {

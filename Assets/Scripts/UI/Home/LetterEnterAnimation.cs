@@ -110,8 +110,8 @@ public class LetterEnterAnimation : MonoBehaviour
 
         yield return new WaitForSeconds(initialFocus.duration);
         yield return playAudioClip(LetterList.o.getAudioClip(l.letterId));
-        yield return new WaitForSeconds(initialFocus.audioRepeatDelay);
-        yield return playAudioClip(LetterList.o.getAudioClip(l.letterId));
+        // yield return new WaitForSeconds(initialFocus.audioRepeatDelay);
+        // yield return playAudioClip(LetterList.o.getAudioClip(l.letterId));
         cam.zoom(otherLetters.zoom, otherLetters.delay).SetEase(otherLetters.zoomEase).add(tweens);
         cam.move(wordText.transform.position, otherLetters.delay).SetEase(Ease.OutQuad).add(tweens);
 
@@ -148,8 +148,8 @@ public class LetterEnterAnimation : MonoBehaviour
         if (word.clip)
         {
             yield return playAudioClip(word.clip);
-            yield return new WaitForSeconds(fullWord.audioRepeatDelay);
-            yield return playAudioClip(word.clip);
+            // yield return new WaitForSeconds(fullWord.audioRepeatDelay);
+            // yield return playAudioClip(word.clip);
         }
 
         // yield return pictureContainer.DOPunchScale(.2f.vector(), fullWord.picturePunch);
