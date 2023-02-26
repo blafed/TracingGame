@@ -22,9 +22,9 @@ public class RainbowPattern : SplinePattern
         shineTimer = rate.random;
         followObject.gameObject.SetActive(false);
     }
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         if (state == PatternState.tracing)
         {
             moveSpline();
@@ -32,7 +32,7 @@ public class RainbowPattern : SplinePattern
         else if (state == PatternState.animation)
         {
             moveObjectAlong(followObject, movedDistance);
-            shineTimer -= Time.deltaTime;
+            shineTimer -= Time.fixedDeltaTime;
             if (shineTimer <= 0)
             {
                 var s = Instantiate(shines.getRandom(), getPoint(movedDistance), default);
@@ -49,6 +49,7 @@ public class RainbowPattern : SplinePattern
 
     protected override void onStageChanged(PatternState old)
     {
+        base.onStageChanged(old);
         switch (old)
         {
             case PatternState.animation:

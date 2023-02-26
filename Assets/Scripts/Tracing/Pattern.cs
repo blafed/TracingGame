@@ -35,6 +35,9 @@ public class Pattern : MonoBehaviour
     public bool isTracing => state == PatternState.tracing;
     public bool isTracingDone => isDone || isAnimation;
 
+    public bool isStateCompleted => progress >= 1;
+    protected virtual bool createEdgePointsByDefault => true;
+
 
 
 
@@ -99,8 +102,12 @@ public class Pattern : MonoBehaviour
     protected float pathLength => segment.totalLength;
 
 
-
-    protected virtual void Update()
+    protected virtual void Start()
+    {
+        if (createEdgePointsByDefault)
+            createEdgePoints();
+    }
+    protected virtual void FixedUpdate()
     {
 
     }
@@ -113,8 +120,6 @@ public class Pattern : MonoBehaviour
     /// <param name="old"></param>
     protected virtual void onStageChanged(PatternState old)
     {
-        if (state.isTracing())
-            createEdgePoints();
     }
 
 

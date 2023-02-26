@@ -41,7 +41,7 @@ public class ObjectPattern : Pattern
         return c;
     }
 
-    private void FixedUpdate()
+    protected override void FixedUpdate()
     {
         if (isAnimation)
         {

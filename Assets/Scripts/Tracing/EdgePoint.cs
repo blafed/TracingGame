@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 public class EdgePoint : MonoBehaviour
@@ -10,6 +11,8 @@ public class EdgePoint : MonoBehaviour
     PatternState state => pattern.state;
 
     [SerializeField] float rotationPerDistance = 30;
+    [SerializeField] float spawnAnimationDuration = .5f;
+    [SerializeField] float spawnAnimationCurveHeight = 1.4f;
     [SerializeField] float transitionDuration = .4f;
     [SerializeField] PairList<PatternState, SpriteRenderer> stateRenderers = new PairList<PatternState, SpriteRenderer>();
 
@@ -19,7 +22,27 @@ public class EdgePoint : MonoBehaviour
     float movedOnRotation;
 
     PatternState oldState;
+    bool didStateComplete;
 
+
+
+
+    private void Start()
+    {
+        if (TracingManager.o.spawnEdgePointsFrom.HasValue)
+        {
+            var targetPoint = transform.position;
+            transform.position = TracingManager.o.spawnEdgePointsFrom.Value;
+            transform.DOMoveCurvy(targetPoint, spawnAnimationDuration, spawnAnimationCurveHeight);
+        }
+        else
+        {
+            transform.localScale = Vector3.zero;
+            transform.DOScale(1, spawnAnimationDuration).SetEase(Ease.OutBack);
+        }
+
+        // transitRenderer(PatternState.unknown);
+    }
     Tween transitRenderer(PatternState state)
     {
         var seq = DOTween.Sequence();
@@ -31,6 +54,11 @@ public class EdgePoint : MonoBehaviour
     }
     void onPatternStateChange()
     {
+        onPatternStateChange(this.state);
+    }
+
+    void onPatternStateChange(PatternState customState)
+    {
         if (currentTween != null)
             currentTween.Kill();
         var seq = DOTween.Sequence();
@@ -40,6 +68,9 @@ public class EdgePoint : MonoBehaviour
 
     private void Update()
     {
+        didStateComplete = pattern.isStateCompleted;
+        if (pattern.state != oldState)
+            onPatternStateChange();
         oldState = pattern.state;
         if (pattern.isTracing)
         {

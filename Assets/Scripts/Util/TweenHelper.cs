@@ -1,5 +1,29 @@
+using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+
+
+public static class TweenHelper
+{
+    public static Tween DOMoveCurvy(this Transform t, Vector2 point, float duration, float curveHeight = 1, Ease ease = Ease.Linear)
+    {
+        var origin = (Vector2)t.transform.position;
+        var diff = point - origin;
+        var mid = point + diff * .5f;
+        mid += mid.getNormal().normalized * curveHeight;
+
+
+        float f = 0;
+
+        var tweenF = DOTween.To(() => f, x =>
+        {
+            f = x;
+            t.position = BezierHelper.EvaluateQuadratic(origin, mid, point, f);
+        }
+        , 1, duration).SetEase(ease);
+        return tweenF;
+    }
+}
 public static class TweenOrganizer
 {
 

@@ -216,6 +216,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPerDistance: 90
+  spawnAnimationDuration: 0.5
+  spawnAnimationCurveHeight: 1.4
   transitionDuration: 0.4
   stateRenderers:
     items:

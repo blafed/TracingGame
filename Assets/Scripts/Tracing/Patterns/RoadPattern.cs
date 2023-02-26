@@ -7,9 +7,9 @@ public class RoadPattern : SplinePattern
         base.Start();
         followObject.gameObject.SetActive(false);
     }
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         if (isTracing)
             moveSpline();
         if (isAnimation)
@@ -22,6 +22,7 @@ public class RoadPattern : SplinePattern
 
     protected override void onStageChanged(PatternState old)
     {
+        base.onStageChanged(old);
         if (state.isAnimation())
         {
             followObject.gameObject.SetActive(true);

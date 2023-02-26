@@ -9,10 +9,11 @@ public class TracingPhase : Phase<TracingPhase>
     int nextPlayPatternIndex = 0;
 
 
-    public void playCustomPattern(PatternCode pattern)
+    public void playCustomPattern(PatternCode pattern, Vector2? spawnEdgePointsFrom = null)
     {
         TracingManager.o.startTracing(argLetter);
         TracingManager.o.setTracingPattern(pattern);
+        TracingManager.o.spawnEdgePointsFrom = spawnEdgePointsFrom;
 
     }
     public void playPattern(int index)

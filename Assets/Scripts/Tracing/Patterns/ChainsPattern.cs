@@ -23,15 +23,16 @@ public class ChainsPattern : SplinePattern
 
     protected override void onStageChanged(PatternState old)
     {
+        base.onStageChanged(old);
         if (old == PatternState.tracing)
         {
             hookAnimate();
         }
     }
 
-    protected override void Update()
+    protected override void FixedUpdate()
     {
-        base.Update();
+        base.FixedUpdate();
         if (isTracing)
         {
             moveSpline();

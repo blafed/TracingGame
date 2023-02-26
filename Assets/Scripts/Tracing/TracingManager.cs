@@ -13,6 +13,9 @@ public class TracingManager : MonoBehaviour
     }
     public static TracingManager o { get; private set; }
 
+
+    public Vector2? spawnEdgePointsFrom { get; set; }
+
     [SerializeField]
     public Options options = new Options();
     public bool manualProgress = false;
@@ -81,6 +84,7 @@ public class TracingManager : MonoBehaviour
             Debug.LogError("Current Letter is not set", gameObject);
             return;
         }
+        spawnEdgePointsFrom = null;
         hasSegmentChanged = true;
         foreach (var x in segmentPatterns)
             Destroy(x.gameObject);
