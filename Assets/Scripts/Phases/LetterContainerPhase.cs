@@ -10,12 +10,15 @@ public class LetterContainerPhase : Phase<LetterContainerPhase>
     {
         isReady = false;
         this.letter = null;
+        LetterContainer.o.adjustCamera();
         LetterContainer.o.showAll().OnComplete(() => isReady = true);
         Backgrounds.o.changeRandomly(BackgroundsList.forHome);
+        HomeUI.o.setBackButtonEnabled(false);
     }
     protected override void onExit()
     {
         LetterContainer.o.hideAll(x => x == letter);
+        HomeUI.o.setBackButtonEnabled(true);
     }
 
 

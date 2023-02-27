@@ -38,10 +38,10 @@ public class ObjectPattern : Pattern
         {
             gameObject = s.gameObject,
             renderer = s,
-            delay = progress,
+            delay = (movedDistance / spacing).floor() * spacing,
             index = objects.Count
         });
-        moveObjectAlong(s.transform, (progress) * segment.totalLength);
+        moveObjectAlong(s.transform, movedDistance);
 
         return c;
     }
@@ -66,7 +66,7 @@ public class ObjectPattern : Pattern
     {
         foreach (var x in objects)
         {
-            moveObjectAlong(x.transform, (x.delay * pathLength + distance) % pathLength);
+            moveObjectAlong(x.transform, (x.delay + distance) % pathLength);
         }
     }
 

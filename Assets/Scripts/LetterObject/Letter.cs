@@ -49,8 +49,7 @@ public class Letter : MonoBehaviour
     {
         rect.drawGizmos(Color.cyan);
     }
-
-    private void OnMouseEnter()
+    private void OnMouseDown()
     {
         onClick?.Invoke();
     }

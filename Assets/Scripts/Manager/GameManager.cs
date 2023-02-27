@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        AnyButton.register(CommandCode.back, () => { Phase.change(LetterContainerPhase.o); });
     }
 
 

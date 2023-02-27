@@ -25,6 +25,7 @@ public class SelectedLetterPhase : Phase<SelectedLetterPhase>
     protected override void onExit()
     {
         LetterEnterAnimation.o.stop();
+        LetterEnterAnimation.o.clean();
     }
 
     public void setArgs(Letter letter, WordInfo wordInfo)

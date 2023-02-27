@@ -43,7 +43,7 @@ public class TracingManager : MonoBehaviour
 
 
 
-    bool hasSegmentChanged = true;
+    public bool hasSegmentChanged = true;
     float initialTime = 0;
     float unitedTime;
 
@@ -74,6 +74,17 @@ public class TracingManager : MonoBehaviour
             Destroy(x.gameObject);
         segmentPatterns.Clear();
         segmentIndex = 0;
+    }
+
+
+    public void clean()
+    {
+        HandTracing.o.setEnabled(false);
+        currentLetter.text.alpha = 1;
+        currentLetter.setTextEnabled(true);
+        foreach (var x in segmentPatterns)
+            Destroy(x.gameObject);
+        segmentPatterns.Clear();
     }
 
 
@@ -122,7 +133,6 @@ public class TracingManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        setHandTracing(!autoTracing);
         if (segmentPatterns.Count == 0)
             return;
         if (initialTime > 0)
@@ -130,6 +140,8 @@ public class TracingManager : MonoBehaviour
             initialTime -= Time.fixedDeltaTime;
             return;
         }
+        setHandTracing(!autoTracing);
+
         if (state == TracingState.initial)
             state++;
 
@@ -211,6 +223,7 @@ public class TracingManager : MonoBehaviour
 
         if (segmentIndex >= segmentPatterns.Count)
         {
+            HandTracing.o.setEnabled(false);
             segmentIndex = 0;
             state++;
         }

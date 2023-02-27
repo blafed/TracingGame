@@ -52,6 +52,7 @@ public class TracingPhase : Phase<TracingPhase>
     }
     protected override void onExit()
     {
+        TracingManager.o.clean();
         StopAllCoroutines();
         TracingPanelUI.o.hide();
     }

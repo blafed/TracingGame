@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86f69f85033bbc44a8fa8f02f8fe1f6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  command: 0
+  command: 1
   noSound: 0
   closeCurrentPopup: 0
 --- !u!1001 &5740596517070341951
@@ -246,6 +246,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dde5167971287fb4294e0d400fbedb1a, type: 3}
+--- !u!1 &424338301923591299 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5352879390704075708, guid: dde5167971287fb4294e0d400fbedb1a, type: 3}
+  m_PrefabInstance: {fileID: 5740596517070341951}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8226828009574265534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424338301923591299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 035a3b1f56663c34ebe69a32431f9e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backButton: {fileID: 57546261}
 --- !u!224 &3147948394879591443 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7207290460830540588, guid: dde5167971287fb4294e0d400fbedb1a, type: 3}

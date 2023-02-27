@@ -122,10 +122,16 @@ public class LetterContainer : MonoBehaviour
             if (exclude != null && exclude(x.letter))
                 continue;
             x.letter.transform.localPosition = x.leavingPosition;
-            x.letter.transform.DOLocalMove(x.startPosition, leavingPosition.duration)
+            x.letter.transform.DOMoveCurvy(x.startPosition, leavingPosition.duration, 2f)
             .SetEase(leavingPosition.ease);
         }
         return DOTween.Sequence().PrependInterval(leavingPosition.duration);
+    }
+
+    public Tween adjustCamera()
+    {
+        return DOTween.Sequence().Join(
+        CameraControl.o.move(transform.position)).Join(CameraControl.o.zoom(cameraSize));
     }
 
 

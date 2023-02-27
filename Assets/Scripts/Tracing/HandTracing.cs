@@ -52,7 +52,7 @@ public class HandTracing : MonoBehaviour
     {
         var p = im.point;
 
-        if (TracingManager.o.state == TracingState.tracing)
+        if (TracingManager.o.state == TracingState.tracing && !tracingManager.hasSegmentChanged)
         {
 
             var pattern = TracingManager.o.currentSegmentPattern;

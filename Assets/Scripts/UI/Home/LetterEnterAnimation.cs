@@ -78,6 +78,7 @@ public class LetterEnterAnimation : MonoBehaviour
 
 
     List<Tween> tweens = new List<Tween>();
+    Letter currentLetter;
 
     private void Awake()
     {
@@ -98,6 +99,7 @@ public class LetterEnterAnimation : MonoBehaviour
 
     public void play(Letter l, WordInfo word)
     {
+        currentLetter = l;
         StartCoroutine(playCycle(l, word));
     }
     IEnumerator playCycle(Letter l, WordInfo word)
@@ -144,6 +146,8 @@ public class LetterEnterAnimation : MonoBehaviour
         pictureContainer.localScale = default;
         pictureContainer.DOScale(1f.vector(), fullWord.delay).SetEase(fullWord.pictureScaleEase).add(tweens);
         cam.zoom(fullWord.zoom, fullWord.delay).add(tweens);
+        cam.move(pictureContainer.transform.position, fullWord.delay).SetEase(Ease.OutQuad).add(tweens);
+
         yield return new WaitForSeconds(fullWord.delay);
         if (word.clip)
         {
@@ -164,7 +168,12 @@ public class LetterEnterAnimation : MonoBehaviour
         onFinish?.Invoke();
 
     }
-
+    public void clean()
+    {
+        currentLetter.text.alpha = 1;
+        currentLetter.text.color = Color.white;
+        wordText.gameObject.SetActive(false);
+    }
     public void stop()
     {
         foreach (var x in tweens)
