@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8833489776627266187}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &8833489775330217618
 SpriteShapeRenderer:
@@ -211,13 +211,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833489775866497662}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8833489776627266187}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &8833489775866497658
 SpriteShapeRenderer:
@@ -275,8 +275,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: 1.7500001, y: 0, z: 0}
-    m_Extent: {x: 0.052000165, y: 2, z: 0}
+    m_Center: {x: 1.7500001, y: 0.75, z: 0}
+    m_Extent: {x: 0.052000165, y: 2.75, z: 0}
 --- !u!114 &8833489775866497657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,7 +292,7 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 1
     m_ControlPoints:
-    - position: {x: 1.75, y: 2, z: 0}
+    - position: {x: 1.75, y: 3.5, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: a
+  m_text: d
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f3ec04d122b6c684d9581ab39f996826, type: 2}
   m_sharedMaterial: {fileID: 5755322128000896874, guid: f3ec04d122b6c684d9581ab39f996826, type: 2}
@@ -523,7 +523,7 @@ GameObject:
   - component: {fileID: 8833489776627266187}
   - component: {fileID: 8833489776627266186}
   m_Layer: 0
-  m_Name: a
+  m_Name: d
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,8 +542,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8833489775908375853}
-  - {fileID: 8833489775330217623}
   - {fileID: 8833489775866497663}
+  - {fileID: 8833489775330217623}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

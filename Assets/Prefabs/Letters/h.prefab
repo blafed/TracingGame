@@ -27,12 +27,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833489775330217622}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -1.66, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8833489776627266187}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &8833489775330217618
 SpriteShapeRenderer:
@@ -90,8 +90,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: -0.02774787, y: -0.00001859665, z: 0}
-    m_Extent: {x: 1.8242481, y: 1.9519544, z: 0}
+    m_Center: {x: 1.6715136, y: -0.096088886, z: 0}
+    m_Extent: {x: 1.4804868, y: 2.0039113, z: 0}
 --- !u!114 &8833489775330217617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -107,9 +107,9 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 1
     m_ControlPoints:
-    - position: {x: 1.75, y: 0.6999998, z: 0}
+    - position: {x: 0.2213254, y: 0.90288156, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
-      rightTangent: {x: -0.105216265, y: 0.157825, z: 0}
+      rightTangent: {x: 0.32355714, y: 0.2319712, z: 0}
       mode: 2
       height: 0.1
       bevelCutoff: 0
@@ -117,9 +117,9 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 0, y: 1.9000001, z: 0}
-      leftTangent: {x: 1.2557318, y: -0.073667526, z: 0}
-      rightTangent: {x: -1.0879889, y: 0.06382704, z: 0}
+    - position: {x: 1.8180069, y: 1.8549824, z: 0}
+      leftTangent: {x: -0.72877765, y: -0.0388422, z: 0}
+      rightTangent: {x: 0.7038971, y: 0.037516117, z: 0}
       mode: 1
       height: 0.1
       bevelCutoff: 0
@@ -127,30 +127,20 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -1.8, y: 0, z: 0}
-      leftTangent: {x: -0.018714422, y: 0.8931758, z: -0}
-      rightTangent: {x: 0.017902875, y: -0.8544434, z: 0}
-      mode: 1
+    - position: {x: 3.1, y: 0.5, z: 0}
+      leftTangent: {x: -0.0400939, y: 0.9333546, z: 0}
+      rightTangent: {x: 0, y: -0.7604623, z: 0}
+      mode: 2
       height: 0.1
       bevelCutoff: 0
       bevelSize: 0
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 0, y: -1.9, z: 0}
-      leftTangent: {x: -1.2794029, y: 0.048115134, z: 0}
-      rightTangent: {x: 0.7561345, y: -0.028436324, z: -0}
-      mode: 1
-      height: 0.1
-      bevelCutoff: 0
-      bevelSize: 0
-      spriteIndex: 0
-      corner: 1
-      m_CornerMode: 1
-    - position: {x: 1.75, y: -0.6999998, z: 0}
-      leftTangent: {x: -0.26555586, y: -0.53061485, z: 0}
+    - position: {x: 3.1, y: -2.1, z: 0}
+      leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
-      mode: 2
+      mode: 0
       height: 0.1
       bevelCutoff: 0
       bevelSize: 0
@@ -211,13 +201,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833489775866497662}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.45, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8833489776627266187}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1971053207 &8833489775866497658
 SpriteShapeRenderer:
@@ -275,8 +265,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: 1.7500001, y: 0, z: 0}
-    m_Extent: {x: 0.052000165, y: 2, z: 0}
+    m_Center: {x: 0, y: 0.7750001, z: 0}
+    m_Extent: {x: 0.051999997, y: 2.875, z: 0}
 --- !u!114 &8833489775866497657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -292,7 +282,7 @@ MonoBehaviour:
   m_Spline:
     m_IsOpenEnded: 1
     m_ControlPoints:
-    - position: {x: 1.75, y: 2, z: 0}
+    - position: {x: 0, y: 3.65, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -302,7 +292,7 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 1.75, y: -2, z: 0}
+    - position: {x: 0, y: -2.1, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -375,7 +365,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.12, y: 0.88}
+  m_AnchoredPosition: {x: 0, y: 0.88}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &8833489775908375855
@@ -440,7 +430,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: a
+  m_text: h
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: f3ec04d122b6c684d9581ab39f996826, type: 2}
   m_sharedMaterial: {fileID: 5755322128000896874, guid: f3ec04d122b6c684d9581ab39f996826, type: 2}
@@ -523,7 +513,7 @@ GameObject:
   - component: {fileID: 8833489776627266187}
   - component: {fileID: 8833489776627266186}
   m_Layer: 0
-  m_Name: a
+  m_Name: h
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -542,8 +532,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8833489775908375853}
-  - {fileID: 8833489775330217623}
   - {fileID: 8833489775866497663}
+  - {fileID: 8833489775330217623}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
