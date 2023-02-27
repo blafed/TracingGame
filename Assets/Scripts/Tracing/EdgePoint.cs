@@ -16,6 +16,7 @@ public class EdgePoint : MonoBehaviour
     public Pattern pattern { get; set; }
 
     [SerializeField] float rotationPerDistance = 30;
+    [SerializeField] float rotationDamping = 3f;
     [SerializeField] float spawnAnimationDuration = .5f;
     [SerializeField] float spawnAnimationCurveHeight = 1.4f;
     [SerializeField] float spawnAnimationScale = 1.4f;
@@ -105,11 +106,12 @@ public class EdgePoint : MonoBehaviour
         diffMovement += pattern.movedDistance - movedOnRotation;
         movedOnRotation = pattern.movedDistance;
 
-        var rotationSpeed = Time.deltaTime * this.rotationPerDistance * Mathf.Min(1, diffMovement);
+
+
+        var rotationSpeed = Time.deltaTime * this.rotationPerDistance * diffMovement;
         transform.Rotate(Vector3.forward * rotationSpeed);
 
-        diffMovement -= Time.deltaTime;
-        diffMovement = Mathf.Max(0, diffMovement);
+        diffMovement = Mathf.Lerp(diffMovement, 0, Mathf.Max(Time.fixedDeltaTime, .02f) * rotationDamping);
     }
     public void rotateToOrigin()
     {

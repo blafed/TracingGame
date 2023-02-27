@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotationPerDistance: 180
+  rotationDamping: 3
   spawnAnimationDuration: 0.5
   spawnAnimationCurveHeight: 1.4
   spawnAnimationScale: 1.4
