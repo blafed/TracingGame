@@ -5,6 +5,7 @@ public class ChainsPattern : SplinePattern
 {
     [SerializeField] float _hookLength = .9f;
     [SerializeField] float _unitedTime = 1.5f;
+    [SerializeField] CosWave hookWaving = new CosWave { amplitude = 2, frequency = 5 };
     [SerializeField]
     float hookRotation = 5;
     [SerializeField]
@@ -39,7 +40,7 @@ public class ChainsPattern : SplinePattern
         base.whileTracing();
         moveSpline();
         moveObjectAlong(followObject, movedDistance);
-        followObject.localEulerAngles += Vector3.forward * hookRotation * Random.Range(-1, 1f);
+        followObject.localEulerAngles += Vector3.forward * hookWaving.calculate(movedDistance);
     }
 
 

@@ -130,6 +130,11 @@ public class LetterContainer : MonoBehaviour
 
 
 
+    public Letter findLetter(int letterId)
+    {
+        return letters.Find(x => x.letter.letterId == letterId).letter;
+    }
+
 
 
 }

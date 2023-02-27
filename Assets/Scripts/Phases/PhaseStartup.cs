@@ -6,6 +6,13 @@ public class PhaseStartup : MonoBehaviour
 
     private void Start()
     {
-        Phase.change(initialPhase);
+        if (GameManager.o.testTracing)
+        {
+            var letter = LetterContainer.o.findLetter(LetterUtility.charToLetterId(GameManager.o.testTracingLetter));
+            TracingPhase.o.setArgs(letter);
+            Phase.change(TracingPhase.o);
+        }
+        else
+            Phase.change(initialPhase);
     }
 }

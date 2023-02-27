@@ -154,7 +154,7 @@ public class Pattern : MonoBehaviour
     /// </summary>
     /// <param name="movedDistance"></param>
     /// <returns></returns>
-    protected Vector2 getPoint(float movedDistance)
+    public Vector2 getPoint(float movedDistance)
     {
         movedDistance /= pathScale;
         return transform.position + targetPath.evaluate(movedDistance).toVector3() * pathScale;
@@ -175,7 +175,7 @@ public class Pattern : MonoBehaviour
     /// </summary>
     /// <param name="movedDistance"></param>
     /// <returns></returns>
-    protected virtual Vector2 getDirection(float movedDistance)
+    public virtual Vector2 getDirection(float movedDistance)
     {
         // movedDistance /= pathScale;
         var a = getPoint(movedDistance);

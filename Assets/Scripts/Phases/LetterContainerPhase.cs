@@ -11,6 +11,7 @@ public class LetterContainerPhase : Phase<LetterContainerPhase>
         isReady = false;
         this.letter = null;
         LetterContainer.o.showAll().OnComplete(() => isReady = true);
+        Backgrounds.o.changeRandomly(BackgroundsList.forHome);
     }
     protected override void onExit()
     {

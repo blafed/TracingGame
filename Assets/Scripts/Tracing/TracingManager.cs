@@ -117,10 +117,12 @@ public class TracingManager : MonoBehaviour
             segmentPatterns.Add(pattern);
             pattern.gameObject.SetActive(false);
         }
+        Backgrounds.o.changeRandomly(BackgroundsList.forTracing);
     }
 
     private void FixedUpdate()
     {
+        setHandTracing(!autoTracing);
         if (segmentPatterns.Count == 0)
             return;
         if (initialTime > 0)
@@ -133,6 +135,8 @@ public class TracingManager : MonoBehaviour
 
         if (hasSegmentChanged)
         {
+            HandTracing.o.reset();
+            HandTracing.o.onSegmentPatternChange(currentSegmentPattern);
             if (state == TracingState.tracing)
             {
                 currentSegmentPattern.progress = 0;
@@ -210,6 +214,12 @@ public class TracingManager : MonoBehaviour
             segmentIndex = 0;
             state++;
         }
+    }
+
+    public void setHandTracing(bool value)
+    {
+        autoTracing = !value;
+        HandTracing.o.setEnabled(value);
     }
 
 }

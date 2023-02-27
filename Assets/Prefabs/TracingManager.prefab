@@ -55,4 +55,4 @@ MonoBehaviour:
     - {fileID: 7605648207159524934, guid: 6732d28aef6a3f045a691250bcd4285d, type: 3}
     - {fileID: 8877065510831761988, guid: 03383a876bf0dac4ab5ba8bbb1892d93, type: 3}
     - {fileID: 7811810815110988914, guid: 05bd48c52b2c29146b8cccb4f2959541, type: 3}
-  autoTracing: 1
+  autoTracing: 0
