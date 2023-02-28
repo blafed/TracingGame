@@ -14,15 +14,17 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
         circle,
     }
 
+    public bool reverse;
     public Type type;
     [Min(0)]
     public float height = 1;
-    [Header("circle")]
+    [Header("Circle")]
     [Min(0)]
     public float diameter = 1;
     [Range(0, 1)]
     public float absense = 0;
-    [Header("Debug")]
+    public bool centerAbsense = true;
+    [Header("Debug-------------")]
     [SerializeField] Path _path;
     [SerializeField] bool _manualPath;
 
@@ -62,9 +64,10 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
                 }
 
             }
-            return path;
+
         }
         else
+        {
             switch (type)
             {
                 case Type.strightLine:
@@ -101,20 +104,39 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
                     path = path.lerp(path.totalLength - absense * tl);
 
 
+
+
+
                     for (int i = 0; i < path.points.Count; i++)
                     {
                         path.points[i] *= diameter / 2;
+
                     }
 
                     break;
 
+
             }
 
-        //apply rotation and scale
-        for (int i = 0; i < path.points.Count; i++)
-        {
-            path.points[i] = transform.TransformPoint(path.points[i]) - transform.position;
+            var isDoingCenterAbsense = centerAbsense && type == Type.circle;
+            var deg = Mathf.Rad2Deg * absense * 2 * Mathf.PI;
+            var rotation = -deg * Vector3.forward * .5f;
+
+            if (isDoingCenterAbsense)
+                transform.Rotate(rotation);
+
+            //apply rotation and scale
+            for (int i = 0; i < path.points.Count; i++)
+            {
+                path.points[i] = transform.TransformPoint(path.points[i]) - transform.position;
+            }
+            if (isDoingCenterAbsense)
+                transform.Rotate(-rotation);
+
         }
+
+        if (reverse)
+            path.points.Reverse();
 
         return path;
     }
