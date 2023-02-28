@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
 [DefaultExecutionOrder(0)]
-public class LetterSegment : MonoBehaviour, IPathProvider
+public class LetterSegment : MonoBehaviour
 {
     public Vector2 position
     {
@@ -29,14 +29,22 @@ public class LetterSegment : MonoBehaviour, IPathProvider
             path = pathCreator.path;
         else
         {
-            var shapeController = GetComponent<SpriteShapeController>();
-            if (shapeController)
+            IPathProvider pathProvider;
+            if (TryGetComponent(out pathProvider))
             {
-                path = new Path(transform.position);
-                SplinePathHelper.splineToPath(shapeController.spline, path);
+                path = pathProvider.path;
             }
             else
-                Debug.LogError("Segment doesn't have path", this);
+            {
+                var shapeController = GetComponent<SpriteShapeController>();
+                if (shapeController)
+                {
+                    path = new Path(transform.position);
+                    SplinePathHelper.splineToPath(shapeController.spline, path);
+                }
+                else
+                    Debug.LogError("Segment doesn't have path", this);
+            }
         }
         totalLength = path.totalLength;
 
