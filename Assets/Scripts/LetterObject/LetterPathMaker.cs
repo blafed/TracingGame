@@ -21,6 +21,8 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
     [Header("Circle")]
     [Min(0)]
     public float diameter = 1;
+    [Min(0)]
+    public float circularity = 1;
     [Range(0, 1)]
     public float absense = 0;
     public bool centerAbsense = true;
@@ -58,7 +60,7 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
                 path.points.Capacity += childPath.points.Count;
                 for (int j = 0; j < childPath.points.Count; j++)
                 {
-                    var pp = transform.TransformPoint(childPath.points[j]) + child.transform.localPosition;
+                    var pp = transform.TransformPoint(childPath.points[j]) - transform.position + child.transform.localPosition;
                     path.points.Add(pp);
 
                 }
@@ -81,7 +83,8 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
                 case Type.circle:
 
 
-                    const float k = 0.5522f;
+                    float k = 0.5522f * circularity;
+
 
                     path.points = new System.Collections.Generic.List<Vector2>
                 {
@@ -163,7 +166,8 @@ public class LetterPathMaker : MonoBehaviour, IPathProvider
     {
         var path = generate();
         path.center = transform.position;
-
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(path.startPoint, .2f);
         for (int i = 0; i < path.NumSegments; i++)
         {
             Vector2[] points = path.GetPointsInSegment(i);

@@ -12,15 +12,15 @@ public class Letter : MonoBehaviour
     public Rect rect => Extensions2.rectFromCenter(transform.position, size);
     public Vector2 size => _size;
     [SerializeField] Vector2 _size;
-    public int letterId => LetterUtility.charToLetterId(_letterId);
+    public int letterId => LetterUtility.charToLetterId(name[0]);
 
     public int segmentCount => segments.Count;
     public TextMeshPro text { get; private set; }
 
     public List<LetterSegment> segments { get; private set; } = new List<LetterSegment>();
 
-    [SerializeField]
-    char _letterId;
+    // [SerializeField]
+    // char _letterId => name[0];
 
     private void Awake()
     {

@@ -18,6 +18,8 @@ public class LetterSegment : MonoBehaviour
 
     public float totalLength { get; private set; }
 
+    public bool isDot;
+
 
     Letter _letter;
 
