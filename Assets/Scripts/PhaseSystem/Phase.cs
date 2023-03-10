@@ -18,6 +18,7 @@ public class Phase : MonoBehaviour
         }
         last = current;
         current = other;
+        current.prepare();
         current.onEnter();
     }
     List<PhaseEntity> entities = new List<PhaseEntity>();
@@ -31,19 +32,25 @@ public class Phase : MonoBehaviour
 
     void clean()
     {
+        foreach (var x in entities)
+        {
+            x.onPhaseExit();
+        }
         for (int i = entities.Count - 1; i > -1; i--)
         {
             var x = entities[i];
-            if (x is ActivatedPhaseEntity)
-                x.gameObject.SetActive(false);
-            else if (x is CleanablePhaseEntity)
-                ((CleanablePhaseEntity)x).clean();
-            else if (x is CreatedPhaseEntity)
-            {
-                entities.RemoveAt(i);
-                Destroy(x.gameObject);
-            }
+            if (x)
+                if (x is CreatedPhaseEntity)
+                {
+                    entities.RemoveAt(i);
+                    Destroy(x.gameObject);
+                }
         }
+    }
+    void prepare()
+    {
+        foreach (var x in entities)
+            x.onPhaseEnter();
     }
 
 
