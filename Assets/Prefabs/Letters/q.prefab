@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 418713603524467020}
   - component: {fileID: 1455930012832574708}
+  - component: {fileID: 99251742644421046}
   m_Layer: 0
   m_Name: segment
   m_TagString: Untagged
@@ -70,6 +71,19 @@ MonoBehaviour:
     isClosed: 0
     autoSetControlPoints: 0
   _manualPath: 0
+--- !u!114 &99251742644421046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6071415491775721961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!1 &8188964830081324382
 GameObject:
   m_ObjectHideFlags: 0
@@ -80,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5440266437378107448}
   - component: {fileID: 1908163367102865036}
+  - component: {fileID: 7282707716004505474}
   m_Layer: 0
   m_Name: segment (1)
   m_TagString: Untagged
@@ -126,11 +141,24 @@ MonoBehaviour:
     points:
     - {x: 0, y: 0}
     - {x: 0, y: 0}
-    - {x: 0, y: -5.7200003}
-    - {x: 0, y: -5.7200003}
+    - {x: -0.00000047683716, y: -5.7200003}
+    - {x: -0.00000047683716, y: -5.7200003}
     isClosed: 0
     autoSetControlPoints: 0
   _manualPath: 0
+--- !u!114 &7282707716004505474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8188964830081324382}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!1 &8833489775908375852
 GameObject:
   m_ObjectHideFlags: 0
@@ -351,3 +379,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4}
+  useCustomPattern: 0
+  customPatterns: 

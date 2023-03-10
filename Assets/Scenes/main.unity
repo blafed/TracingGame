@@ -358,6 +358,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LetterContainer
       objectReference: {fileID: 0}
+    - target: {fileID: 7592754491952291345, guid: ea4fa1b922d682348a62a722f5c5fc52, type: 3}
+      propertyPath: m_LocalAABB.m_Extent.x
+      value: 1.8275145
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea4fa1b922d682348a62a722f5c5fc52, type: 3}
 --- !u!1001 &3338512397571432812
@@ -481,6 +485,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3979821986029097393, guid: fc05438e8393a9746aa91202b423d571, type: 3}
+      propertyPath: skip
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3979821986029097395, guid: fc05438e8393a9746aa91202b423d571, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -599,6 +607,26 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 519420031}
+    - target: {fileID: 3977274228199609830, guid: fa65d2de6bf28dc4981439d59cbc5637, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977274228199609830, guid: fa65d2de6bf28dc4981439d59cbc5637, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977274228199609830, guid: fa65d2de6bf28dc4981439d59cbc5637, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977274228199609830, guid: fa65d2de6bf28dc4981439d59cbc5637, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3977274228199609830, guid: fa65d2de6bf28dc4981439d59cbc5637, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5318142489537541533, guid: fa65d2de6bf28dc4981439d59cbc5637, type: 3}
       propertyPath: m_RootOrder
       value: 7

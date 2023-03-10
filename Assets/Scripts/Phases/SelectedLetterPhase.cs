@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class SelectedLetterPhase : Phase<SelectedLetterPhase>
 {
+    public bool skip = false;
     Letter argLetter;
     WordInfo argWordInfo;
 
@@ -19,6 +20,12 @@ public class SelectedLetterPhase : Phase<SelectedLetterPhase>
     protected override void onEnter()
     {
         LetterEnterAnimation.o.play(argLetter, argWordInfo);
+        if (skip)
+        {
+            LetterEnterAnimation.o.stop();
+            LetterEnterAnimation.o.clean();
+            finish();
+        }
     }
 
 

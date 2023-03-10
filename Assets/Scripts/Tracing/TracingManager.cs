@@ -17,13 +17,16 @@ public class TracingManager : MonoBehaviour
     {
         public float speed = 2;
         public float cameraZoom = 5;
+        public float autoTracingSegmentDelay = .5f;
+
         public EdgePoint edgePointPrefab;
         public List<Pattern> patternObjects = new List<Pattern>();
+
 
     }
     public static TracingManager o { get; private set; }
 
-
+    public bool isTracingStarted { get; private set; }
     public Vector2? spawnEdgePointsFrom { get; set; }
 
     [SerializeField]
@@ -42,10 +45,16 @@ public class TracingManager : MonoBehaviour
     public TracingState state { get; private set; }
 
 
+    public event System.Action onDone;
+    public event System.Action<Pattern> onSegmentPatternChanged;
+    public event System.Action<TracingState> onStateChanged;
+
+
 
     public bool hasSegmentChanged = true;
     float initialTime = 0;
     float unitedTime;
+    float autoTracingSegmentTimer;
 
 
     // public Letter letter;
@@ -80,11 +89,15 @@ public class TracingManager : MonoBehaviour
     public void clean()
     {
         HandTracing.o.setEnabled(false);
+
+        if (!isTracingStarted)
+            return;
         currentLetter.text.alpha = 1;
         currentLetter.setTextEnabled(true);
         foreach (var x in segmentPatterns)
             Destroy(x.gameObject);
         segmentPatterns.Clear();
+        currentLetter = null;
     }
 
 
@@ -94,10 +107,11 @@ public class TracingManager : MonoBehaviour
         {
             leave();
         }
-        CameraControl.o.move(letter.transform.position);
-        CameraControl.o.zoom(options.cameraZoom);
+        // CameraControl.o.move(letter.transform.position);
+        // CameraControl.o.zoom(options.cameraZoom);
         this.currentLetter = letter;
         this.currentLetter.setTextEnabled(false);
+        isTracingStarted = true;
     }
     public void setTracingPattern(PatternCode patternCode)
     {
@@ -106,9 +120,16 @@ public class TracingManager : MonoBehaviour
             Debug.LogError("Current Letter is not set", gameObject);
             return;
         }
+        var patternPrefab = getPatternPrefab(patternCode);
+        if (!patternPrefab)
+        {
+            Debug.LogError("No Pattern prefab " + patternCode);
+            return;
+        }
         unitedTime = 0;
         state = TracingState.initial;
-        initialTime = getPatternPrefab(patternCode).waitBeforeEnableTracing;
+
+        initialTime = patternPrefab.waitBeforeEnableTracing;
         spawnEdgePointsFrom = null;
         hasSegmentChanged = true;
         foreach (var x in segmentPatterns)
@@ -143,12 +164,18 @@ public class TracingManager : MonoBehaviour
         setHandTracing(!autoTracing);
 
         if (state == TracingState.initial)
+        {
             state++;
+            onStateChanged?.Invoke(state);
+        }
+
 
         if (hasSegmentChanged)
         {
+            autoTracingSegmentTimer = options.autoTracingSegmentDelay;
             HandTracing.o.reset();
             HandTracing.o.onSegmentPatternChange(currentSegmentPattern);
+            onSegmentPatternChanged?.Invoke(currentSegmentPattern);
             if (state == TracingState.tracing)
             {
                 currentSegmentPattern.progress = 0;
@@ -169,8 +196,11 @@ public class TracingManager : MonoBehaviour
                 }
             }
             else if (state == TracingState.done)
+            {
                 foreach (var x in segmentPatterns)
                     x.onAllDone();
+                onDone?.Invoke();
+            }
             hasSegmentChanged = false;
         }
         if (state == TracingState.tracing)
@@ -184,7 +214,10 @@ public class TracingManager : MonoBehaviour
                 segmentIndex++;
             }
             else if (autoTracing)
-                currentSegmentPattern.movedDistance += options.speed * Time.fixedDeltaTime;
+            {
+                currentSegmentPattern.movedDistance += Mathf.Max(0, options.speed * Time.fixedDeltaTime - (autoTracingSegmentTimer * options.speed));
+                autoTracingSegmentTimer = Mathf.MoveTowards(autoTracingSegmentTimer, 0, Time.fixedDeltaTime);
+            }
         }
         if (state == TracingState.animation)
         {
@@ -226,6 +259,7 @@ public class TracingManager : MonoBehaviour
             HandTracing.o.setEnabled(false);
             segmentIndex = 0;
             state++;
+            onStateChanged?.Invoke(state);
         }
     }
 

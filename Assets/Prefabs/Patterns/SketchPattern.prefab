@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3653454756745916059}
   - component: {fileID: 6226746705933901862}
   m_Layer: 0
-  m_Name: chains
+  m_Name: shape-controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +519,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3174265915278203472}
-  - component: {fileID: 7811810815110988914}
+  - component: {fileID: 119844721391818874}
   m_Layer: 0
   m_Name: SketchPattern
   m_TagString: Untagged
@@ -545,7 +545,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7811810815110988914
+--- !u!114 &119844721391818874
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -554,15 +554,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 6503913184773429808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d65cf1361a1e3d44a029bd98e9a8beb, type: 3}
+  m_Script: {fileID: 11500000, guid: 029d5fe812964d84da2636e759d79082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   code: 6
   splineHeight: 0.4
   shapeController: {fileID: 6226746705933901862}
-  followObject: {fileID: 2997853876203891718}
-  hookRotation: 5
-  hookDuration: 0.7
+  followObject: {fileID: 0}
 --- !u!1 &7916280533875459109
 GameObject:
   m_ObjectHideFlags: 0

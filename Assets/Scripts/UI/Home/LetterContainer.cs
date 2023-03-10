@@ -48,8 +48,8 @@ public class LetterContainer : MonoBehaviour
             this.letters.Add(new LetterData
             {
                 letter = x,
-                startPosition = x.transform.localPosition,
-                leavingPosition = x.transform.localPosition.normalized * leavingPosition.distance
+                startPosition = x.transform.position,
+                leavingPosition = x.transform.position.normalized * leavingPosition.distance
             });
         }
     }
@@ -90,7 +90,8 @@ public class LetterContainer : MonoBehaviour
         {
             if (exclude != null && exclude(x.letter))
                 continue;
-            x.letter.transform.localPosition = x.leavingPosition;
+            x.letter.gameObject.SetActive(false);
+            // x.letter.transform.position = x.leavingPosition;
         }
     }
     public void showAllNoTween(System.Predicate<Letter> exclude = null)
@@ -99,7 +100,8 @@ public class LetterContainer : MonoBehaviour
         {
             if (exclude != null && exclude(x.letter))
                 continue;
-            x.letter.transform.localPosition = x.startPosition;
+            x.letter.gameObject.SetActive(true);
+            // x.letter.transform.position = x.startPosition;
         }
     }
     public Tween hideAll(System.Predicate<Letter> exclude = null)
@@ -108,8 +110,9 @@ public class LetterContainer : MonoBehaviour
         {
             if (exclude != null && exclude(x.letter))
                 continue;
-            x.letter.transform.localPosition = x.startPosition;
-            x.letter.transform.DOLocalMove(x.leavingPosition, leavingPosition.duration)
+            x.letter.gameObject.SetActive(false);
+            x.letter.transform.position = x.startPosition;
+            x.letter.transform.DOMove(x.leavingPosition, leavingPosition.duration)
             .SetEase(leavingPosition.ease);
         }
 
@@ -121,7 +124,8 @@ public class LetterContainer : MonoBehaviour
         {
             if (exclude != null && exclude(x.letter))
                 continue;
-            x.letter.transform.localPosition = x.leavingPosition;
+            x.letter.gameObject.SetActive(true);
+            x.letter.transform.position = x.leavingPosition;
             x.letter.transform.DOMoveCurvy(x.startPosition, leavingPosition.duration, 2f)
             .SetEase(leavingPosition.ease);
         }

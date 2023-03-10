@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 605b9f28d936ceb4b9fcb227c73d184d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reverse: 0
+  reverse: 1
   type: 1
   height: 1
   diameter: 3.71
@@ -476,3 +476,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4}
+  useCustomPattern: 0
+  customPatterns: 

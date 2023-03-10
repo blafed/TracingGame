@@ -19,6 +19,20 @@ public class Letter : MonoBehaviour
 
     public List<LetterSegment> segments { get; private set; } = new List<LetterSegment>();
 
+    #region  GetCustomPatternCode
+    [SerializeField]
+    bool useCustomPattern;
+    [SerializeField]
+    List<PatternCode> customPatterns = new List<PatternCode>();
+
+    public PatternCode getCustomPattern(int index)
+    {
+        if (useCustomPattern)
+            if (index < customPatterns.Count)
+                return customPatterns[index];
+        return PatternCode.none;
+    }
+    #endregion
     // [SerializeField]
     // char _letterId => name[0];
 

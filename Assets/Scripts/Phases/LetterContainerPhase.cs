@@ -11,13 +11,15 @@ public class LetterContainerPhase : Phase<LetterContainerPhase>
         isReady = false;
         this.letter = null;
         LetterContainer.o.adjustCamera();
-        LetterContainer.o.showAll().OnComplete(() => isReady = true);
+        LetterContainer.o.showAllNoTween();
+        isReady = true;
+        //.OnComplete(() => isReady = true);
         Backgrounds.o.changeRandomly(BackgroundsList.forHome);
         HomeUI.o.setBackButtonEnabled(false);
     }
     protected override void onExit()
     {
-        LetterContainer.o.hideAll(x => x == letter);
+        LetterContainer.o.hideAllNoTween(x => x == letter);
         HomeUI.o.setBackButtonEnabled(true);
     }
 
@@ -36,13 +38,13 @@ public class LetterContainerPhase : Phase<LetterContainerPhase>
             return false;
         if (this.letter)
             return false;
-        this.letter = letter;
         var word = WordList.o.getRandomContains(letter.letterId);
         if (word == null)
         {
             Debug.LogError("No Word for this letter  " + LetterUtility.letterToString(letter.letterId));
             return false;
         }
+        this.letter = letter;
         SelectedLetterPhase.o.setArgs(letter, word);
         change(SelectedLetterPhase.o);
 
