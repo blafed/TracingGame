@@ -22,6 +22,11 @@ public class CameraControl : MonoBehaviour
         rotor = transform.GetChild(0);
     }
 
+    public void stop()
+    {
+        transform.DOKill();
+    }
+
     public Tween move(Vector2 point, float duration = .5f, Ease ease = Ease.OutQuad)
     {
         return transform.DOMove(point.toVector3(transform.position.z), duration).SetEase(ease);

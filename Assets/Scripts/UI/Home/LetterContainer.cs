@@ -54,6 +54,8 @@ public class LetterContainer : MonoBehaviour
         }
     }
 
+
+
     Letter selectedLetter;
 
 

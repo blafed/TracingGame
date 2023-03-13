@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 312244203612791115}
-  - component: {fileID: 2114460401}
+  - component: {fileID: 8826543375668531151}
   m_Layer: 0
   m_Name: LetterContainer
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2114460401
+--- !u!114 &8826543375668531151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,14 +42,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 312244203612791124}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c9cdd6696e456244bbf781761ba0447, type: 3}
+  m_Script: {fileID: 11500000, guid: d69f9fe9a72c70746aa35cff7193e57e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leavingPosition:
-    distance: 40
-    duration: 2
+  cameraOptions:
+    duration: 1
+    cameraZoom: 25
     ease: 7
-  cameraSize: 25
+    cameraFocus: {x: 0, y: 0}
 --- !u!1 &8131878556756487871
 GameObject:
   m_ObjectHideFlags: 0
@@ -116,7 +116,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 407617764279557246, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: _path.points.Array.data[2].x
-      value: 1.6419992
+      value: 1.6419988
       objectReference: {fileID: 0}
     - target: {fileID: 407617764279557246, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: _path.points.Array.data[2].y
@@ -124,7 +124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 407617764279557246, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: _path.points.Array.data[3].x
-      value: 1.6419992
+      value: 1.6419988
       objectReference: {fileID: 0}
     - target: {fileID: 407617764279557246, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: _path.points.Array.data[3].y
@@ -132,11 +132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4911466804216652776, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: _path.points.Array.data[2].y
-      value: -3.9199839
+      value: -3.9199858
       objectReference: {fileID: 0}
     - target: {fileID: 4911466804216652776, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: _path.points.Array.data[3].y
-      value: -3.9199839
+      value: -3.9199858
       objectReference: {fileID: 0}
     - target: {fileID: 8833489776627266185, guid: 4656bcc844682014db0123cc289fd23d, type: 3}
       propertyPath: m_Name
@@ -1044,6 +1044,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2050513502839536345}
     m_Modifications:
+    - target: {fileID: 1908163367102865036, guid: 184182dc1f851014aa4e1def4e79cbc4, type: 3}
+      propertyPath: _path.points.Array.data[2].x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1908163367102865036, guid: 184182dc1f851014aa4e1def4e79cbc4, type: 3}
+      propertyPath: _path.points.Array.data[3].x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8833489776627266185, guid: 184182dc1f851014aa4e1def4e79cbc4, type: 3}
       propertyPath: m_Name
       value: q

@@ -1,18 +1,21 @@
 using UnityEngine;
 
-public class PhaseStartup : MonoBehaviour
+namespace KidLetters
 {
-    [SerializeField] Phase initialPhase;
-
-    private void Start()
+    public class PhaseStartup : MonoBehaviour
     {
-        if (GameManager.o.testTracing)
+        [SerializeField] Phase initialPhase;
+
+        private void Start()
         {
-            var letter = LetterContainer.o.findLetter(LetterUtility.charToLetterId(GameManager.o.testTracingLetter));
-            TracingPhase.o.setArgs(letter);
-            Phase.change(TracingPhase.o);
+            if (GameManager.o.testTracing)
+            {
+                var letter = LetterContainer.o.findLetter(LetterUtility.charToLetterId(GameManager.o.testTracingLetter));
+                TracingPhase.o.setArgs(letter, WordList.o.getRandomContains(letter.letterId));
+                Phase.change(TracingPhase.o);
+            }
+            else
+                Phase.change(HomePhase.o);
         }
-        else
-            Phase.change(initialPhase);
     }
 }

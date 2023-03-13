@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wordInfos:
   - word: cat
-    prefab: {fileID: 0}
+    prefab: {fileID: 1824133707487253613, guid: 87293c0d5f2a1094da7be3efaa59886f, type: 3}
     picture: {fileID: 21300000, guid: 92556eae618572147890b8f40a776542, type: 3}
     clip: {fileID: 8300000, guid: d890d560c44dae343821588658f85178, type: 3}
   - word: bus

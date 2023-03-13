@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,19 +24,24 @@ public class WordList : ScriptableObject
 
     public WordInfo getRandomContains(int letterId)
     {
-        List<WordInfo> wordWithLetter = new List<WordInfo>(wordInfos.Count);
+        List<WordInfo> wordsWithLetter = new List<WordInfo>(wordInfos.Count);
         foreach (var x in wordInfos)
         {
             if (x.containsLetter(letterId))
-                wordWithLetter.Add(x);
+                wordsWithLetter.Add(x);
         }
-        Debug.Log(wordWithLetter.Count);
-        return wordWithLetter.getRandom();
+        List<WordInfo> wordsWithArt = new List<WordInfo>(wordsWithLetter.Count);
+        foreach (var x in wordsWithLetter)
+            if (x.prefab)
+                wordsWithArt.Add(x);
+        if (wordsWithArt.Count == 0)
+            return wordsWithLetter.getRandom();
+        return wordsWithArt.getRandom();
     }
 }
 
 [System.Serializable]
-public class WordInfo
+public class WordInfo : IEnumerable<int>
 {
     public string word;
     public GameObject prefab;
@@ -61,5 +67,16 @@ public class WordInfo
     public int indexOfLetter(int letterId)
     {
         return word.IndexOf(LetterUtility.letterToChar(letterId));
+    }
+
+    public IEnumerator<int> GetEnumerator()
+    {
+        foreach (var x in word)
+            yield return LetterUtility.charToLetterId(x);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
