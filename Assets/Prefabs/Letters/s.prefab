@@ -307,3 +307,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4}
+  _viewRect:
+    serializedVersion: 2
+    x: -1.44
+    y: -2.2
+    width: 2.97
+    height: 4.36
+  useCustomPattern: 0
+  customPatterns: 

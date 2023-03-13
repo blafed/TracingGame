@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!114 &2411447326978100385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -129,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!114 &4589633535202085589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -448,3 +450,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4}
+  _viewRect:
+    serializedVersion: 2
+    x: -1.88
+    y: -2
+    width: 3.69
+    height: 4.12
+  useCustomPattern: 0
+  customPatterns: 

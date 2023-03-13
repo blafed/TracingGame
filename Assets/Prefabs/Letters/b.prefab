@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!114 &1836360155135976451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +62,7 @@ MonoBehaviour:
   type: 1
   height: 1
   diameter: 3.75
+  circularity: 1
   absense: 0.12
   centerAbsense: 1
   _path:
@@ -127,6 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!114 &407617764279557246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -143,6 +146,7 @@ MonoBehaviour:
   type: 0
   height: 5.52
   diameter: 1
+  circularity: 1
   absense: 0
   centerAbsense: 1
   _path:
@@ -375,4 +379,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4}
-  _letterId: 97
+  _viewRect:
+    serializedVersion: 2
+    x: -1.95
+    y: -2
+    width: 4.06
+    height: 5.57
+  useCustomPattern: 0
+  customPatterns: 

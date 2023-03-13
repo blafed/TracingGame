@@ -11,7 +11,10 @@ public class Letter : MonoBehaviour
     public event System.Action onClick;
     public Rect rect => Extensions2.rectFromCenter(transform.position, size);
     public Vector2 size => _size;
+    public Rect relativeViewRect => _viewRect;
+    public Rect viewRect => Extensions2.rectFromCenter(_viewRect.center + transform.position.toVector2(), _viewRect.size);
     [SerializeField] Vector2 _size;
+    [SerializeField] Rect _viewRect = Extensions2.rectFromCenter(Vector2.zero, Vector2.one * 4);
     public int letterId => LetterUtility.charToLetterId(name[0]);
 
     public int segmentCount => segments.Count;
@@ -62,11 +65,10 @@ public class Letter : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         rect.drawGizmos(Color.cyan);
+        viewRect.drawGizmos(Color.magenta);
     }
     private void OnMouseDown()
     {
         onClick?.Invoke();
     }
-
-
 }

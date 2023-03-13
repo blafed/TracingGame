@@ -266,6 +266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!1 &8349516494022131736
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path:
-    center: {x: -13.070393, y: 5.437813}
+    center: {x: 0.829607, y: 1.3378129}
     points:
     - {x: -2.2974873, y: -0.65595245}
     - {x: -1.8538208, y: 0.080942154}
@@ -351,6 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!1 &8833489775866497662
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14e3d08d36b2fe4a8fd7012bdf7293a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDot: 0
 --- !u!114 &407617764279557246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,8 +423,8 @@ MonoBehaviour:
     points:
     - {x: 0, y: 0}
     - {x: 0, y: 0}
-    - {x: 0, y: -5.5200005}
-    - {x: 0, y: -5.5200005}
+    - {x: -0.00000047683716, y: -5.5200005}
+    - {x: -0.00000047683716, y: -5.5200005}
     isClosed: 0
     autoSetControlPoints: 0
   _manualPath: 0
@@ -645,3 +648,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4.57}
+  _viewRect:
+    serializedVersion: 2
+    x: -1.64
+    y: -2.12
+    width: 3.37
+    height: 5.83
+  useCustomPattern: 0
+  customPatterns: 
