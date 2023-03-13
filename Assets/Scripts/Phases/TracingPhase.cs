@@ -44,6 +44,7 @@ public class TracingPhase : Phase<TracingPhase>
 
     [System.Obsolete]
     PatternCode[] patternArray = new PatternCode[3];
+    [System.Obsolete]
     int nextPlayPatternIndex = 0;
 
 
@@ -64,6 +65,12 @@ public class TracingPhase : Phase<TracingPhase>
             TracingPanelUI.o.hideIndicating();
         if (obj == TracingState.done)
         {
+            TracingDoneStarEffect.o.startStarAnimation(() =>
+            {
+                if (playingDoneIndex < playingIndex)
+                    playingDoneIndex = playingIndex;
+            });
+
             nextPlayPatternIndex++;
         }
         TracingPanelUI.o.refresh();
@@ -71,9 +78,7 @@ public class TracingPhase : Phase<TracingPhase>
 
     private void onSegmentPatternChanged(Pattern obj)
     {
-        TracingPanelUI.o.setIndicatingPosition(obj.startEdgePoint.transform.position, obj.getDirection(.03f));
-        if (playingDoneIndex < playingIndex)
-            playingDoneIndex = playingIndex;
+
     }
 
 

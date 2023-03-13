@@ -9,7 +9,7 @@ public class TracingPanelUI : MonoBehaviour
 
     [SerializeField] Vector2 cameraOffset = new Vector2(0, .7f);
     [SerializeField] float cameraZoom = 4;
-    [SerializeField] FlowList<PlayPatternButton> playPatternButtons = new FlowList<PlayPatternButton>();
+    public FlowList<PlayPatternButton> playPatternButtons = new FlowList<PlayPatternButton>();
     [SerializeField] Transform indicatingArrow;
 
     GameObject panelGO => transform.GetChild(0).gameObject;
@@ -30,11 +30,19 @@ public class TracingPanelUI : MonoBehaviour
             x.gameObject.SetActive(true);
             x.component.init(x.iterationIndex);
         });
-        CameraControl.o.move(TracingPhase.o.argLetter.transform.position + cameraOffset.toVector3());
+        CameraControl.o.move(getFocusPosition());
         CameraControl.o.zoom(cameraZoom);
         refresh();
         hideIndicating();
     }
+
+
+    public Vector2 getFocusPosition()
+    {
+        return TracingPhase.o.argLetter.transform.position + cameraOffset.toVector3();
+    }
+
+
 
 
 

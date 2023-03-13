@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Phase : MonoBehaviour
+public abstract class Phase : MonoBehaviour
 {
     public static Phase current { get; private set; }
     protected static Phase last { get; private set; }
@@ -30,7 +30,7 @@ public class Phase : MonoBehaviour
     }
 
 
-    void clean()
+    protected virtual void clean()
     {
         foreach (var x in entities)
         {
@@ -51,6 +51,14 @@ public class Phase : MonoBehaviour
     {
         foreach (var x in entities)
             x.onPhaseEnter();
+    }
+
+    public T getEntity<T>() where T : PhaseEntity
+    {
+        foreach (var x in entities)
+            if (x is T t)
+                return t;
+        return null;
     }
 
 

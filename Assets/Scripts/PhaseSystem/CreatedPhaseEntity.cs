@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CreatedPhaseEntity : PhaseEntity
+public abstract class CreatedPhaseEntity : PhaseEntity
 {
 
 }
