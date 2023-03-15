@@ -10,6 +10,7 @@ public enum TracingState
     united,
     done,
 }
+[System.Obsolete]
 public class TracingManager : MonoBehaviour
 {
     [System.Serializable]
@@ -173,7 +174,7 @@ public class TracingManager : MonoBehaviour
         if (hasSegmentChanged)
         {
             autoTracingSegmentTimer = options.autoTracingSegmentDelay;
-            HandTracing.o.reset();
+            HandTracing.o.clean();
             HandTracing.o.onSegmentPatternChange(currentSegmentPattern);
             onSegmentPatternChanged?.Invoke(currentSegmentPattern);
             if (state == TracingState.tracing)

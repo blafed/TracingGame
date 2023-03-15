@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class HandTracing : MonoBehaviour
+[System.Obsolete]
+public class HandTracing : Singleton<HandTracing>
 {
-    public static HandTracing o;
     public float distanceThreshold = .5f;
     public float addingSpeed = 5;
     public float maxSpeed = 4;
@@ -16,12 +16,11 @@ public class HandTracing : MonoBehaviour
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         enabled = false;
-        o = this;
     }
-
     public void setEnabled(bool value)
     {
         enabled = value;
@@ -32,7 +31,7 @@ public class HandTracing : MonoBehaviour
     float totalAddedDistance;
     float addedDistanceAt;
 
-    public void reset()
+    public void clean()
     {
         addedDistance = addedDistanceAt = totalAddedDistance = 0;
     }

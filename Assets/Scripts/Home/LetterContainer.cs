@@ -55,12 +55,8 @@ namespace KidLetters.Home
 
         public void selectLetter(Letter letter)
         {
-            PronouncingPhase.o.setArgs(letter);
-            Phase.change(PronouncingPhase.o);
+            HomePhase.o.selectLetter(letter);
         }
-
-
-
 
         public void setActiveLetters(bool active, System.Predicate<Letter> except = null)
         {
