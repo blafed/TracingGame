@@ -80,6 +80,12 @@ public class FlowList<T>
             Debug.LogError(template + " Template not has " + typeof(T).ToString(), template);
     }
 
+    public void clear()
+    {
+        foreach (var x in items)
+            GameObject.Destroy(x.gameObject);
+        items.Clear();
+    }
 
 
 }

@@ -14,7 +14,7 @@ public class SelectedLetterPhase : Phase<SelectedLetterPhase>
     public void finish()
     {
         LetterEnterAnimation.o.stop();
-        TracingPhase.o.setArgs(argLetter);
+        TracingPhase.o.setArgs(argLetter, null);
         change(TracingPhase.o);
     }
     protected override void onEnter()

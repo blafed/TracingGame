@@ -3,7 +3,7 @@ namespace KidLetters.Tracing
 {
     using UnityEngine;
 
-    public class StageButtonContainer : Singleton<StageButtonContainer>
+    public class StageButtonContainer : PhaseSingletonEntity<StageButtonContainer, TracingPhase>
     {
 
         //fields
@@ -11,13 +11,24 @@ namespace KidLetters.Tracing
         [SerializeField] Vector2 cameraOffset = new Vector2(0, .7f);
         [SerializeField] float cameraZoom = 4;
         [SerializeField] Transform indicatingArrow;
-        [SerializeField] FlowList<StageButton> playPatternButtons = new FlowList<StageButton>();
+        [SerializeField] FlowList<StageButton> stageButtons = new FlowList<StageButton>();
 
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             gameObject.SetActive(false);
             TracingPhase.o.onStageChanged += onStageChanged;
+            TracingPhase.o.onFocused += onFocused;
+        }
+
+        void onFocused()
+        {
+            show();
+        }
+        protected override void onPhaseExit()
+        {
+            hide();
         }
 
         void onStageChanged(TracingStage stage)
@@ -29,24 +40,24 @@ namespace KidLetters.Tracing
             // playPatternButtons.iterate(playPatternButtons.count, x => x.component.refresh());
         }
 
-        public void show()
+        void show()
         {
             gameObject.SetActive(true);
             transform.localScale = new Vector3();
             transform.DOScale(1, enterDuration).SetEase(Ease.OutBack);
-            playPatternButtons.iterate(playPatternButtons.count, x => x.gameObject.SetActive(false));
+            stageButtons.iterate(stageButtons.count, x => x.gameObject.SetActive(false));
 
-            playPatternButtons.iterate(TracingPhase.o.tracingStages.Length, x =>
+            stageButtons.iterate(TracingPhase.o.tracingStages.Length, x =>
             {
                 x.gameObject.SetActive(true);
-                x.component.init(x.iterationIndex);
+                x.component.prepare(x.iterationIndex);
             });
             CameraControl.o.move(getFocusPosition());
             CameraControl.o.zoom(cameraZoom);
-            refresh();
-            hideIndicating();
+
+            // hideIndicating();
         }
-        public void hide()
+        void hide()
         {
             gameObject.SetActive(false);
         }
@@ -62,6 +73,7 @@ namespace KidLetters.Tracing
                 direction = Vector2.down;
             indicatingArrow.transform.up = -direction.Value;
         }
+        [System.Obsolete]
         public void showIndicating()
         {
             if (!indicatingArrow.gameObject.activeSelf)
@@ -70,6 +82,7 @@ namespace KidLetters.Tracing
                 indicatingArrow.DOScale(1, .25f);
             }
         }
+        [System.Obsolete]
         public void hideIndicating()
         {
             indicatingArrow.DOScale(0, .25f).OnComplete(() =>

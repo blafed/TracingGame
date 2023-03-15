@@ -16,7 +16,7 @@ namespace KidLetters.Tracing
         {
             this.stage = stage;
 
-            stage.onSegmentPatternChanged += onSegmentPatternChagned;
+            stage.onSegmentChanged += onSegmentPatternChagned;
 
         }
 
@@ -27,7 +27,7 @@ namespace KidLetters.Tracing
 
         private void FixedUpdate()
         {
-            var currentSegmentPattern = stage.currentSegmentPattern;
+            var currentSegmentPattern = stage.currentSegment;
             var movement = Mathf.Max(0, speed * Time.fixedDeltaTime - (segmentDelayTimer * speed));
             currentSegmentPattern.movedDistance += movement;
             segmentDelayTimer = Mathf.MoveTowards(segmentDelayTimer, 0, Time.fixedDeltaTime);

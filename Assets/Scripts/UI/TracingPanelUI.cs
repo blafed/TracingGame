@@ -39,7 +39,7 @@ public class TracingPanelUI : MonoBehaviour
 
     public Vector2 getFocusPosition()
     {
-        return TracingPhase.o.argLetter.transform.position + cameraOffset.toVector3();
+        return TracingPhase.o.letter.transform.position + cameraOffset.toVector3();
     }
 
 

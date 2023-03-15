@@ -17,19 +17,20 @@ namespace KidLetters.Tracing
         public bool hasSegmentChanged { get; private set; }
         public bool isDone { get; private set; }
         public int segmentIndex { get; private set; } = 0;
-        public int segmentCount => segmentPatterns.Count;
-        public Pattern oldSegmentPattern => segmentPatterns.getOrDefault(segmentIndex - 1);
-        public Pattern currentSegmentPattern => segmentIndex < segmentPatterns.Count ? segmentPatterns[segmentIndex] : null;
+        public int tracedSegments { get; private set; }
+        public int segmentCount => segments.Count;
+        public Pattern oldSegment => segments.getOrDefault(segmentIndex - 1);
+        public Pattern currentSegment => segmentIndex < segments.Count ? segments[segmentIndex] : null;
 
 
         //events
         public event Action<TracingState> onStateChanged;
-        public event Action<Pattern> onSegmentPatternChanged;
+        public event Action<Pattern> onSegmentChanged;
         public event Action onDone;
-        public event Action<Pattern> onSegmentPatternDone;
+        public event Action<Pattern> onSegmentTracingDone;
 
         //private variables
-        List<Pattern> segmentPatterns = new List<Pattern>();
+        List<Pattern> segments = new List<Pattern>();
         float initialTime = 0;
         HandTracer handTracer;
         AutoTracer autoTracer;
@@ -84,9 +85,9 @@ namespace KidLetters.Tracing
 
             initialTime = patternPrefab.waitBeforeEnableTracing;
             hasSegmentChanged = true;
-            foreach (var x in segmentPatterns)
+            foreach (var x in segments)
                 Destroy(x.gameObject);
-            segmentPatterns.Clear();
+            segments.Clear();
             segmentIndex = 0;
             letter.setTextEnabled(false);
             for (int i = 0; i < letter.segmentCount; i++)
@@ -98,7 +99,7 @@ namespace KidLetters.Tracing
                 pattern.setup(seg);
                 pattern.progress = 0;
                 pattern.onCreated();
-                segmentPatterns.Add(pattern);
+                segments.Add(pattern);
                 pattern.gameObject.SetActive(false);
             }
             Backgrounds.o.changeRandomly(BackgroundsList.forTracing);
@@ -114,7 +115,7 @@ namespace KidLetters.Tracing
         private void FixedUpdate()
         {
             enableTracers();
-            if (segmentPatterns.Count == 0)
+            if (segments.Count == 0)
                 return;
             if (initialTime > 0)
             {
@@ -131,21 +132,21 @@ namespace KidLetters.Tracing
 
             if (hasSegmentChanged)
             {
-                onSegmentPatternChanged?.Invoke(currentSegmentPattern);
+                onSegmentChanged?.Invoke(currentSegment);
                 if (state == TracingState.tracing)
                 {
-                    currentSegmentPattern.progress = 0;
-                    currentSegmentPattern.gameObject.SetActive(true);
-                    currentSegmentPattern.onStartTracing();
+                    currentSegment.progress = 0;
+                    currentSegment.gameObject.SetActive(true);
+                    currentSegment.onStartTracing();
                 }
                 else if (state == TracingState.animation)
                 {
-                    currentSegmentPattern.progress = 0;
-                    currentSegmentPattern.onStartAnimation();
+                    currentSegment.progress = 0;
+                    currentSegment.onStartAnimation();
                 }
                 else if (state == TracingState.united)
                 {
-                    foreach (var x in segmentPatterns)
+                    foreach (var x in segments)
                     {
                         x.progress = 0;
                         x.onStartUnited();
@@ -153,7 +154,7 @@ namespace KidLetters.Tracing
                 }
                 else if (state == TracingState.done)
                 {
-                    foreach (var x in segmentPatterns)
+                    foreach (var x in segments)
                         x.onAllDone();
                     onDone?.Invoke();
                 }
@@ -166,39 +167,40 @@ namespace KidLetters.Tracing
                 case TracingState.tracing:
 
 
-                    currentSegmentPattern.whileTracing();
-                    if (currentSegmentPattern.isProgressCompleted)
+                    currentSegment.whileTracing();
+                    if (currentSegment.isProgressCompleted)
                     {
                         hasSegmentChanged = true;
-                        currentSegmentPattern.onEndTracing();
+                        currentSegment.onEndTracing();
                         segmentIndex++;
+                        onSegmentTracingDone?.Invoke(currentSegment);
                     }
 
                     break;
                 case TracingState.animation:
-                    currentSegmentPattern.whileAnimation();
-                    if (currentSegmentPattern.isProgressCompleted)
+                    currentSegment.whileAnimation();
+                    if (currentSegment.isProgressCompleted)
                     {
                         hasSegmentChanged = true;
-                        currentSegmentPattern.onEndAnimation();
-                        currentSegmentPattern.onDone();
+                        currentSegment.onEndAnimation();
+                        currentSegment.onDone();
                         segmentIndex++;
                     }
                     else
                     {
-                        currentSegmentPattern.movedDistance += animationSpeed * Time.fixedDeltaTime;
+                        currentSegment.movedDistance += animationSpeed * Time.fixedDeltaTime;
                     }
                     break;
                 case TracingState.united:
                     unitedTime += Time.fixedDeltaTime;
 
-                    foreach (var x in segmentPatterns)
+                    foreach (var x in segments)
                     {
                         x.whileUnited(unitedTime);
                         if (unitedTime > x.unitedTime)
                         {
                             hasSegmentChanged = true;
-                            foreach (var y in segmentPatterns)
+                            foreach (var y in segments)
                             {
                                 y.onEndUnited();
                                 state = TracingState.done;
@@ -209,7 +211,7 @@ namespace KidLetters.Tracing
                     break;
             }
 
-            if (segmentIndex >= segmentPatterns.Count)
+            if (segmentIndex >= segments.Count)
             {
                 segmentIndex = 0;
                 state++;

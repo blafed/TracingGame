@@ -246,8 +246,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: -0.40492162, y: -0.7906039, z: 0}
-    m_Extent: {x: 0.45928034, y: 2.790604, z: 0}
+    m_Center: {x: -0.4079416, y: -0.7901566, z: 0}
+    m_Extent: {x: 0.4599416, y: 2.7901566, z: 0}
 --- !u!114 &8833489775866497657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,9 +274,9 @@ MonoBehaviour:
       corner: 1
       m_CornerMode: 1
     - position: {x: 0, y: -1.68, z: 0}
-      leftTangent: {x: 0, y: 0, z: 0}
-      rightTangent: {x: 0.025973823, y: -1.3027054, z: 0}
-      mode: 2
+      leftTangent: {x: 0, y: 0.80306965, z: 0}
+      rightTangent: {x: 0, y: -1.330058, z: 0}
+      mode: 1
       height: 0.1
       bevelCutoff: 0
       bevelSize: 0
@@ -284,7 +284,7 @@ MonoBehaviour:
       corner: 1
       m_CornerMode: 1
     - position: {x: -0.8537693, y: -3.5302653, z: 0}
-      leftTangent: {x: 0.7008333, y: 0.14352703, z: 0}
+      leftTangent: {x: 0.7376952, y: 0.20803547, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 0.1

@@ -23,18 +23,26 @@ namespace KidLetters.Tracing
         {
             button.onClick.AddListener(() =>
             {
-                if (isDone)
-                    return;
                 transform.DOPunchScale(.2f.vector(), .2f);
                 TracingPhase.o.playStage(index, this);
             });
         }
 
 
-        public void init(int index)
+        public void prepare(int index)
         {
             this.index = index;
+            setAutoSprite();
+            isDone = false;
         }
+
+
+        // public void init(int index)
+        // {
+        //     this.index = index;
+        //     setAutoSprite();
+        //     isDone = false;
+        // }
 
 
         public void punch()

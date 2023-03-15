@@ -16,6 +16,9 @@ namespace KidLetters
         public Vector2 stageButtonPosition => stageButton.transform.position;
         public StageButton stageButton { get; private set; }
 
+
+        public event System.Action onFocused;
+
         //events
         public event System.Action<TracingStage> onStageChanged;
 
@@ -28,6 +31,7 @@ namespace KidLetters
         //overrides
         protected override void onEnter()
         {
+            stageButton = null;
             doneStage = 0;
             List<PatternCode> patternCodes = Enumerable.Range(1, (int)PatternCode.sketch - 1).Select(x => (PatternCode)x).ToList();
 
@@ -53,8 +57,8 @@ namespace KidLetters
         }
         protected override void onExit()
         {
-            StageButtonContainer.o.hide();
-            MinorStarContainer.o.hide();
+            // StageButtonContainer.o.hide();
+            // MinorStarContainer.o.hide();
             if (oldStage)
             {
                 Destroy(oldStage.gameObject);
@@ -69,9 +73,8 @@ namespace KidLetters
         IEnumerator cycle()
         {
             yield return Tracing.FocusOnLetter.o.play();
+            onFocused?.Invoke();
 
-            Tracing.MinorStarContainer.o.show();
-            StageButtonContainer.o.show();
 
 
             yield return new WaitUntil(() => doneStage >= tracingStages.Length);

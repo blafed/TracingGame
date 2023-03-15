@@ -35,10 +35,8 @@ namespace KidLetters.Tracing
         }
 
 
-        public void refresh()
-        {
 
-        }
+
 
     }
 }

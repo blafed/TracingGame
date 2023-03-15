@@ -41,7 +41,7 @@ namespace KidLetters.Tracing
         public void setup(TracingStage stage)
         {
             this.stage = stage;
-            stage.onSegmentPatternChanged += onSegmentPatternChange;
+            stage.onSegmentChanged += onSegmentPatternChange;
         }
 
         void incorrectInput()
@@ -62,7 +62,7 @@ namespace KidLetters.Tracing
             if (stage.state == TracingState.tracing && !stage.hasSegmentChanged)
             {
 
-                var pattern = stage.currentSegmentPattern;
+                var pattern = stage.currentSegment;
                 if (im.isEnter)
                 {
                     var currentPoint = pattern.getPoint(totalAddedDistance);

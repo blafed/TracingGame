@@ -146,7 +146,7 @@ public class Pattern : MonoBehaviour
     /// <summary>
     /// path absolute length
     /// </summary>
-    protected float pathLength => segment.totalLength;
+    public float pathLength => segment.totalLength;
 
 
     /// <summary>

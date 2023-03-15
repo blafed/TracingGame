@@ -19,6 +19,7 @@ public class LetterSegment : MonoBehaviour
     public float totalLength { get; private set; }
 
     public bool isDot;
+    public float dotRadius = .4f;
 
 
     Letter _letter;
@@ -53,5 +54,15 @@ public class LetterSegment : MonoBehaviour
 
         path.center = default;
 
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        if (isDot)
+        {
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, dotRadius);
+        }
     }
 }

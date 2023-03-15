@@ -5,6 +5,7 @@ namespace KidLetters
 {
     public class PronouncingPhase : Phase<PronouncingPhase>
     {
+        public bool skip = false;
         public int letterIndexInWord => wordInfo.indexOfLetter(letterId);
         public int letterId => this.letter.letterId;
         public Letter letter { get; private set; }
@@ -52,6 +53,13 @@ namespace KidLetters
         }
         IEnumerator cycle()
         {
+            if (skip)
+            {
+                TracingPhase.o.setArgs(letter, wordInfo);
+                Phase.change(TracingPhase.o);
+                yield break;
+            }
+
             if (!isAfterTracing)
                 yield return Pronouncing.FocusOnLetter.o.play();
             yield return Pronouncing.WordView.o.play();
@@ -61,6 +69,7 @@ namespace KidLetters
             {
                 yield return Pronouncing.LeadPronouncingToHome.o.play();
                 HomePhase.o.setArgs(letter);
+                Phase.change(HomePhase.o);
             }
             else
             {

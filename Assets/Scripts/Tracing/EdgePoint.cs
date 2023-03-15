@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TPhase = KidLetters.TracingPhase;
 public class EdgePoint : MonoBehaviour
 {
 
@@ -38,9 +39,9 @@ public class EdgePoint : MonoBehaviour
 
     private void Start()
     {
-        if (TracingManager.o.spawnEdgePointsFrom.HasValue)
+        if (TPhase.o.stageButton)
         {
-            spawnFromPoint(TracingManager.o.spawnEdgePointsFrom.Value);
+            spawnFromPoint(TPhase.o.stageButtonPosition);
         }
         else
         {

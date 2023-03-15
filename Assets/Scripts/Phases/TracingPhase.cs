@@ -29,7 +29,8 @@ public class TracingPhase : Phase<TracingPhase>
 
 
 
-    public Letter argLetter { get; private set; }
+    public Letter letter { get; private set; }
+    public WordInfo wordInfo { get; private set; }
 
     List<PlayTracingOptions> playTracingOptions = new List<PlayTracingOptions>(){
         new PlayTracingOptions(PatternCode.sketch, true),
@@ -111,7 +112,7 @@ public class TracingPhase : Phase<TracingPhase>
     }
     public void playCustomPattern(PatternCode pattern, Vector2? spawnEdgePointsFrom = null)
     {
-        TracingManager.o.startTracing(argLetter);
+        TracingManager.o.startTracing(letter);
         TracingManager.o.setTracingPattern(pattern);
         TracingManager.o.spawnEdgePointsFrom = spawnEdgePointsFrom;
 
@@ -135,9 +136,10 @@ public class TracingPhase : Phase<TracingPhase>
     }
 
 
-    public void setArgs(Letter letter)
+    public void setArgs(Letter letter, WordInfo wordInfo)
     {
-        argLetter = letter;
+        this.letter = letter;
+        this.wordInfo = wordInfo;
     }
 
     [System.Obsolete]
@@ -152,7 +154,7 @@ public class TracingPhase : Phase<TracingPhase>
 
         for (int i = 0; i < 2; i++)
         {
-            var patternCode = argLetter.getCustomPattern(i);
+            var patternCode = letter.getCustomPattern(i);
             if (patternCode == 0)
             {
                 patternCode = availablePatterns.getRandom();

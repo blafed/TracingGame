@@ -36,10 +36,10 @@ namespace KidLetters.Pronouncing
         public IEnumerator play()
         {
             Home.LetterContainer.o.setActiveLetters(false, x => x == PronouncingPhase.o.letter);
-            CameraControl.o.zoom(cameraZoom, duration, zoomEase);
-            CameraControl.o.move(PronouncingPhase.o.letter.transform.position, duration, moveEase);
-            PronouncingPhase.o.playLetterAudio(PronouncingPhase.o.letter.letterId);
             PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
+            yield return GeneralAudioPlayer.o.playWaitFinish(LetterList.o.getAudioClip(PronouncingPhase.o.letterId));
+            CameraControl.o.move(PronouncingPhase.o.letter.transform.position, duration, moveEase);
+            CameraControl.o.zoom(cameraZoom, duration, zoomEase);
             yield return new WaitForSeconds(duration);
         }
 

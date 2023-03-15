@@ -3,9 +3,11 @@ using UnityEngine;
 
 public abstract class Phase : MonoBehaviour
 {
-
+    protected static List<Phase> allPhases = new List<Phase>();
     public static Phase current { get; private set; }
     protected static Phase last { get; private set; }
+
+
     public event System.Action onEnterEvent;
     public event System.Action onExitEvent;
 
@@ -66,6 +68,11 @@ public abstract class Phase : MonoBehaviour
     }
 
 
+    public static T findPhase<T>() where T : Phase
+    {
+        return allPhases.Find(x => x is T) as T;
+    }
+
 
 }
 
@@ -77,5 +84,6 @@ public abstract class Phase<T> : Phase where T : Phase<T>
     private void Awake()
     {
         o = (T)this;
+        allPhases.Add(this);
     }
 }
