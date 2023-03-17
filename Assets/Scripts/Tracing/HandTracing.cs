@@ -6,6 +6,7 @@ public class HandTracing : Singleton<HandTracing>
     public float distanceThreshold = .5f;
     public float addingSpeed = 5;
     public float maxSpeed = 4;
+    //threshold time
 
 
     [SerializeField] float followLerpFactor = 5;
@@ -31,6 +32,8 @@ public class HandTracing : Singleton<HandTracing>
     float totalAddedDistance;
     float addedDistanceAt;
 
+    bool isDotPlotted;
+
     public void clean()
     {
         addedDistance = addedDistanceAt = totalAddedDistance = 0;
@@ -46,6 +49,7 @@ public class HandTracing : Singleton<HandTracing>
     {
         if (pattern)
             totalAddedDistance = pattern.movedDistance;
+        isDotPlotted = false;
     }
     private void Update()
     {
@@ -55,6 +59,24 @@ public class HandTracing : Singleton<HandTracing>
         {
 
             var pattern = TracingManager.o.currentSegmentPattern;
+            if (pattern.isDot)
+            {
+                var boundingOnDot = new BoundingSphere(pattern.transform.position, pattern.dotRadius);
+
+                if (im.isEnter && boundingOnDot.contains(im.point))
+                {
+                    isDotPlotted = true;
+                }
+
+
+                if (isDotPlotted)
+                {
+                    pattern.movedDistance += maxSpeed * Time.deltaTime;
+                }
+
+                return;
+            }
+            //if is not dot
             if (im.isEnter)
             {
                 var currentPoint = pattern.getPoint(totalAddedDistance);
@@ -78,9 +100,9 @@ public class HandTracing : Singleton<HandTracing>
                     totalAddedDistance += diff * Time.deltaTime;
                 }
 
+
+
             }
-
-
             // pattern.movedDistance = Mathf.MoveTowards(pattern.movedDistance, totalAddedDistance, Time.deltaTime * maxSpeed);
             pattern.movedDistance = Mathf.Lerp(pattern.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
 

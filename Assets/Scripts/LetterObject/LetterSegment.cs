@@ -11,7 +11,7 @@ public class LetterSegment : MonoBehaviour
         get => transform.position;
         set => transform.position = value;
     }
-    public Letter letter => this.getComponentCachedInParent(ref _letter);
+    public Letter letter => this.cachedComponentInParent(ref _letter);
     public Path path { get; private set; }
 
 

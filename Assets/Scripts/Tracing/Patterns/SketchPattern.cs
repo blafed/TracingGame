@@ -7,8 +7,11 @@ public class SketchPattern : SplinePattern
     public override void onCreated()
     {
         base.onCreated();
-        startEdgePoint.gameObject.SetActive(false);
-        endEdgePoint.gameObject.SetActive(false);
+
+        if (startEdgePoint)
+            startEdgePoint.gameObject.SetActive(false);
+        if (endEdgePoint)
+            endEdgePoint.gameObject.SetActive(false);
     }
 
     public override void whileTracing()

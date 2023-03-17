@@ -7,11 +7,14 @@ namespace KidLetters
     using Tracing;
     public class TracingPhase : Phase<TracingPhase>
     {
+
+        [SerializeField]
+        TracingStageInfo[] overrideStages = new TracingStageInfo[0];
         //properties
         public Letter letter { get; private set; }
         public WordInfo wordInfo { get; private set; }
         public int doneStage { get; private set; } = -1;
-        public TracingStageInfo[] tracingStages { get; private set; } = new TracingStageInfo[3];
+        public TracingStageInfo[] tracingStages { get; private set; }
         public TracingStage currentStage { get; private set; }
         public Vector2 stageButtonPosition => stageButton.transform.position;
         public StageButton stageButton { get; private set; }
@@ -34,6 +37,11 @@ namespace KidLetters
             stageButton = null;
             doneStage = 0;
             List<PatternCode> patternCodes = Enumerable.Range(1, (int)PatternCode.sketch - 1).Select(x => (PatternCode)x).ToList();
+
+            if (overrideStages.Length > 0)
+                tracingStages = overrideStages;
+            else
+                tracingStages = new TracingStageInfo[3];
 
             for (int i = 0; i < tracingStages.Length; i++)
             {

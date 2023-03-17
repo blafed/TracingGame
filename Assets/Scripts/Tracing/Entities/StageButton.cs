@@ -10,7 +10,7 @@ namespace KidLetters.Tracing
         [SerializeField] Sprite initialButtonSprite;
         public int index { get; set; }
         Button _button;
-        public Button button => this.getComponentCached(ref _button);
+        public Button button => this.cachedComponent(ref _button);
 
 
         public bool isDone { get; private set; }

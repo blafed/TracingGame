@@ -561,6 +561,7 @@ MonoBehaviour:
   splineHeight: 0.4
   shapeController: {fileID: 6226746705933901862}
   followObject: {fileID: 0}
+  dotSplineScale: 2
 --- !u!1 &7916280533875459109
 GameObject:
   m_ObjectHideFlags: 0

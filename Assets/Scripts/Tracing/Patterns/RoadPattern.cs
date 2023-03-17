@@ -9,6 +9,13 @@ public class RoadPattern : SplinePattern
         followObject.gameObject.SetActive(false);
 
     }
+    // public override void onStartTracing()
+    // {
+    //     base.onStartTracing();
+    //     if (isDot)
+    //     {
+    //     }
+    // }
     public override void whileTracing()
     {
         base.whileTracing();
@@ -25,6 +32,12 @@ public class RoadPattern : SplinePattern
     public override void onStartAnimation()
     {
         base.onStartAnimation();
+        if (isDot)
+        {
+            followObject.gameObject.SetActive(false);
+            progress = 1;
+            return;
+        }
         followObject.gameObject.SetActive(true);
         followObject.localScale = Vector3.zero;
         followObject.DOScale(1, .25f);

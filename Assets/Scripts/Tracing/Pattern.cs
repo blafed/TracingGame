@@ -25,15 +25,16 @@ public class Pattern : MonoBehaviour
     public PatternCode code;
 
     EdgePoint[] edgePoints = new EdgePoint[2];
-    public EdgePoint startEdgePoint => edgePoints[0];
-    public EdgePoint endEdgePoint => edgePoints[1];
+    public EdgePoint startEdgePoint => edgePoints.getOrDefault(0);
+    public EdgePoint endEdgePoint => edgePoints.getOrDefault(1);
     public LetterSegment segment { get; private set; }
 
 
     public virtual float waitBeforeEnableTracing => 1;
     public virtual float unitedTime => 0;
 
-
+    public bool isDot => segment.isDot;
+    public float dotRadius => segment.dotRadius;
     public bool isProgressCompleted => progress >= 1;
     protected virtual bool createEdgePointsByDefault => true;
 
@@ -43,6 +44,11 @@ public class Pattern : MonoBehaviour
 
     public virtual void onCreated()
     {
+        if (isDot)
+        {
+            edgePoints = new EdgePoint[0];
+            return;
+        }
         if (createEdgePointsByDefault)
             createEdgePoints();
     }
@@ -51,6 +57,7 @@ public class Pattern : MonoBehaviour
         foreach (var x in edgePoints)
             x.setPlaying();
     }
+
     public virtual void whileTracing()
     {
         foreach (var x in edgePoints)
@@ -146,7 +153,7 @@ public class Pattern : MonoBehaviour
     /// <summary>
     /// path absolute length
     /// </summary>
-    public float pathLength => segment.totalLength;
+    public float pathLength => isDot ? dotRadius * 2 : segment.totalLength;
 
 
     /// <summary>
@@ -192,7 +199,6 @@ public class Pattern : MonoBehaviour
             d = a - b;
         return d.normalized;
     }
-
 
 
     protected void createEdgePoints(System.Action<EdgePoint> callback = null)

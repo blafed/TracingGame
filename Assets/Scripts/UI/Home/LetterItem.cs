@@ -8,9 +8,9 @@ public class LetterItem : MonoBehaviour
     [SerializeField] TextMeshProUGUI letterText;
     [SerializeField] FlowList<TextMeshProUGUI> wordTexts;
     Button _button;
-    public Button button => this.getComponentCached(ref _button);
+    public Button button => this.cachedComponent(ref _button);
     LayoutElement _element;
-    LayoutElement layoutElement => this.getComponentCached(ref _element);
+    LayoutElement layoutElement => this.cachedComponent(ref _element);
     public int letterId { get; private set; }
 
     public void init(int letter)

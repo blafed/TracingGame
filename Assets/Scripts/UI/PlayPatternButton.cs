@@ -8,7 +8,7 @@ public class PlayPatternButton : MonoBehaviour
     [SerializeField] Sprite initialButtonSprite;
     public int index;
     Button _button;
-    public Button button => this.getComponentCached(ref _button);
+    public Button button => this.cachedComponent(ref _button);
 
     private void Awake()
     {

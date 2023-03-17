@@ -41,7 +41,7 @@ namespace KidLetters.Tracing
                 hide();
                 stage.onSegmentChanged += (seg) =>
                 {
-                    if (!stage.info.autoTracing)
+                    if (!stage.info.autoTracing && !seg.isDot)
                         showOnPattern(seg);
                 };
             };

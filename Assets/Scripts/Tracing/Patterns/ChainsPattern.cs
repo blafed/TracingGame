@@ -16,7 +16,7 @@ public class ChainsPattern : SplinePattern
     bool isHookAnimationStarted;
 
     public override float unitedTime => _unitedTime;
-    protected override float addedLength => _hookLength;
+    protected override float addedLength => isDot ? 0 : _hookLength;
 
 
 
@@ -29,6 +29,11 @@ public class ChainsPattern : SplinePattern
     public override void onStartTracing()
     {
         base.onStartTracing();
+
+        if (isDot)
+        {
+            followObject.gameObject.SetActive(false);
+        }
     }
     public override void onEndTracing()
     {

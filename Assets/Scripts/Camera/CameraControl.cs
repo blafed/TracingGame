@@ -14,7 +14,7 @@ public class CameraControl : MonoBehaviour
 
     Camera _camera;
 
-    public new Camera camera => this.getComponentCachedInChild(ref _camera);
+    public new Camera camera => this.cachedComponentInChild(ref _camera);
 
     private void Awake()
     {

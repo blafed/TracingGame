@@ -35,6 +35,7 @@ namespace KidLetters.Tracing
         float addedDistance;
         float totalAddedDistance;
         float addedDistanceAt;
+        bool isDotPlotted;
 
 
 
@@ -63,6 +64,25 @@ namespace KidLetters.Tracing
             {
 
                 var pattern = stage.currentSegment;
+
+                if (pattern.isDot)
+                {
+                    var boundingOnDot = new BoundingSphere(pattern.transform.position, pattern.dotRadius);
+
+                    if (im.isEnter && boundingOnDot.contains(im.point))
+                    {
+                        isDotPlotted = true;
+                    }
+
+
+                    if (isDotPlotted)
+                    {
+                        pattern.movedDistance += maxSpeed * Time.deltaTime;
+                    }
+
+                    return;
+                }
+
                 if (im.isEnter)
                 {
                     var currentPoint = pattern.getPoint(totalAddedDistance);

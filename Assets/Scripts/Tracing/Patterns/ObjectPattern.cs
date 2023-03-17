@@ -8,6 +8,8 @@ public class ObjectPattern : Pattern
     [SerializeField] protected float spacing = .25f;
     [SerializeField] protected GameObject objectSource;
     [SerializeField] protected Color[] colors;
+    [SerializeField]
+    float dotScale = 1;
 
     protected List<CreatedObject> objects = new();
 
@@ -16,7 +18,7 @@ public class ObjectPattern : Pattern
 
 
     [System.Serializable]
-    protected class CreatedObject
+    public class CreatedObject
     {
         public GameObject gameObject;
         public Transform transform => gameObject.transform;
@@ -26,7 +28,7 @@ public class ObjectPattern : Pattern
     }
 
 
-    protected virtual CreatedObject createObject()
+    public virtual CreatedObject createObject()
     {
         var s = Instantiate(objectSource).GetComponent<SpriteRenderer>();
         s.gameObject.SetActive(true);
@@ -46,6 +48,19 @@ public class ObjectPattern : Pattern
         return c;
     }
 
+    public override void onStartTracing()
+    {
+        base.onStartTracing();
+
+
+        if (isDot)
+        {
+            var obj = createObject();
+            obj.transform.position = transform.position;
+            obj.transform.localScale = dotScale.vector();
+            obj.transform.right = Vector3.up;
+        }
+    }
 
     public override void onStartAnimation()
     {
@@ -55,6 +70,12 @@ public class ObjectPattern : Pattern
     public override void whileTracing()
     {
         base.whileTracing();
+
+        if (isDot)
+        {
+            objects[0].transform.localScale = Vector3.Lerp(Vector3.zero, (dotRadius * 2).vector(), EaseType2.QuadOut.evaluate(progress));
+            return;
+        }
         if ((movedDistance / spacing).floor() > objects.Count)
         {
             var obj = createObject();
@@ -73,6 +94,8 @@ public class ObjectPattern : Pattern
     public override void whileUnited(float time)
     {
         base.whileUnited(time);
+        if (isDot)
+            return;
         moveAllObjectsAlong(unitedSpeed * time);
     }
 

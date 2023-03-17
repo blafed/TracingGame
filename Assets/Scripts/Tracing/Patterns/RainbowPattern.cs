@@ -31,6 +31,9 @@ public class RainbowPattern : SplinePattern
     public override void whileAnimation()
     {
         base.whileAnimation();
+
+
+
         moveObjectAlong(followObject, movedDistance);
         followObject.transform.localEulerAngles = Vector3.zero;
         shineTimer -= Time.fixedDeltaTime;
@@ -57,6 +60,11 @@ public class RainbowPattern : SplinePattern
     public override void onStartAnimation()
     {
         base.onStartAnimation();
+        if (isDot)
+        {
+            progress = 1;
+            return;
+        }
         followObject.gameObject.SetActive(true);
         followObject.localScale = Vector3.zero;
         followObject.DOScale(1, .25f);
