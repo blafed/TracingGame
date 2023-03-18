@@ -13,7 +13,7 @@ namespace KidLetters
         //properties
         public Letter letter { get; private set; }
         public WordInfo wordInfo { get; private set; }
-        public int doneStage { get; private set; } = -1;
+        public int doneStage { get; private set; } = 0;
         public TracingStageInfo[] tracingStages { get; private set; }
         public TracingStage currentStage { get; private set; }
         public Vector2 stageButtonPosition => stageButton.transform.position;
@@ -108,9 +108,7 @@ namespace KidLetters
             currentStage.transform.parent = transform;
             oldStage = currentStage;
             //call event
-            onStageChanged?.Invoke(currentStage);
 
-            //registering the removing event after calling onStageChanged because, so let the other entities register their events in an order before removing the reference of currentStage
             currentStage.onDone += () =>
                 {
                     if (index >= doneStage)
@@ -119,6 +117,17 @@ namespace KidLetters
                         currentStage = null;
                     }
                 };
+
+            onStageChanged?.Invoke(currentStage);
+            //registering the removing event after calling onStageChanged because, so let the other entities register their events in an order before removing the reference of currentStage
+            currentStage.onDone += () =>
+                {
+                    if (index >= doneStage)
+                    {
+                        currentStage = null;
+                    }
+                };
+
         }
         public bool canPlayStage(int index)
         {

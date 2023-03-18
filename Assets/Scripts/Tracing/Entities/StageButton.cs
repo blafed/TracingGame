@@ -49,34 +49,36 @@ namespace KidLetters.Tracing
         {
             TracingPhase.o.stageButton.transform.DOPunchScale(.2f.vector(), .2f);
         }
+        [System.Obsolete]
         public void setDone()
         {
             punch();
             button.image.sprite = doneButtonSprite;
             isDone = true;
         }
+        [System.Obsolete]
         public void setAutoSprite()
         {
             button.image.sprite = autoButtonSprite;
         }
+        [System.Obsolete]
         public void setNormalSprite()
         {
             button.image.sprite = initialButtonSprite;
         }
 
-        [System.Obsolete]
         public void refresh()
         {
 
 
             // var isCurrent = TracingPhase.o.playingDoneIndex == index;
-            var isEnabled = TracingPhase.o.doneStage >= index - 1;
-            var isDone = TracingPhase.o.doneStage >= index;
+            var isEnabled = TracingPhase.o.doneStage >= index;
+            var isDone = TracingPhase.o.doneStage >= index + 1;
             gameObject.SetActive(TracingPhase.o.tracingStages.Length > index);
             var options = TracingPhase.o.tracingStages[index];
             var isAuto = options.autoTracing;
             button.interactable = isEnabled;
-            button.image.sprite = isDone ? doneButtonSprite : isAuto ? autoButtonSprite : initialButtonSprite;
+            button.image.sprite = !isEnabled ? initialButtonSprite : isDone ? doneButtonSprite : autoButtonSprite;
 
             if (lastEnabled != isEnabled)
             {

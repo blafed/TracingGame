@@ -26,6 +26,10 @@ namespace KidLetters.Tracing
         {
             show();
         }
+        protected override void onPhaseEnter()
+        {
+            refresh();
+        }
         protected override void onPhaseExit()
         {
             hide();
@@ -34,10 +38,12 @@ namespace KidLetters.Tracing
         void onStageChanged(TracingStage stage)
         {
             stage.onDone += refresh;
+            refresh();
         }
         void refresh()
         {
-            // playPatternButtons.iterate(playPatternButtons.count, x => x.component.refresh());
+            print("refreshing " + TracingPhase.o.doneStage);
+            stageButtons.iterate(stageButtons.count, x => x.component.refresh());
         }
 
         void show()

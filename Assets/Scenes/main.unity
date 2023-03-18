@@ -624,7 +624,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea850d4822c463c45ad089f09f8f39e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationDuration: 1
   effect: {fileID: 2087428499}
 --- !u!4 &372467181
 Transform:
@@ -3141,7 +3140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8930192752294569418, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}
       propertyPath: skip
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}

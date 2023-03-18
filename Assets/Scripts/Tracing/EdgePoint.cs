@@ -16,6 +16,8 @@ public class EdgePoint : MonoBehaviour
     }
     public Pattern pattern { get; set; }
 
+    public float diameter = .575f;
+    [Space]
     [SerializeField] float rotationPerDistance = 30;
     [SerializeField] float rotationDamping = 3f;
     [SerializeField] float spawnAnimationDuration = .5f;
