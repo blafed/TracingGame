@@ -38,6 +38,10 @@ public class WordList : ScriptableObject
             return wordsWithLetter.getRandom();
         return wordsWithArt.getRandom();
     }
+    public WordInfo findWord(string name)
+    {
+        return wordInfos.Find(x => x.word == name);
+    }
 }
 
 [System.Serializable]
