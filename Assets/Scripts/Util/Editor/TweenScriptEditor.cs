@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine.UIElements;
 using UnityEditor.UIElements;
 [CanEditMultipleObjects]
-[CustomEditor(typeof(TweenScript))]
+// [CustomEditor(typeof(TweenScript))]
 public class TweenScriptEditor : Editor
 {
 

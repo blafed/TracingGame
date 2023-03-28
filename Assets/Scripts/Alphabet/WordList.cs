@@ -19,6 +19,8 @@ public class WordList : ScriptableObject
     };
 
 
+    public IReadOnlyList<WordInfo> wordList => wordInfos;
+
 
 
 

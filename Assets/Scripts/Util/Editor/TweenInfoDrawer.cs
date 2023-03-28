@@ -7,7 +7,6 @@ public class TweenInfoDrawer : PropertyDrawer
 {
     public override VisualElement CreatePropertyGUI(SerializedProperty property)
     {
-        Debug.Log("dadds");
         var container = new VisualElement();
 
         var type_prop = property.FindPropertyRelative("type");
@@ -15,13 +14,20 @@ public class TweenInfoDrawer : PropertyDrawer
         var type = (TweenInfo.Type)type_field.value;
         container.Add(type_field);
 
+
+
+
         switch (type)
         {
             case TweenInfo.Type.tween:
+                container.Add(new PropertyField(property.FindPropertyRelative(nameof(TweenInfo.loopType))));
                 container.Add(new PropertyField(property.FindPropertyRelative(nameof(TweenInfo.loops))));
                 break;
             case TweenInfo.Type.invokeScripts:
                 container.Add(new PropertyField(property.FindPropertyRelative(nameof(TweenInfo.startScripts))));
+                break;
+            case TweenInfo.Type.delay:
+                container.Add(new PropertyField(property.FindPropertyRelative(nameof(TweenInfo.delay))));
                 break;
         }
 

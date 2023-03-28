@@ -74,9 +74,9 @@ namespace KidLetters.Pronouncing
 
 
             var animation = createWordPictureAnimation();
-            container.localScale = Vector3.zero;
-            container.DOScale(1, startScaleDuration);
-            yield return new WaitForSeconds(startScaleDuration);
+            // container.localScale = Vector3.zero;
+            // container.DOScale(1, startScaleDuration);
+            // yield return new WaitForSeconds(startScaleDuration);
 
             var m = animation && animation.overrideMeta ? animation.meta : defaultPlayingMeta;
             StartCoroutine(WordView.o.setHighlightAll(true));
@@ -87,7 +87,7 @@ namespace KidLetters.Pronouncing
             yield return new WaitForSeconds(m.audioPlayDelay);
 
             GeneralAudioPlayer.o.play(wordInfo.clip);
-            yield return new WaitForSeconds(m.duration - m.audioPlayDelay);
+            yield return new WaitUntil(() => animation.isTerminated);
             yield return new WaitForSeconds(endPaddingTime);
             yield return container.DOScale(0, exitTime).WaitForCompletion();
 
