@@ -36,17 +36,32 @@ namespace KidLetters.Pronouncing
             StopAllCoroutines();
         }
 
-        WordPictureAnimation createWordPictureAnimation()
+        GameObject _createdWordPictureGameObject;
+        WordPictureAnimation createWordPictureAnimation(WordInfo wordInfo)
         {
-            var wordInfo = PronouncingPhase.o.wordInfo;
             if (!wordInfo.prefab)
                 return null;
             var p = wordPicture = Instantiate(wordInfo.prefab);
             p.transform.parent = container;
             p.transform.localScale = Vector3.one;
             p.transform.localPosition = new Vector3();
+            _createdWordPictureGameObject = p;
             var a = p.GetComponent<WordPictureAnimation>();
             return a;
+        }
+        WordPictureAnimation createWordPictureAnimation()
+        {
+            var wordInfo = PronouncingPhase.o.wordInfo;
+            if (!wordInfo.prefab && wordInfo.picture)
+            {
+                var catWord = WordList.o.findWord("cat");
+
+                var catAnimation = createWordPictureAnimation(catWord);
+                var spriteRenderer = _createdWordPictureGameObject.GetComponentInChildren<SpriteRenderer>();
+                spriteRenderer.sprite = wordInfo.picture;
+                return catAnimation;
+            }
+            return createWordPictureAnimation(wordInfo);
         }
         public IEnumerator play()
         {
