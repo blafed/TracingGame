@@ -1,5 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+
+#endif
+
 [CreateAssetMenu(fileName = "LetterList", menuName = "KidLetters/LetterList", order = 0)]
 public class LetterList : ScriptableObject
 {
@@ -18,4 +24,20 @@ public class LetterList : ScriptableObject
             letterId -= LetterUtility.lowerMin;
         return audioClips[letterId];
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("AutoSetup")]
+    void AutoSetup()
+    {
+        Undo.RegisterCompleteObjectUndo(this, "AutoSetup LetterList");
+        audioClips.Clear();
+        for (int i = 0; i < LetterUtility.sizeSet; i++)
+        {
+            var c = LetterUtility.letterToChar(i);
+            var clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/AudioClips/LetterNames/" + c + ".wav");
+            audioClips.Add(clip);
+        }
+
+    }
+#endif
 }

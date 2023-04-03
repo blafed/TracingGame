@@ -16,92 +16,193 @@ MonoBehaviour:
   - word: cat
     prefab: {fileID: 1824133707487253613, guid: 87293c0d5f2a1094da7be3efaa59886f, type: 3}
     picture: {fileID: 21300000, guid: 92556eae618572147890b8f40a776542, type: 3}
-    clip: {fileID: 8300000, guid: d890d560c44dae343821588658f85178, type: 3}
+    clip: {fileID: 8300000, guid: 9012befce205363459ba72805654240c, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: fa359c94e4134784eab53a3dfd83dcea, type: 3}
+    - {fileID: 8300000, guid: 0681789439d3b5d4aba7ff5fe77fb83e, type: 3}
+    - {fileID: 8300000, guid: 89acb9a992bbccd47a357d72b768bb43, type: 3}
   - word: ball
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 2bc2faedb5a41db42b07e82d828ffc89, type: 3}
     clip: {fileID: 0}
+    spellingClips:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
   - word: cake
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: a781412ddb79fee4e90c73112e3c57c4, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 30163ebd280596c4489657ad4ea0b34b, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 65737321a05273d4f8a4a88d6138acf3, type: 3}
+    - {fileID: 8300000, guid: 7535c1498cb347249a500aa19a4a5017, type: 3}
+    - {fileID: 8300000, guid: a84c1d78c7c8b4f4a8fc299110e30243, type: 3}
+    - {fileID: 8300000, guid: 35cfb75729680a34c8b8985ad7b97caf, type: 3}
   - word: dog
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 7f633a895f087bd4fabd466a6e882c8d, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 21655dfcc9e0a8643b4035b8222f2df5, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 6ea5f83f492a99e48a77f8229e97ac1c, type: 3}
+    - {fileID: 8300000, guid: f8658ed21fa476342ad147724015850b, type: 3}
+    - {fileID: 8300000, guid: a0562e9fcdcb8bc489c7b606c0a342cc, type: 3}
   - word: egg
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 247f9c0458e66d345ba7a6342ff400a5, type: 3}
     clip: {fileID: 0}
+    spellingClips:
+    - {fileID: 8300000, guid: 2e6a4199e98376f4ebc887262e22e9c6, type: 3}
+    - {fileID: 8300000, guid: a1f560e7e1f3e6747ad027d2524f3e64, type: 3}
+    - {fileID: 8300000, guid: a1f560e7e1f3e6747ad027d2524f3e64, type: 3}
   - word: fish
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 0860da84a1de41c4ca7f59dc3a59614a, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 4e6a50b49e1381a44a61f9d3a83de197, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 3cb6e3d67d5d55f42a6bcfec7977a02c, type: 3}
+    - {fileID: 8300000, guid: 5fc0728f058d75043ae014fb262a1311, type: 3}
+    - {fileID: 8300000, guid: f763c2bc2b3a55149b7086d1817ff96b, type: 3}
   - word: girl
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 003498ea6db3e3d40b97f306660bbefb, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 49a49fed140d9364a827716b0ff0c198, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 3720f378ae476ae43a393e53c0d515c8, type: 3}
+    - {fileID: 0}
+    - {fileID: 8300000, guid: 19b96362d247c7d4db66fbc9a166a4dc, type: 3}
+    - {fileID: 8300000, guid: 89d3227bac564234aa8223c4d99d59fa, type: 3}
   - word: hat
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 92d5f021a22a0254c95b14ae076c6764, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 3c11fb370e6ac6b4c905773b4b875fb1, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: e1286e868a70daf43b7af941b5d4379b, type: 3}
+    - {fileID: 8300000, guid: 63d86c713db79d4469cebc1251273b8f, type: 3}
+    - {fileID: 8300000, guid: e04df260116bc614ebb5318475b2b5dd, type: 3}
   - word: pig
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: c892db8d18f53ec45a59d54109b42aa8, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 65f9cfc4a1c8dff42bc882addb1f395e, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 508e399658ffd7e4bad3d06078559692, type: 3}
+    - {fileID: 8300000, guid: 3de11bab9ff860e42b6658faf14db1ff, type: 3}
+    - {fileID: 8300000, guid: 23b4e8e1ceadfdf4da9b65c5a2fcf4f7, type: 3}
   - word: jump
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 6694b2f98bfab334cb13b18bb0bb7330, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 2ea7519d0ddf2ba46a89e25514da0950, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 870637a132d717440a9fe5286ef4f1be, type: 3}
+    - {fileID: 8300000, guid: efaa7b913c61baa47b4201a4212d0b85, type: 3}
+    - {fileID: 8300000, guid: 27f4bda45f459954f9018958cf208a7a, type: 3}
+    - {fileID: 8300000, guid: 2154d16e739bca04c886bb0e472f3a4f, type: 3}
   - word: kick
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: d123e2ff86c403c47ba2008401bb9d7b, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 4d92857065bdafa498629c2238ffbd5d, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: d9f1ed058b432aa4a89e3bd49d4d41d5, type: 3}
+    - {fileID: 8300000, guid: 1dccf63666401fd45ac19250d9cbffb7, type: 3}
+    - {fileID: 0}
   - word: lick
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: f37be46bb985f204c951c01a598e3a1e, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: bd2f56c1c22cc6d4cbc7dd44e66bb9df, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: f7b1e6c489264f9458e6a29774019b55, type: 3}
+    - {fileID: 8300000, guid: 06ae54a8db12cbf4d92b94bc07fbd61b, type: 3}
+    - {fileID: 0}
   - word: moon
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 70dd8db853527184da00277d5b3ded57, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 3c37bf9100e769b43a51ee36cce29623, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 8365f6dfb7eb9b845a488410cc513f97, type: 3}
+    - {fileID: 8300000, guid: 9489b5cd0313a2b449a3a4c9529d7d44, type: 3}
+    - {fileID: 8300000, guid: 9489b5cd0313a2b449a3a4c9529d7d44, type: 3}
+    - {fileID: 8300000, guid: fee93fd3eb13fea458e8cc3ecd5293bf, type: 3}
   - word: nose
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: e92045ee4f8c75f4997ce4ae672332c2, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 31cef0120d4eb404ea123a1e1dcea463, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 98b47f3bb0205024bbabb31aabfb9ebf, type: 3}
+    - {fileID: 8300000, guid: 85cff5d45f4c9744298437d1f364a6c0, type: 3}
+    - {fileID: 8300000, guid: 51851e1df4a832f498ab1e99fb651896, type: 3}
+    - {fileID: 8300000, guid: fd43fb51f570f6d43a3fe67ebb3c2b35, type: 3}
   - word: fox
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 0dea2e42d636a49498ce74b1dd3e3bd2, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: d3ccf5ea798f77f4ca5e67a578f86fcb, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: e44796af3f9bbbf40beb49a6d3dcd32f, type: 3}
+    - {fileID: 8300000, guid: c056eff83e189784398cce7a1bfb8138, type: 3}
+    - {fileID: 8300000, guid: 3f48d103b5cf401498787423a847218c, type: 3}
   - word: run
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: c15f4d5785d102346916e1b3aadc9852, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: cfda3cd26f88f76439957c4a339d4864, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: ffb2f80874f6c2648857b985c707771f, type: 3}
+    - {fileID: 8300000, guid: 2b0a5a7c1eb2cb0499092ab7cd98d231, type: 3}
+    - {fileID: 8300000, guid: ca0b5f4a77110ff4e9b4372e4248f735, type: 3}
   - word: sun
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 968f48fc841033343a9aac85c09c14b7, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: f3e7f5afe368e8f45b6a20ffd99d14b0, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 36cb964be707e4741882dda2d950969a, type: 3}
+    - {fileID: 8300000, guid: 231f7e127f13c8041bb11cf8e57377d9, type: 3}
+    - {fileID: 8300000, guid: 963adb634c3d3264aa63502459add5e4, type: 3}
   - word: time
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: c391369d4954ec74b9eabdcd73998205, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 2bae68246b8d76d4ca681982c1700208, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: ca7ce2b8a90c77c4387bc41232bb8739, type: 3}
+    - {fileID: 8300000, guid: dc4bda09e49d92e49b0f9e4bf43107f6, type: 3}
+    - {fileID: 8300000, guid: 04ee21bea541b8343abdc004156c7436, type: 3}
+    - {fileID: 8300000, guid: f32e29c672524c348bbc531e2751126a, type: 3}
   - word: bus
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 79243dbb7dcd9564b9ad45d046ca4e20, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 4b0742e14e7be254e9b56573cead3ab2, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: f543c76e21646e14a9a110fd9d3c9611, type: 3}
+    - {fileID: 8300000, guid: 7c260fd017ee1074ea68546c40658c3f, type: 3}
+    - {fileID: 8300000, guid: e604904be61858247881c4fd75f6b648, type: 3}
   - word: love
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 2145258c9be1d584296415ff91843da0, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 1c50d7b3b30fd6543991b758bb289c34, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: c9029b842c457da4a8cd7e7b32155502, type: 3}
+    - {fileID: 8300000, guid: 3e66e602c8987b946acd2fd8977c7720, type: 3}
+    - {fileID: 8300000, guid: 776650980a427ed46b4d518b32423946, type: 3}
+    - {fileID: 8300000, guid: 3faf99dd302697b4abef9e8cb4a8bd0d, type: 3}
   - word: wet
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 30cc66eea2e16aa4b8e42547bb1039c9, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 72e69b1f161f71f4ba1b24eb250037f6, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 246b934d42da94541ba005fa4daa2ebd, type: 3}
+    - {fileID: 8300000, guid: b4c4f55f31ad7e04bb9cc8db43fe9703, type: 3}
+    - {fileID: 8300000, guid: b26bd48037898c648bf6ac81090bdbba, type: 3}
   - word: yes
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 38287b6b9e6c5774e9fd9090b0fba741, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: a040ad78f14bf664f83a40d81133fd33, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 2481734d238097b459098fa9285a72ed, type: 3}
+    - {fileID: 8300000, guid: e68495f55018c3245879c7ba8f6cf671, type: 3}
+    - {fileID: 8300000, guid: 3d19fb8f7b3d5784ebe4a1a74363c27b, type: 3}
   - word: buzz
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: e8ab314024c855242995d30d3fb83c4f, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 05c6baca78bff6f419a0892fd2af112f, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: f1ed3b6c1b89e8343beeb47b56e75068, type: 3}
+    - {fileID: 8300000, guid: 218d468c736a03d479399c6b5422f2de, type: 3}
+    - {fileID: 8300000, guid: 7257a6542ca0ff74394e004d8649a9a4, type: 3}
+    - {fileID: 8300000, guid: 7257a6542ca0ff74394e004d8649a9a4, type: 3}

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 [CreateAssetMenu(fileName = "WordList", menuName = "KidLetters/WordList", order = 0)]
 public class WordList : ScriptableObject
 {
@@ -27,7 +29,7 @@ public class WordList : ScriptableObject
         List<WordInfo> wordsWithLetter = new List<WordInfo>(wordInfos.Count);
         foreach (var x in wordInfos)
         {
-            if (x.containsLetter(letterId))
+            if (x.containsLetter(letterId) && x.clip != null)
                 wordsWithLetter.Add(x);
         }
         List<WordInfo> wordsWithArt = new List<WordInfo>(wordsWithLetter.Count);
@@ -42,6 +44,38 @@ public class WordList : ScriptableObject
     {
         return wordInfos.Find(x => x.word == name);
     }
+
+
+#if UNITY_EDITOR
+    [ContextMenu("AutoSetup")]
+    void AutoSetup()
+    {
+        Undo.RegisterCompleteObjectUndo(this, "AutoSetup");
+        foreach (var x in wordInfos)
+        {
+            if (x.word == null)
+                continue;
+
+            x.prefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/WordObjects/" + x.word + ".prefab");
+            x.picture = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/Textures/Words/" + x.word + ".png");
+            x.clip = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/AudioClips/Spelling/" + x.word + ".wav");
+
+            var totalClipCount = x.word.Length;
+            for (int i = 0; i < x.word.Length; i++)
+                if (x.isDigraph(i))
+                    totalClipCount--;
+
+            x.spellingClips = new AudioClip[totalClipCount];
+            for (int i = 0; i < x.spellingClips.Length; i++)
+            {
+                if (x.isDigraph(i))
+                    x.spellingClips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/AudioClips/Spelling/" + x.word + "_" + x.word[i] + x.word[i + 1] + ".wav");
+                else
+                    x.spellingClips[i] = AssetDatabase.LoadAssetAtPath<AudioClip>("Assets/AudioClips/Spelling/" + x.word + "_" + x.word[i] + ".wav");
+            }
+        }
+    }
+#endif
 }
 
 [System.Serializable]
@@ -51,6 +85,18 @@ public class WordInfo : IEnumerable<int>
     public GameObject prefab;
     public Sprite picture;
     public AudioClip clip;
+    public AudioClip[] spellingClips;
+
+    public bool isDigraph(int letterIndex)
+    {
+        return letterIndex < word.Length - 1 && LetterUtility.isDigraph(getLetterId(letterIndex), getLetterId(letterIndex + 1));
+    }
+    public int digraphCount(int letterIndex)
+    {
+        if (isDigraph(letterIndex))
+            return 2;
+        return 1;
+    }
 
 
 

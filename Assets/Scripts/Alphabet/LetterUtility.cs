@@ -28,4 +28,12 @@ public static class LetterUtility
             return (int)c - 'a' + lowerMin;
     }
 
+    public static bool isDigraph(int letterA, int letterB)
+    {
+        char ca = letterToChar(letterA);
+        char cb = letterToChar(letterB);
+        string sum = ca.ToString() + cb;
+        return sum == "sh" || sum == "ch" || sum == "th" || sum == "ph" || sum == "ck" || sum == "ng" || sum == "qu" || sum == "wh";
+    }
+
 }

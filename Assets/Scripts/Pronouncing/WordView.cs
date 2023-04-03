@@ -106,21 +106,33 @@ namespace KidLetters.Pronouncing
 
 
             yield return new WaitForSeconds(paddingTimeStart);
-            int i = 0;
-            foreach (var x in this.letters)
+
+
+            var actualI = 0;
+            for (int i = 0; i < this.letters.Count; i++)
             {
+                var x = this.letters[i];
                 if (i != 0)
                     yield return new WaitForSeconds(letterDelay);
-                yield return playLetter(x);
+                var letterId = x.letterId;
 
-                i++;
+                var playAudio = wordInfo.spellingClips[actualI];
+                if (wordInfo.isDigraph(i))
+                {
+                    StartCoroutine(playLetter(x, null, playAudio.length));
+                    yield return playLetter(this.letters[i + 1], playAudio);
+                    i++;
+                }
+                else
+                    yield return playLetter(x, playAudio);
+
+                actualI++;
             }
             yield return new WaitForSeconds(paddingTimeEnd);
 
         }
 
-
-        IEnumerator playLetter(Letter letter)
+        IEnumerator playLetter(Letter letter, AudioClip playAudio, float customWait = 0)
         {
             letter.gameObject.SetActive(true);
             letter.text.color = glowOptions.normalColor;
@@ -128,7 +140,12 @@ namespace KidLetters.Pronouncing
             letter.transform.DOScale(glowOptions.targetScale, glowOptions.duration);
             if (glowOptions.punchScale)
                 letter.transform.DOPunchScale(.2f.vector(), .2f);
-            yield return GeneralAudioPlayer.o.playWaitFinish(LetterList.o.getAudioClip(letter.letterId));
+            // yield return GeneralAudioPlayer.o.playWaitFinish(LetterList.o.getAudioClip(letter.letterId));
+            var wordInfo = PronouncingPhase.o.wordInfo;
+            if (playAudio)
+                yield return GeneralAudioPlayer.o.playWaitFinish(playAudio);
+            if (customWait > 0)
+                yield return new WaitForSeconds(customWait);
             letter.text.DOColor(glowOptions.normalColor, glowOptions.duration);
 
         }
