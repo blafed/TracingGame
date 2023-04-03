@@ -30,7 +30,7 @@ namespace KidLetters
         {
             this.isAfterTracing = false;
             this.letter = letter;
-            wordInfo = WordList.o.getRandomContains(letter.letterId);
+            wordInfo = WordList.o.getWordByStartingLetter(letter.letterId);
         }
         public void setArgsAfterTracing(Letter letter, WordInfo wordInfo)
         {

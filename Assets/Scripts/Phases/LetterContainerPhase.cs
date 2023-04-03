@@ -38,7 +38,7 @@ public class LetterContainerPhase : Phase<LetterContainerPhase>
             return false;
         if (this.letter)
             return false;
-        var word = WordList.o.getRandomContains(letter.letterId);
+        var word = WordList.o.getWordByStartingLetter(letter.letterId);
         if (word == null)
         {
             Debug.LogError("No Word for this letter  " + LetterUtility.letterToString(letter.letterId));

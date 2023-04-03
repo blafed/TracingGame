@@ -11,7 +11,7 @@ namespace KidLetters
             if (GameManager.o.testTracing)
             {
                 var letter = LetterContainer.o.findLetter(LetterUtility.charToLetterId(GameManager.o.testTracingLetter));
-                TracingPhase.o.setArgs(letter, WordList.o.getRandomContains(letter.letterId));
+                TracingPhase.o.setArgs(letter, WordList.o.getWordByStartingLetter(letter.letterId));
                 Phase.change(TracingPhase.o);
             }
             else

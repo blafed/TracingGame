@@ -75,7 +75,7 @@ public class LetterContainer : MonoBehaviour
         letter.transform.DOPunchScale(.2f.vector(), .2f);
 
         return;
-        var word = WordList.o.getRandomContains(letter.letterId);
+        var word = WordList.o.getWordByStartingLetter(letter.letterId);
         if (word == null)
         {
             Debug.LogError("No Word for this letter  " + LetterUtility.letterToString(letter.letterId));

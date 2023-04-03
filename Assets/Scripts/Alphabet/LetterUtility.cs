@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Rendering;
 
 public static class LetterUtility
 {
@@ -34,6 +35,19 @@ public static class LetterUtility
         char cb = letterToChar(letterB);
         string sum = ca.ToString() + cb;
         return sum == "sh" || sum == "ch" || sum == "th" || sum == "ph" || sum == "ck" || sum == "ng" || sum == "qu" || sum == "wh";
+    }
+
+
+    static int[] _allLetters;
+    public static int[] listAllLetters()
+    {
+        if (_allLetters == null)
+        {
+            _allLetters = new int[count];
+            for (int i = 0; i < count; i++)
+                _allLetters[i] = i + lowerMin;
+        }
+        return _allLetters;
     }
 
 }

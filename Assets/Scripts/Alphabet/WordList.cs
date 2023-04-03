@@ -21,9 +21,29 @@ public class WordList : ScriptableObject
     };
 
 
+    public List<WordInfo> listAll()
+    {
+        return wordInfos;
+    }
+
+    public WordInfo getWordByStartingLetter(int letterId)
+    {
+        var letterStr = LetterUtility.letterToString(letterId);
+        var words = StartingLetters.getWords(letterStr);
+        var listOfWords = new List<string>(words);
 
 
-
+        while (listOfWords.Count > 0)
+        {
+            var randomIndex = Random.Range(0, listOfWords.Count);
+            var found = wordInfos.Find(x => x.word == listOfWords[randomIndex]);
+            listOfWords.RemoveAt(randomIndex);
+            if (found != null)
+                return found;
+        }
+        return null;
+    }
+    [System.Obsolete]
     public WordInfo getRandomContains(int letterId)
     {
         List<WordInfo> wordsWithLetter = new List<WordInfo>(wordInfos.Count);
@@ -86,7 +106,13 @@ public class WordInfo : IEnumerable<int>
     public Sprite picture;
     public AudioClip clip;
     public AudioClip[] spellingClips;
+    [SerializeField] List<char> startingLetters = new List<char>();
 
+
+    public bool isStartingLetter(int letterId)
+    {
+        return startingLetters.Contains(LetterUtility.letterToChar(letterId));
+    }
     public bool isDigraph(int letterIndex)
     {
         return letterIndex < word.Length - 1 && LetterUtility.isDigraph(getLetterId(letterIndex), getLetterId(letterIndex + 1));
