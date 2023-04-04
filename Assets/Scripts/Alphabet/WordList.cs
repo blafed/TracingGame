@@ -106,13 +106,7 @@ public class WordInfo : IEnumerable<int>
     public Sprite picture;
     public AudioClip clip;
     public AudioClip[] spellingClips;
-    [SerializeField] List<char> startingLetters = new List<char>();
 
-
-    public bool isStartingLetter(int letterId)
-    {
-        return startingLetters.Contains(LetterUtility.letterToChar(letterId));
-    }
     public bool isDigraph(int letterIndex)
     {
         return letterIndex < word.Length - 1 && LetterUtility.isDigraph(getLetterId(letterIndex), getLetterId(letterIndex + 1));

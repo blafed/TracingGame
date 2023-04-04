@@ -97,7 +97,7 @@ namespace KidLetters.Pronouncing
             // phase.letter.text.DOColor(glowOptions.normalColor, glowOptions.duration);
             yield return new WaitForSeconds(paddingTimeStart);
             phase.letter.text.DOFade(0, cameraOptions.duration);
-            var focusPos = cameraOptions.offset - relLetterPos + letterPos + Vector2.right * width / 2f; ;
+            var focusPos = -relLetterPos + letterPos + Vector2.right * width / 2f;
             CameraControl.o.move(focusPos, cameraOptions.duration, Ease.InOutQuad);
             CameraControl.o.zoom(cameraOptions.zoom, cameraOptions.duration);
             yield return new WaitForSeconds(cameraOptions.duration);
@@ -129,6 +129,7 @@ namespace KidLetters.Pronouncing
                 actualI++;
             }
             yield return new WaitForSeconds(paddingTimeEnd);
+            yield return CameraControl.o.move(cameraOptions.offset + focusPos, cameraOptions.duration, Ease.InOutQuad).WaitForCompletion();
 
         }
 

@@ -104,7 +104,7 @@ MonoBehaviour:
     spellingClips:
     - {fileID: 8300000, guid: d9f1ed058b432aa4a89e3bd49d4d41d5, type: 3}
     - {fileID: 8300000, guid: 1dccf63666401fd45ac19250d9cbffb7, type: 3}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: a49e84f44a4bc0646a7d5ff567129c86, type: 3}
   - word: lick
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: f37be46bb985f204c951c01a598e3a1e, type: 3}
@@ -206,3 +206,22 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 218d468c736a03d479399c6b5422f2de, type: 3}
     - {fileID: 8300000, guid: 7257a6542ca0ff74394e004d8649a9a4, type: 3}
     - {fileID: 8300000, guid: 7257a6542ca0ff74394e004d8649a9a4, type: 3}
+  - word: quack
+    prefab: {fileID: 0}
+    picture: {fileID: 21300000, guid: 436228e5f7b0f494aae1aabe4457d90c, type: 3}
+    clip: {fileID: 8300000, guid: 77990dd160a3bd645a1e13bf3f330f6d, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 1235fde33ae447048b439db837c4e8ec, type: 3}
+    - {fileID: 8300000, guid: 26f483f1a1bcee74984b78f1027e0ba6, type: 3}
+    - {fileID: 8300000, guid: e49b8a01d2fb883408f03583fad621b4, type: 3}
+    - {fileID: 8300000, guid: 200f882d1b086044996fff902ceb6480, type: 3}
+  - word: queen
+    prefab: {fileID: 0}
+    picture: {fileID: 0}
+    clip: {fileID: 8300000, guid: b1ce16d9b58b6ce4e8c4f4a030a289da, type: 3}
+    spellingClips:
+    - {fileID: 8300000, guid: 772ff5be949c705429a101df48a69fff, type: 3}
+    - {fileID: 8300000, guid: f047022a8083c484fbc39a3a67f6a738, type: 3}
+    - {fileID: 8300000, guid: c6d5a1a8bf77d2147a5f00e42300be58, type: 3}
+    - {fileID: 8300000, guid: c6d5a1a8bf77d2147a5f00e42300be58, type: 3}
+    - {fileID: 8300000, guid: cfed299c5a15cc140b4537cf6a03d1c1, type: 3}

@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cameraZoom: 12
-  duration: 1
+  duration: 0.5
   zoomEase: 26
   moveEase: 7
 --- !u!1 &8930192751730786881
@@ -358,6 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6cb17495091a094eba5825e0fa52c03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skip: 0
 --- !u!1 &8930192752325589856
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,8 +27,11 @@ public static class StartingLetters
         //iterate over lines of csvText
         foreach (var x in csvText.text.lines())
         {
+            if (x == "" || x[0] == '#')
+                continue;
             //split line into columns by comma
             var columns = x.Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+
             //first column is letter
             var letter = columns[0];
             //other columns are words

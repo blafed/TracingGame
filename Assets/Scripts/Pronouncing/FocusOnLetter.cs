@@ -37,10 +37,12 @@ namespace KidLetters.Pronouncing
         {
             Home.LetterContainer.o.setActiveLetters(false, x => x == PronouncingPhase.o.letter);
             PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
-            yield return GeneralAudioPlayer.o.playWaitFinish(LetterList.o.getAudioClip(PronouncingPhase.o.letterId));
             CameraControl.o.move(PronouncingPhase.o.letter.transform.position, duration, moveEase);
-            CameraControl.o.zoom(cameraZoom, duration, zoomEase);
-            yield return new WaitForSeconds(duration);
+            yield return CameraControl.o.zoom(cameraZoom, duration, zoomEase).WaitForCompletion();
+            yield return new WaitForSeconds(.25f);
+            PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
+            yield return GeneralAudioPlayer.o.playWaitFinish(LetterList.o.getAudioClip(PronouncingPhase.o.letterId));
+            yield return new WaitForSeconds(.25f);
         }
 
 

@@ -1,11 +1,20 @@
 using UnityEngine.UI;
 using UnityEngine;
+using DG.Tweening;
 
 public class Backgrounds : MonoBehaviour
 {
 
     public static Backgrounds o;
 
+
+    [SerializeField]
+    Image colorImage;
+    [SerializeField]
+    Color[] colors;
+
+    [SerializeField]
+    float changeDuration = .5f;
 
 
 
@@ -23,13 +32,10 @@ public class Backgrounds : MonoBehaviour
 
     public void changeRandomly(BackgroundsList list)
     {
-
-        var li = list == BackgroundsList.ALL ? bgLists.items.getRandom().value : bgLists.get(list);
-        foreach (var x in bgLists)
-            foreach (var y in x.value)
-                y.gameObject.SetActive(false);
-        li.getRandom().gameObject.SetActive(true);
+        var randomColor = colors.getRandom();
+        colorImage.DOColor(randomColor, changeDuration);
     }
+
 }
 
 
