@@ -14,7 +14,7 @@ public class EdgePoint : MonoBehaviour
         completed,
 
     }
-    public Pattern pattern { get; set; }
+    public Pattern pattern { get; private set; }
 
     public float diameter = .575f;
     [Space]
@@ -35,6 +35,9 @@ public class EdgePoint : MonoBehaviour
     bool didStateComplete;
 
     Tween transitTween;
+
+    public Transform wrapper => transform.GetChild(0);
+
 
 
 
@@ -70,6 +73,12 @@ public class EdgePoint : MonoBehaviour
         transitTween = seq;
 
         return seq;
+    }
+
+
+    public virtual void setup(Pattern pattern)
+    {
+        this.pattern = pattern;
     }
 
 
@@ -121,6 +130,12 @@ public class EdgePoint : MonoBehaviour
         transform.localEulerAngles = new Vector3();
     }
 
+
+    public float setDiameter(float diameter)
+    {
+        wrapper.transform.localScale = Vector3.one * diameter;
+        return diameter;
+    }
 
 
 

@@ -218,7 +218,7 @@ public class Pattern : MonoBehaviour
 
             var x = Instantiate(prefab, p, default);
             var edgePoint = x.GetComponent<EdgePoint>();
-            edgePoint.pattern = this;
+            edgePoint.setup(this);
             edgePoints[j] = edgePoint;
             x.transform.parent = transform.parent;
             if (j == 1)

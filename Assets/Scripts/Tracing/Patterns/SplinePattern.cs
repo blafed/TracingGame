@@ -6,7 +6,7 @@ public class SplinePattern : Pattern
 {
 
     [SerializeField]
-    protected float splineHeight = .5f;
+    public float splineHeight = .5f;
     protected Spline spline => shapeController.spline;
 
     [SerializeField]
