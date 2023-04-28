@@ -200,10 +200,16 @@ public class Pattern : MonoBehaviour
         return d.normalized;
     }
 
-
+    protected virtual GameObject edgePointPrefab
+    {
+        get
+        {
+            return TracingManager.o.options.edgePointPrefab.gameObject;
+        }
+    }
     protected void createEdgePoints(System.Action<EdgePoint> callback = null)
     {
-        var prefab = TracingManager.o.options.edgePointPrefab.gameObject;
+        var prefab = edgePointPrefab;
         for (int j = 0; j < 2; j++)
         {
             var p = segment.path.startPoint;
