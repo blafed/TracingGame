@@ -1,5 +1,6 @@
 using UnityEngine;
 
+using KidLetters.Home;
 namespace KidLetters
 {
     public class PhaseStartup : MonoBehaviour
@@ -10,7 +11,7 @@ namespace KidLetters
         {
             if (GameManager.o.testTracing)
             {
-                var letter = LetterContainer.o.findLetter(LetterUtility.charToLetterId(GameManager.o.testTracingLetter));
+                var letter = LetterContainer.o.getLetter(LetterUtility.charToLetterId(GameManager.o.testTracingLetter));
                 TracingPhase.o.setArgs(letter, WordList.o.getWordByStartingLetter(letter.letterId));
                 Phase.change(TracingPhase.o);
             }

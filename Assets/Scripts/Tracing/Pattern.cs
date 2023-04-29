@@ -2,7 +2,7 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine.U2D;
 using UnityEngine;
-
+using KidLetters;
 // public enum PatternState
 // {
 //     unknown,
@@ -204,7 +204,7 @@ public class Pattern : MonoBehaviour
     {
         get
         {
-            return TracingManager.o.options.edgePointPrefab.gameObject;
+            return TracingConfig.o.edgePointPrefab;
         }
     }
     protected void createEdgePoints(System.Action<EdgePoint> callback = null)

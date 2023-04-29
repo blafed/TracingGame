@@ -1,6 +1,8 @@
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
+
+[System.Obsolete]
 public class TracingDoneStarEffect : PhaseEntity
 {
     public static TracingDoneStarEffect o;
@@ -14,7 +16,7 @@ public class TracingDoneStarEffect : PhaseEntity
 
     protected override void register()
     {
-        TracingPhase.o.registerEntity(this);
+        // TracingPhase.o.registerEntity(this);
     }
 
     protected override void Awake()
@@ -43,8 +45,12 @@ public class TracingDoneStarEffect : PhaseEntity
     public Tween startStarAnimation(System.Action onComplete)
     {
         target.gameObject.SetActive(true);
-        var startPosition = TracingPanelUI.o.getFocusPosition();
-        var endPosition = TracingPanelUI.o.playPatternButtons.get(TracingPhase.o.playingIndex).component.transform.position;
+        //TODO fix this
+        Vector2 startPosition = Vector2.zero;
+        // var startPosition = TracingPanelUI.o.getFocusPosition();
+        Vector2 endPosition = Vector2.zero;
+        //TODO uncomment this and fix it
+        // var endPosition = TracingPanelUI.o.playPatternButtons.get(TracingPhase.o.playingIndex).component.transform.position;
 
         var d = this;
         var t = d.target;

@@ -17,7 +17,7 @@ namespace KidLetters
         }
         public float movedDistance { get; private set; }
 
-        public int activeFillerIndex
+        public int activeSegmentIndex
         {
             get
             {
@@ -33,7 +33,10 @@ namespace KidLetters
                 return index;
             }
         }
-        public LetterSegmentFiller activeFiller => segmentFillers.getOrDefault(activeFillerIndex);
+        public LetterSegmentFiller activeSegment => segmentFillers.getOrDefault(activeSegmentIndex);
+        // public float activePathLength => activeSegment.pathLength;
+        // public float activeMovedDistance => activeSegment.movedDistance;
+
 
         List<LetterSegmentFiller> segmentFillers = new List<LetterSegmentFiller>();
 

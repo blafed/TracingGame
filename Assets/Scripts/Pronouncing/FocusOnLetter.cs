@@ -19,7 +19,12 @@ namespace KidLetters.Pronouncing
         [SerializeField] Ease zoomEase = Ease.InBack;
         [SerializeField] Ease moveEase = Ease.InOutQuad;
 
-
+        AudioSource audioSource;
+        protected override void Awake()
+        {
+            base.Awake();
+            audioSource = GetComponentInChildren<AudioSource>();
+        }
         private void Start()
         {
             PronouncingPhase.o.onExitEvent += onPhaseExit;
@@ -35,6 +40,7 @@ namespace KidLetters.Pronouncing
 
         public IEnumerator play()
         {
+            audioSource.Play();
             Home.LetterContainer.o.setActiveLetters(false, x => x == PronouncingPhase.o.letter);
             PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
             CameraControl.o.move(PronouncingPhase.o.letter.transform.position, duration, moveEase);

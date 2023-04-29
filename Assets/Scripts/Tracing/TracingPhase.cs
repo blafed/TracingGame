@@ -82,9 +82,6 @@ namespace KidLetters
         {
             yield return Tracing.FocusOnLetter.o.play();
             onFocused?.Invoke();
-
-
-
             yield return new WaitUntil(() => doneStage >= tracingStages.Length);
             PronouncingPhase.o.setArgsAfterTracing(this.letter, wordInfo);
             Phase.change(PronouncingPhase.o);
@@ -144,4 +141,11 @@ namespace KidLetters
     }
 }
 
-
+public enum TracingState
+{
+    initial,
+    tracing,
+    animation,
+    united,
+    done,
+}
