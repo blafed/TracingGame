@@ -48,8 +48,8 @@ namespace KidLetters
         {
             StopAllCoroutines();
             letter.gameObject.SetActive(true);
-            letter.text.color = Color.white;
-            letter.text.gameObject.SetActive(true);
+            letter.setColor(Color.white);
+            letter.setTextEnabled(true);
         }
         IEnumerator cycle()
         {

@@ -4,6 +4,7 @@ namespace KidLetters
 {
     public class LetterSegmentFiller : MonoBehaviour
     {
+        public float width = .5f;
         public LetterFiller letterFiller { get; private set; }
         public LetterSegment segment { get; private set; }
         protected virtual Path targetPath => segment.path;
@@ -67,10 +68,6 @@ namespace KidLetters
 
 
 
-        protected virtual void onMoved()
-        {
-        }
-
 
         public void initSpline(float splineHeight, SpriteShapeController shapeController)
         {
@@ -79,7 +76,7 @@ namespace KidLetters
             {
                 return new SplineControlPoint
                 {
-                    height = 1,
+                    height = width,
                     corner = true,
                     mode = ShapeTangentMode.Continuous,
                     cornerMode = Corner.Automatic,
@@ -103,12 +100,23 @@ namespace KidLetters
         {
             return new SplineControlPoint
             {
-                height = 1,
+                height = width,
                 corner = true,
                 mode = ShapeTangentMode.Continuous,
                 cornerMode = Corner.Automatic,
             };
         }
+        protected virtual void Start() { }
+        protected virtual void Awake() { }
+
+        protected virtual void onMoved()
+        {
+            // print("moved");
+        }
+
+
+        public virtual void setColor(Color color) { }
+        public virtual void setAlpha(float alpha) { }
 
 
 

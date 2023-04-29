@@ -125,7 +125,7 @@ public class LetterEnterAnimation : MonoBehaviour
         wordText.text = word.word;
         wordText.color = unhighlightColor;
         wordText.alpha = 0;
-        l.text.DOFade(0, otherLetters.fadeDuration).add(tweens);
+        l.doFade(0, otherLetters.fadeDuration).add(tweens);
 
         yield return wordText.DOFade(1, otherLetters.fadeDuration).add(tweens).WaitForCompletion();
         wordText.color = Color.white;
@@ -162,7 +162,7 @@ public class LetterEnterAnimation : MonoBehaviour
         wordText.DOFade(0, terminate.duration).add(tweens);
         cam.zoom(terminate.zoom, terminate.duration).add(tweens);
         yield return new WaitForSeconds(terminate.duration);
-        l.text.DOFade(1, terminate.duration).add(tweens);
+        l.doFade(1, terminate.duration).add(tweens);
         cam.move(l.transform.position, terminate.duration).add(tweens);
         yield return new WaitForSeconds(terminate.duration);
         onFinish?.Invoke();
@@ -170,8 +170,8 @@ public class LetterEnterAnimation : MonoBehaviour
     }
     public void clean()
     {
-        currentLetter.text.alpha = 1;
-        currentLetter.text.color = Color.white;
+        currentLetter.setAlpha(1);
+        currentLetter.setColor(Color.white);
         wordText.gameObject.SetActive(false);
     }
     public void stop()

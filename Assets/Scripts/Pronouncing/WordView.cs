@@ -73,10 +73,11 @@ namespace KidLetters.Pronouncing
                 nextPosition.x += c.relativeViewRect.size.x / 2 + spacing;
 
 
-                if (c.text)
+                try
                 {
-                    c.text.color = glowOptions.normalColor;
+                    c.setColor(glowOptions.normalColor);
                 }
+                catch { }
                 c.transform.localScale = glowOptions.normalScale.vector();
                 c.gameObject.SetActive(indexOfTargetLetter == i);
 
@@ -96,12 +97,12 @@ namespace KidLetters.Pronouncing
             transform.position = letterPos - relLetterPos;
             // phase.letter.text.DOColor(glowOptions.normalColor, glowOptions.duration);
             yield return new WaitForSeconds(paddingTimeStart);
-            phase.letter.text.DOFade(0, cameraOptions.duration);
+            phase.letter.doFade(0, cameraOptions.duration);
             var focusPos = -relLetterPos + letterPos + Vector2.right * width / 2f;
             CameraControl.o.move(focusPos, cameraOptions.duration, Ease.InOutQuad);
             CameraControl.o.zoom(cameraOptions.zoom, cameraOptions.duration);
             yield return new WaitForSeconds(cameraOptions.duration);
-            phase.letter.text.alpha = 1;
+            phase.letter.setAlpha(1);
             phase.letter.gameObject.SetActive(false);
 
 
@@ -136,8 +137,8 @@ namespace KidLetters.Pronouncing
         IEnumerator playLetter(Letter letter, AudioClip playAudio, float customWait = 0)
         {
             letter.gameObject.SetActive(true);
-            letter.text.color = glowOptions.normalColor;
-            letter.text.DOColor(glowOptions.targetColor, glowOptions.duration);
+            letter.setColor(glowOptions.normalColor);
+            letter.doColor(glowOptions.targetColor, glowOptions.duration);
             letter.transform.DOScale(glowOptions.targetScale, glowOptions.duration);
             if (glowOptions.punchScale)
                 letter.transform.DOPunchScale(.2f.vector(), .2f);
@@ -147,7 +148,7 @@ namespace KidLetters.Pronouncing
                 yield return GeneralAudioPlayer.o.playWaitFinish(playAudio);
             if (customWait > 0)
                 yield return new WaitForSeconds(customWait);
-            letter.text.DOColor(glowOptions.normalColor, glowOptions.duration);
+            letter.doColor(glowOptions.normalColor, glowOptions.duration);
 
         }
 
@@ -158,7 +159,7 @@ namespace KidLetters.Pronouncing
             {
                 if (except != null && except(x))
                     continue;
-                x.text.DOFade(0, duration);
+                x.doFade(0, duration);
             }
             yield return new WaitForSeconds(duration);
         }
@@ -171,8 +172,8 @@ namespace KidLetters.Pronouncing
             var targetColor = highlighted ? glowOptions.targetColor : glowOptions.normalColor;
             foreach (var x in letters)
             {
-                x.text.color = fromColor;
-                x.text.DOColor(targetColor, duration).SetEase(Ease.InOutQuad);
+                x.setColor(fromColor);
+                x.doColor(targetColor, duration).SetEase(Ease.InOutQuad);
             }
             yield return new WaitForSeconds(duration);
         }
@@ -189,9 +190,9 @@ namespace KidLetters.Pronouncing
             StopAllCoroutines();
 
             phase.letter.gameObject.SetActive(true);
-            phase.letter.text.color = Color.white;
-            phase.letter.text.alpha = 1;
-            phase.letter.text.DOKill();
+            phase.letter.setColor(Color.white);
+            phase.letter.setAlpha(1);
+            phase.letter.doKill();
             phase.letter.DOKill();
         }
 

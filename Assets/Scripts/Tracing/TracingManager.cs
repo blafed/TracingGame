@@ -93,7 +93,7 @@ public class TracingManager : MonoBehaviour
 
         if (!isTracingStarted)
             return;
-        currentLetter.text.alpha = 1;
+        currentLetter.setAlpha(1);
         currentLetter.setTextEnabled(true);
         foreach (var x in segmentPatterns)
             Destroy(x.gameObject);

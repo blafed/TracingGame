@@ -5,6 +5,9 @@ namespace KidLetters
 {
     public class LetterFiller : MonoBehaviour
     {
+
+
+        [SerializeField] GameObject segmentFillerPrefab;
         public Letter letter { get; private set; }
         public float totalLength { get; private set; }
         public float progress
@@ -38,7 +41,7 @@ namespace KidLetters
         {
             this.letter = letter;
             totalLength = 0;
-            var segFillerObj = GetComponentInChildren<LetterSegmentFiller>().gameObject;
+            var segFillerObj = segmentFillerPrefab;
             foreach (var x in letter.segments)
             {
 
@@ -55,8 +58,6 @@ namespace KidLetters
                 segmentFillers.Add(segFiller);
             }
 
-            segFillerObj.SetActive(false);
-
         }
 
         private void OnDestroy()
@@ -65,17 +66,40 @@ namespace KidLetters
                 Destroy(x);
         }
 
+        private void OnEnable()
+        {
+            foreach (var x in segmentFillers)
+                x.gameObject.SetActive(true);
+        }
+        private void OnDisable()
+        {
+            foreach (var x in segmentFillers)
+                x.gameObject.SetActive(false);
+        }
+
         public void setTotalMovedDistance(float movedDistance)
         {
             foreach (var x in segmentFillers)
             {
-                if (movedDistance < x.pathLength)
-                {
-                    x.movedDistance = Mathf.Clamp(movedDistance, 0, x.pathLength);
-                    break;
-                }
+                print("movedDistance: " + movedDistance + " x.pathLength: " + x.pathLength);
+                x.movedDistance = Mathf.Clamp(movedDistance, 0, x.pathLength);
                 movedDistance -= x.pathLength;
             }
+        }
+        public void setTotalProgress(float totalProgress)
+        {
+            setTotalMovedDistance(totalProgress * totalLength);
+        }
+
+        public void setColor(Color color)
+        {
+            foreach (var x in segmentFillers)
+                x.setColor(color);
+        }
+        public void setAlpha(float alpha)
+        {
+            foreach (var x in segmentFillers)
+                x.setAlpha(alpha);
         }
     }
 }

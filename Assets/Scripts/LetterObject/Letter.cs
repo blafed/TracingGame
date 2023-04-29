@@ -1,8 +1,10 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.U2D;
 using UnityEngine.Sprites;
 using System.Collections.Generic;
 using TMPro;
+using KidLetters;
 
 [DefaultExecutionOrder(1)]
 public class Letter : MonoBehaviour
@@ -18,7 +20,7 @@ public class Letter : MonoBehaviour
     public int letterId => LetterUtility.charToLetterId(name[0]);
 
     public int segmentCount => segments.Count;
-    public TextMeshPro text { get; private set; }
+    // public TextMeshPro text { get; private set; }
 
     public List<LetterSegment> segments { get; private set; } = new List<LetterSegment>();
 
@@ -39,9 +41,15 @@ public class Letter : MonoBehaviour
     // [SerializeField]
     // char _letterId => name[0];
 
+
+    LetterFiller letterFiller;
+
+
+
     private void Awake()
     {
-        text = GetComponentInChildren<TextMeshPro>();
+        var text = GetComponentInChildren<TextMeshPro>();
+        text.gameObject.SetActive(false);
         for (int i = 0; i < transform.childCount; i++)
         {
             var child = transform.GetChild(i);
@@ -52,6 +60,12 @@ public class Letter : MonoBehaviour
                 letterSegment.gameObject.SetActive(false);
             }
         }
+
+        letterFiller = Instantiate(Resources.Load<GameObject>("Prefabs/StandardLetterFiller"), transform).GetComponent<LetterFiller>();
+        letterFiller.setup(this);
+        letterFiller.setTotalProgress(1);
+        letterFiller.setColor(Color.white);
+        letterFiller.setAlpha(1);
     }
 
     public LetterSegment get(int index) => segments[index];
@@ -59,7 +73,7 @@ public class Letter : MonoBehaviour
 
     public void setTextEnabled(bool value)
     {
-        text.gameObject.SetActive(value);
+        letterFiller.gameObject.SetActive(value);
     }
 
     private void OnDrawGizmosSelected()
@@ -70,5 +84,45 @@ public class Letter : MonoBehaviour
     private void OnMouseDown()
     {
         onClick?.Invoke();
+    }
+
+
+    public void setColor(Color color)
+    {
+        _tweenColor = color;
+        letterFiller.setColor(color);
+    }
+    public void setAlpha(float alpha)
+    {
+        _tweenAlpha = alpha;
+        letterFiller.setAlpha(alpha);
+    }
+
+    Color _tweenColor;
+    float _tweenAlpha;
+
+
+    Tween _doColorTween;
+    Tween _doFadeTween;
+
+
+
+    public Tween doColor(Color color, float duration)
+    {
+        return _doColorTween = DOTween.To(() => _tweenColor, x => setColor(x), color, duration);
+    }
+    public Tween doFade(float alpha, float duration)
+    {
+        return _doFadeTween = DOTween.To(() => _tweenAlpha, x => letterFiller.setAlpha(x), alpha, duration);
+    }
+    public void doKill()
+    {
+        this.DOKill();
+
+        if (_doColorTween != null)
+            _doColorTween.Kill();
+
+        if (_doFadeTween != null)
+            _doFadeTween.Kill();
     }
 }
