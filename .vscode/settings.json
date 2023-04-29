@@ -54,6 +54,6 @@
   "files.watcherExclude": {
     "**/target": true
   },
-  "files.autoSave": "off",
+  "files.autoSave": "onWindowChange",
   "editor.formatOnType": true
 }
