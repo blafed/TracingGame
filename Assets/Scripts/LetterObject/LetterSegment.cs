@@ -51,7 +51,6 @@ public class LetterSegment : MonoBehaviour
         }
         totalLength = path.totalLength;
 
-
         path.center = default;
 
     }

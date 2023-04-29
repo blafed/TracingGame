@@ -3,6 +3,8 @@ using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using System.Collections.Generic;
+
+[System.Obsolete]
 public class LetterEnterAnimation : MonoBehaviour
 {
 

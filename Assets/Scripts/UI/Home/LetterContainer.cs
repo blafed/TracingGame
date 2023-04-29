@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 
+[System.Obsolete]
 public class LetterContainer : MonoBehaviour
 {
     public static LetterContainer o;

@@ -139,7 +139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spacing: 0.7
   letterDelay: 0.5
-  paddingTimeStart: 1
+  paddingTimeStart: 0.5
   paddingTimeEnd: 0
   glowOptions:
     targetColor: {r: 1, g: 1, b: 1, a: 1}

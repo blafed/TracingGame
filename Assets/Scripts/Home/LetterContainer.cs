@@ -74,5 +74,11 @@ namespace KidLetters.Home
             return letters.Find(x => x.letterId == letterId);
         }
 
+
+        public Letter instantiateLetter(int letterId)
+        {
+            return Instantiate(LetterPrefabContainer.o.getLetterPrefab(letterId), getLetter(letterId).transform.position, default).GetComponent<Letter>();
+        }
+
     }
 }

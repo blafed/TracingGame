@@ -17,9 +17,6 @@ namespace KidLetters.LetterFillers
         protected override void Awake()
         {
             shapeController = GetComponentInChildren<SpriteShapeController>();
-
-
-
         }
         protected override void onMoved()
         {
@@ -55,5 +52,38 @@ namespace KidLetters.LetterFillers
             Gizmos.DrawWireSphere(getPoint(0), width);
             Gizmos.DrawWireSphere(getPoint(movedDistance), width);
         }
+
+
+        public override void setColor(Color color)
+        {
+            init();
+            shapeController.spriteShapeRenderer.color = color;
+            if (startEdgePoint)
+                startEdgePoint.color = color;
+            if (endEdgePoint)
+                endEdgePoint.color = color;
+        }
+
+        public override void setAlpha(float alpha)
+        {
+            init();
+            var color = shapeController.spriteShapeRenderer.color;
+            color.a = alpha;
+            shapeController.spriteShapeRenderer.color = color;
+            if (startEdgePoint)
+            {
+                color = startEdgePoint.color;
+                color.a = alpha < .5f ? 0 : alpha;
+                startEdgePoint.color = color;
+            }
+            if (endEdgePoint)
+            {
+                color = endEdgePoint.color;
+                color.a = alpha < .5f ? 0 : alpha;
+                endEdgePoint.color = color;
+            }
+        }
+
+
     }
 }

@@ -36,6 +36,12 @@ public class Backgrounds : MonoBehaviour
         colorImage.DOColor(randomColor, changeDuration);
     }
 
+
+    public Color getBackgroundColor()
+    {
+        return colorImage.color;
+    }
+
 }
 
 

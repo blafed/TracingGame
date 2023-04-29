@@ -81,7 +81,6 @@ namespace KidLetters
         {
             foreach (var x in segmentFillers)
             {
-                print("movedDistance: " + movedDistance + " x.pathLength: " + x.pathLength);
                 x.movedDistance = Mathf.Clamp(movedDistance, 0, x.pathLength);
                 movedDistance -= x.pathLength;
             }

@@ -48,7 +48,7 @@ public class Letter : MonoBehaviour
 
     private void Awake()
     {
-        var text = GetComponentInChildren<TextMeshPro>();
+        var text = GetComponentInChildren<TextMeshPro>(true);
         text.gameObject.SetActive(false);
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -63,9 +63,14 @@ public class Letter : MonoBehaviour
 
         letterFiller = Instantiate(Resources.Load<GameObject>("Prefabs/StandardLetterFiller"), transform).GetComponent<LetterFiller>();
         letterFiller.setup(this);
-        letterFiller.setTotalProgress(1);
         letterFiller.setColor(Color.white);
         letterFiller.setAlpha(1);
+    }
+
+
+    private void Start()
+    {
+        letterFiller.setTotalProgress(1);
     }
 
     public LetterSegment get(int index) => segments[index];
@@ -98,8 +103,8 @@ public class Letter : MonoBehaviour
         letterFiller.setAlpha(alpha);
     }
 
-    Color _tweenColor;
-    float _tweenAlpha;
+    Color _tweenColor = Color.white;
+    float _tweenAlpha = 1;
 
 
     Tween _doColorTween;
