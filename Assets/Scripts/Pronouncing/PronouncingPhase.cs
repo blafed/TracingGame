@@ -53,7 +53,8 @@ namespace KidLetters
         }
         IEnumerator cycle()
         {
-            if (skip)
+            Home.LetterContainer.o.setActiveLetters(false, x => x == PronouncingPhase.o.letter);
+            if (skip && !isAfterTracing)
             {
                 TracingPhase.o.setArgs(letter, wordInfo);
                 Phase.change(TracingPhase.o);

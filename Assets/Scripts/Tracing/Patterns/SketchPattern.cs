@@ -34,10 +34,13 @@ public class SketchPattern : SplinePattern
     public override void onStartTracing()
     {
         base.onStartTracing();
-        if (startEdgePoint)
-            startEdgePoint.gameObject.SetActive(true);
-        if (endEdgePoint)
-            endEdgePoint.gameObject.SetActive(true);
+        if (!isDot)
+        {
+            if (startEdgePoint)
+                startEdgePoint.gameObject.SetActive(true);
+            if (endEdgePoint)
+                endEdgePoint.gameObject.SetActive(true);
+        }
     }
 
 
@@ -47,7 +50,8 @@ public class SketchPattern : SplinePattern
     public override void whileTracing()
     {
         moveSpline();
-        moveObjectAlong(endEdgePoint.transform, movedDistance);
+        if (endEdgePoint)
+            moveObjectAlong(endEdgePoint.transform, movedDistance);
     }
     public override void onStartAnimation()
     {

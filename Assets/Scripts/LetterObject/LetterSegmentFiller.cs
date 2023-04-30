@@ -4,11 +4,18 @@ namespace KidLetters
 {
     public class LetterSegmentFiller : MonoBehaviour
     {
-        public float width = .5f;
+        public virtual float width => LetterObjectConfig.o.width;
         public LetterFiller letterFiller { get; private set; }
-        public LetterSegment segment { get; private set; }
-        protected virtual Path targetPath => segment.path;
+        LetterSegment segment { get; set; }
+
+
+        public bool isDot => segment.isDot;
+        public virtual Path targetPath => segment.path;
         protected virtual float pathScale => 1;
+
+
+        public Vector2 startPoint => getPoint(0);
+        public Vector2 endPoint => getPoint(pathLength);
 
         public float progress
         {

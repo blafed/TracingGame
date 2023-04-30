@@ -51,6 +51,10 @@ public class Pattern : MonoBehaviour
         }
         if (createEdgePointsByDefault)
             createEdgePoints();
+        foreach (var x in edgePoints)
+        {
+            x.gameObject.SetActive(false);
+        }
     }
     public virtual void onStartTracing()
     {
@@ -222,13 +226,9 @@ public class Pattern : MonoBehaviour
             edgePoints[j] = edgePoint;
             x.transform.parent = transform.parent;
             if (j == 1)
-            {
                 x.transform.position = transform.position.toVector2() + segment.path.endPoint;
-            }
             else
-            {
                 x.transform.position = transform.position.toVector2() + segment.path.startPoint;
-            }
 
             callback?.Invoke(edgePoint);
         }
@@ -247,5 +247,6 @@ public enum PatternCode
     butterfly,
     candy,
     sketch,
+    brush,
     COUNT,
 }

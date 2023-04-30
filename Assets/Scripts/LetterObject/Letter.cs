@@ -45,6 +45,9 @@ public class Letter : MonoBehaviour
     LetterFiller letterFiller;
 
 
+    public LetterFiller filler => letterFiller;
+
+
 
     private void Awake()
     {
@@ -61,17 +64,10 @@ public class Letter : MonoBehaviour
             }
         }
 
-        letterFiller = Instantiate(Resources.Load<GameObject>("Prefabs/StandardLetterFiller"), transform).GetComponent<LetterFiller>();
-        letterFiller.setup(this);
-        letterFiller.setColor(Color.white);
-        letterFiller.setAlpha(1);
+
+        createBasedFiller(LetterObjectConfig.o.standardLetterFillerPrefab);
     }
 
-
-    private void Start()
-    {
-        letterFiller.setTotalProgress(1);
-    }
 
     public LetterSegment get(int index) => segments[index];
 
@@ -130,4 +126,38 @@ public class Letter : MonoBehaviour
         if (_doFadeTween != null)
             _doFadeTween.Kill();
     }
+
+
+
+    public LetterFiller createBasedFiller(GameObject prefab)
+    {
+        letterFiller = Instantiate(prefab, transform).GetComponent<LetterFiller>();
+        letterFiller.setup(this);
+        letterFiller.setColor(Color.white);
+        letterFiller.setAlpha(1);
+        letterFiller.setTotalProgress(1);
+
+
+        return letterFiller;
+
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        for (int i = 0; i < segmentCount; i++)
+        {
+            var seg = filler[i];
+            if (seg != null)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(seg.startPoint, 0.2f);
+                Gizmos.DrawSphere(seg.endPoint, 0.2f);
+            }
+        }
+    }
+
+
+
+
 }

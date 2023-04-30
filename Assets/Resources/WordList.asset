@@ -50,7 +50,7 @@ MonoBehaviour:
   - word: egg
     prefab: {fileID: 0}
     picture: {fileID: 21300000, guid: 247f9c0458e66d345ba7a6342ff400a5, type: 3}
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 30987ad24a935624dbc1a66a635d9f0a, type: 3}
     spellingClips:
     - {fileID: 8300000, guid: 2e6a4199e98376f4ebc887262e22e9c6, type: 3}
     - {fileID: 8300000, guid: a1f560e7e1f3e6747ad027d2524f3e64, type: 3}

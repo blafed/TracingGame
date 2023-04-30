@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TPhase = KidLetters.TracingPhase;
+
+
+
 public class EdgePoint : MonoBehaviour
 {
-
-
-
     protected enum State
     {
         paused,
@@ -14,6 +14,7 @@ public class EdgePoint : MonoBehaviour
         completed,
 
     }
+    public int indexInSegment { get; set; }
     public Pattern pattern { get; private set; }
 
     public float diameter = .575f;
@@ -26,6 +27,8 @@ public class EdgePoint : MonoBehaviour
     [SerializeField] float transitionDuration = .4f;
     [SerializeField] SpriteRenderer playingRenderer, pausedRenderer;
     [SerializeField] PairList<State, SpriteRenderer> stateRenderers = new PairList<State, SpriteRenderer>();
+
+    [SerializeField] AudioSource startupAudio;
 
     Tween currentTween;
 
@@ -44,6 +47,19 @@ public class EdgePoint : MonoBehaviour
 
     protected virtual void Start()
     {
+    }
+
+    public void startupPunch(float delay = 0)
+    {
+        transform.localScale = new Vector3();
+        DOTween.Sequence().Append(transform.DOScale(1, .3f)).
+        Append(transform.DOPunchScale(Vector3.one * .5f, .25f, 1, 0)).SetDelay(delay);
+        if (startupAudio)
+            startupAudio.Play();
+    }
+
+    public void startTweening()
+    {
         if (TPhase.o.stageButton)
         {
             spawnFromPoint(TPhase.o.stageButtonPosition);
@@ -55,9 +71,8 @@ public class EdgePoint : MonoBehaviour
         }
 
         setStopped();
-
-        // transitRenderer(PatternState.unknown);
     }
+
     protected virtual Tween transitRenderer(State state)
     {
         if (transitTween != null)

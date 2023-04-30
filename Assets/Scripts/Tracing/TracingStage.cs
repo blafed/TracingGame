@@ -102,7 +102,6 @@ namespace KidLetters.Tracing
                 segments.Add(pattern);
                 pattern.gameObject.SetActive(false);
             }
-            Backgrounds.o.changeRandomly(BackgroundsList.forTracing);
 
         }
 

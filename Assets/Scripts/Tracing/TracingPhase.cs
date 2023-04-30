@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -46,7 +47,7 @@ namespace KidLetters
             for (int i = 0; i < tracingStages.Length; i++)
             {
                 var stg = new TracingStageInfo();
-                if (i != 0)
+                if (i > 1)
                 {
                     var patternCode = patternCodes.getRandom();
                     patternCodes.Remove(patternCode);
@@ -55,8 +56,8 @@ namespace KidLetters
                 }
                 else
                 {
-                    stg.autoTracing = true;
-                    stg.patternCode = PatternCode.sketch;
+                    stg.autoTracing = i == 0;
+                    stg.patternCode = i == 0 ? PatternCode.sketch : PatternCode.brush;
                 }
                 tracingStages[i] = stg;
             }
@@ -81,8 +82,27 @@ namespace KidLetters
         IEnumerator cycle()
         {
             yield return Tracing.FocusOnLetter.o.play();
+
+            var edgePoints = EdgePointDealer.o.spawnEdgePoints(TracingConfig.o.edgePointPrefab, letter);
+            yield return new WaitForSeconds(EdgePointDealer.o.estimatedWaitTime);
+            yield return letter.doColor(Backgrounds.o.getBackgroundColor(), 1).WaitForCompletion();
+            letter.setTextEnabled(false);
+            playStage(0, null);
+
             onFocused?.Invoke();
-            yield return new WaitUntil(() => doneStage >= tracingStages.Length);
+
+            yield return new WaitForSeconds(.5f);
+            Backgrounds.o.changeRandomly(BackgroundsList.forTracing);
+
+            for (int i = 0; i < tracingStages.Length; i++)
+            {
+                playStage(i, null);
+
+                yield return new WaitUntil(() => doneStage > i);
+            }
+
+            EdgePointDealer.o.clearEdgePoints();
+
             PronouncingPhase.o.setArgsAfterTracing(this.letter, wordInfo);
             Phase.change(PronouncingPhase.o);
         }

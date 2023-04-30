@@ -51,13 +51,14 @@ namespace KidLetters.Tracing
             gameObject.SetActive(true);
             transform.localScale = new Vector3();
             transform.DOScale(1, enterDuration).SetEase(Ease.OutBack);
-            stageButtons.iterate(stageButtons.count, x => x.gameObject.SetActive(false));
+            //stage buttons are disabled they are no longer nee
+            // stageButtons.iterate(stageButtons.count, x => x.gameObject.SetActive(false));
 
-            stageButtons.iterate(TracingPhase.o.tracingStages.Length, x =>
-            {
-                x.gameObject.SetActive(true);
-                x.component.prepare(x.iterationIndex);
-            });
+            // stageButtons.iterate(TracingPhase.o.tracingStages.Length, x =>
+            // {
+            //     x.gameObject.SetActive(true);
+            //     x.component.prepare(x.iterationIndex);
+            // });
             CameraControl.o.move(getFocusPosition());
             CameraControl.o.zoom(cameraZoom);
 

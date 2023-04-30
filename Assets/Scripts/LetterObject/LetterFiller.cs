@@ -17,6 +17,10 @@ namespace KidLetters
         }
         public float movedDistance { get; private set; }
 
+        public int segmentCount => segmentFillers.Count;
+
+        public LetterSegmentFiller this[int index] => segmentFillers[index];
+
         public int activeSegmentIndex
         {
             get
@@ -103,5 +107,6 @@ namespace KidLetters
             foreach (var x in segmentFillers)
                 x.setAlpha(alpha);
         }
+
     }
 }

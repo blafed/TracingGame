@@ -21,13 +21,13 @@ namespace KidLetters.LetterFillers
         protected override void onMoved()
         {
             init();
-            if (!segment.isDot)
+            if (!isDot)
                 moveSpline(shapeController, movedDistance, width, pathInstance);
             else
                 moveSpline(shapeController, 0, 0, pathInstance);
 
             startEdgePoint.transform.position = getPoint(0);
-            if (!segment.isDot)
+            if (!isDot)
                 endEdgePoint.transform.position = getPoint(movedDistance);
         }
 
@@ -39,8 +39,8 @@ namespace KidLetters.LetterFillers
             isInit = true;
 
             startEdgePoint = Instantiate(roundEdgePoint, transform.parent).GetComponentInChildren<SpriteRenderer>();
-            startEdgePoint.transform.localScale = new Vector3(width, width, 1) * (segment.isDot ? 2 : 1);
-            if (!segment.isDot)
+            startEdgePoint.transform.localScale = new Vector3(width, width, 1) * (isDot ? 2 : 1);
+            if (!isDot)
             {
                 endEdgePoint = Instantiate(roundEdgePoint, transform.parent).GetComponentInChildren<SpriteRenderer>();
                 endEdgePoint.transform.localScale = new Vector3(width, width, 1);
