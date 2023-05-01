@@ -8,6 +8,7 @@ namespace KidLetters
 
 
         [SerializeField] GameObject segmentFillerPrefab;
+        public float width { get; private set; }
         public Letter letter { get; private set; }
         public float totalLength { get; private set; }
         public float progress
@@ -67,6 +68,11 @@ namespace KidLetters
 
         }
 
+        private void Awake()
+        {
+            width = LetterObjectConfig.o.width;
+        }
+
         private void OnDestroy()
         {
             foreach (var x in segmentFillers)
@@ -106,6 +112,12 @@ namespace KidLetters
         {
             foreach (var x in segmentFillers)
                 x.setAlpha(alpha);
+        }
+        public void setWidth(float width)
+        {
+            this.width = width;
+            foreach (var x in segmentFillers)
+                x.onWidthChanged();
         }
 
     }

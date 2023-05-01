@@ -26,13 +26,14 @@ namespace KidLetters
                     var obj = Instantiate(prefab);
                     obj.transform.position = (j == 0 ? segment.startPoint : segment.endPoint);
                     var edgePoint = obj.GetComponent<EdgePoint>();
+                    edgePoint.isFirst = j == 0;
                     result.Add(edgePoint);
                     edgePoint.indexInSegment = j;
-                    edgePoint.startupPunch(.1f * ((i * 2) + j));
+                    edgePoint.startupPunch(.2f * ((i * 2) + j));
                 }
             }
             currentEdgePoints = result;
-            estimatedWaitTime = .1f * result.Count + .4f;
+            estimatedWaitTime = .2f * result.Count + .4f;
             return result;
         }
 
@@ -44,6 +45,32 @@ namespace KidLetters
                 Destroy(item.gameObject);
             }
             currentEdgePoints.Clear();
+        }
+        public void clearEdgePointsTween(float duration = .5f, float delay = .1f)
+        {
+            foreach (var item in currentEdgePoints)
+            {
+                item.collapse(duration).SetDelay(delay).OnComplete(() =>
+                    Destroy(item.gameObject)
+
+                );
+            }
+            currentEdgePoints.Clear();
+        }
+
+        public void onStartSegment(int segmentIndex)
+        {
+            for (int i = segmentIndex * 2; i <= segmentIndex * 2 + 1; i++)
+            {
+                currentEdgePoints[i].onStartTracing();
+
+
+            }
+        }
+        public void onEndSegment(int segmentIndex)
+        {
+            currentEdgePoints[segmentIndex * 2].onEndTracing();
+            currentEdgePoints[segmentIndex * 2 + 1].onEndTracing();
         }
     }
 }

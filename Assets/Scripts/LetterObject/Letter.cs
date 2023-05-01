@@ -98,13 +98,26 @@ public class Letter : MonoBehaviour
         _tweenAlpha = alpha;
         letterFiller.setAlpha(alpha);
     }
+    public void setWidth(float width)
+    {
+        _tweenWidth = width;
+        letterFiller.setWidth(width);
+    }
+    public void setNormalWidth()
+    {
+        setWidth(LetterObjectConfig.o.width);
+    }
+
 
     Color _tweenColor = Color.white;
     float _tweenAlpha = 1;
+    float _tweenWidth = .5f;
+
 
 
     Tween _doColorTween;
     Tween _doFadeTween;
+    Tween _doWidthTween;
 
 
 
@@ -116,6 +129,10 @@ public class Letter : MonoBehaviour
     {
         return _doFadeTween = DOTween.To(() => _tweenAlpha, x => letterFiller.setAlpha(x), alpha, duration);
     }
+    public Tween doWidth(float width, float duration)
+    {
+        return _doWidthTween = DOTween.To(() => _tweenWidth, x => setWidth(x), width, duration);
+    }
     public void doKill()
     {
         this.DOKill();
@@ -125,6 +142,9 @@ public class Letter : MonoBehaviour
 
         if (_doFadeTween != null)
             _doFadeTween.Kill();
+
+        if (_doWidthTween != null)
+            _doWidthTween.Kill();
     }
 
 
@@ -136,10 +156,8 @@ public class Letter : MonoBehaviour
         letterFiller.setColor(Color.white);
         letterFiller.setAlpha(1);
         letterFiller.setTotalProgress(1);
-
-
+        letterFiller.setWidth(LetterObjectConfig.o.width);
         return letterFiller;
-
     }
 
 

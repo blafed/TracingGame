@@ -2,8 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using TPhase = KidLetters.TracingPhase;
-
-
+using UnityEngine.Rendering;
 
 public class EdgePoint : MonoBehaviour
 {
@@ -17,6 +16,8 @@ public class EdgePoint : MonoBehaviour
     public int indexInSegment { get; set; }
     public Pattern pattern { get; private set; }
 
+    public bool isFirst { get; set; }
+
     public float diameter = .575f;
     [Space]
     [SerializeField] float rotationPerDistance = 30;
@@ -29,6 +30,14 @@ public class EdgePoint : MonoBehaviour
     [SerializeField] PairList<State, SpriteRenderer> stateRenderers = new PairList<State, SpriteRenderer>();
 
     [SerializeField] AudioSource startupAudio;
+    [SerializeField] AudioSource collapseAudio;
+    [SerializeField] AudioSource startTracingAudio;
+    [SerializeField] AudioSource endTracingAudio;
+    [SerializeField] AudioSource startAnimationAudio;
+    [SerializeField] AudioSource endAnimationAudio;
+
+    [SerializeField] GameObject startTracingEffect;
+    [SerializeField] GameObject endTracingEffect;
 
     Tween currentTween;
 
@@ -42,23 +51,33 @@ public class EdgePoint : MonoBehaviour
     public Transform wrapper => transform.GetChild(0);
 
 
+    SortingGroup sortingGroup;
 
 
+
+    private void Awake()
+    {
+        sortingGroup = GetComponent<SortingGroup>();
+    }
 
     protected virtual void Start()
     {
+
     }
 
     public void startupPunch(float delay = 0)
     {
         transform.localScale = new Vector3();
-        DOTween.Sequence().Append(transform.DOScale(1, .3f)).
-        Append(transform.DOPunchScale(Vector3.one * .5f, .25f, 1, 0)).SetDelay(delay);
+        DOTween.Sequence().Append(transform.DOScale(1.2f, .3f)).
+        Append(transform.DOPunchScale(Vector3.one * .5f, .25f, 1, 0)).
+        Append(transform.DOScale(1f.vector(), .5f))
+        .SetDelay(delay);
         if (startupAudio)
             startupAudio.Play();
+        transitRenderer(State.paused);
     }
 
-    public void startTweening()
+    public void startupTweening()
     {
         if (TPhase.o.stageButton)
         {
@@ -71,6 +90,40 @@ public class EdgePoint : MonoBehaviour
         }
 
         setStopped();
+    }
+
+    public Tween collapse(float duration = .5f)
+    {
+        if (collapseAudio)
+            collapseAudio.Play();
+        return transform.DOScale(0, duration).SetEase(Ease.InBack);
+    }
+    public void onStartTracing()
+    {
+        if (isFirst)
+            if (startTracingAudio)
+                startTracingAudio.Play();
+        transitRenderer(State.playing);
+
+        if (isFirst)
+            if (startTracingEffect)
+                startTracingEffect.myActive();
+
+
+
+        sortingGroup.sortingOrder++;
+    }
+    public void onEndTracing()
+    {
+        if (!isFirst)
+            if (endTracingAudio)
+                endTracingAudio.Play();
+
+        transitRenderer(State.completed);
+
+        if (endTracingEffect)
+            endTracingEffect.myActive();
+        sortingGroup.sortingOrder--;
     }
 
     protected virtual Tween transitRenderer(State state)

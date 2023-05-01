@@ -23,10 +23,13 @@ namespace KidLetters.Tracing
         public Pattern currentSegment => segmentIndex < segments.Count ? segments[segmentIndex] : null;
 
 
+        public float endSegmentOffset = 0.5f;
         //events
         public event Action<TracingState> onStateChanged;
         public event Action<Pattern> onSegmentChanged;
+        [System.Obsolete]
         public event Action onDone;
+        [System.Obsolete]
         public event Action<Pattern> onSegmentTracingDone;
 
         //private variables
@@ -89,7 +92,7 @@ namespace KidLetters.Tracing
                 Destroy(x.gameObject);
             segments.Clear();
             segmentIndex = 0;
-            letter.setTextEnabled(false);
+            // letter.setTextEnabled(false);
             for (int i = 0; i < letter.segmentCount; i++)
             {
                 var seg = letter.get(i);
@@ -165,8 +168,12 @@ namespace KidLetters.Tracing
             {
                 case TracingState.tracing:
 
-
+                    if (currentSegment.movedDistance >= currentSegment.pathLength - endSegmentOffset)
+                    {
+                        currentSegment.progress = 1;
+                    }
                     currentSegment.whileTracing();
+
                     if (currentSegment.isProgressCompleted)
                     {
                         hasSegmentChanged = true;

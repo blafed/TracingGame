@@ -29,6 +29,11 @@ namespace KidLetters.LetterFillers
             startEdgePoint.transform.position = getPoint(0);
             if (!isDot)
                 endEdgePoint.transform.position = getPoint(movedDistance);
+
+            startEdgePoint.transform.localScale = new Vector3(width, width, 1) * (isDot ? 2 : 1);
+            if (!isDot)
+                endEdgePoint.transform.localScale = new Vector3(width, width, 1);
+
         }
 
         void init()

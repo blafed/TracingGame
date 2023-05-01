@@ -4,7 +4,7 @@ namespace KidLetters
 {
     public class LetterSegmentFiller : MonoBehaviour
     {
-        public virtual float width => LetterObjectConfig.o.width;
+        public virtual float width => letterFiller.width;
         public LetterFiller letterFiller { get; private set; }
         LetterSegment segment { get; set; }
 
@@ -118,7 +118,11 @@ namespace KidLetters
 
         protected virtual void onMoved()
         {
-            // print("moved");
+        }
+
+        public virtual void onWidthChanged()
+        {
+            onMoved();
         }
 
 

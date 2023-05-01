@@ -14,6 +14,7 @@ namespace KidLetters
         //properties
         public Letter letter { get; private set; }
         public WordInfo wordInfo { get; private set; }
+        [System.Obsolete]
         public int doneStage { get; private set; } = 0;
         public TracingStageInfo[] tracingStages { get; private set; }
         public TracingStage currentStage { get; private set; }
@@ -39,19 +40,17 @@ namespace KidLetters
             doneStage = 0;
             List<PatternCode> patternCodes = Enumerable.Range(1, (int)PatternCode.sketch - 1).Select(x => (PatternCode)x).ToList();
 
-            if (overrideStages.Length > 0)
-                tracingStages = overrideStages;
-            else
-                tracingStages = new TracingStageInfo[3];
+            tracingStages = new TracingStageInfo[3];
 
             for (int i = 0; i < tracingStages.Length; i++)
             {
                 var stg = new TracingStageInfo();
-                if (i > 1)
+                if (i > 0 && i < tracingStages.Length - 1)
                 {
                     var patternCode = patternCodes.getRandom();
                     patternCodes.Remove(patternCode);
                     stg.patternCode = patternCode;
+                    stg.showThinLetter = true;
 
                 }
                 else
@@ -59,7 +58,8 @@ namespace KidLetters
                     stg.autoTracing = i == 0;
                     stg.patternCode = i == 0 ? PatternCode.sketch : PatternCode.brush;
                 }
-                tracingStages[i] = stg;
+                // stg.showThinLetter = !(stg.patternCode == PatternCode.sketch || stg.patternCode == PatternCode.brush);
+                tracingStages[i] = i < overrideStages.Length ? overrideStages[i] : stg;
             }
 
             StartCoroutine(cycle());
@@ -74,35 +74,20 @@ namespace KidLetters
             }
             letter.setTextEnabled(true);
             StopAllCoroutines();
+            EdgePointDealer.o.clearEdgePoints();
+            letter.setColor(Color.white);
 
         }
+
+
 
 
         //private functions
         IEnumerator cycle()
         {
             yield return Tracing.FocusOnLetter.o.play();
-
-            var edgePoints = EdgePointDealer.o.spawnEdgePoints(TracingConfig.o.edgePointPrefab, letter);
-            yield return new WaitForSeconds(EdgePointDealer.o.estimatedWaitTime);
-            yield return letter.doColor(Backgrounds.o.getBackgroundColor(), 1).WaitForCompletion();
-            letter.setTextEnabled(false);
-            playStage(0, null);
-
             onFocused?.Invoke();
-
-            yield return new WaitForSeconds(.5f);
-            Backgrounds.o.changeRandomly(BackgroundsList.forTracing);
-
-            for (int i = 0; i < tracingStages.Length; i++)
-            {
-                playStage(i, null);
-
-                yield return new WaitUntil(() => doneStage > i);
-            }
-
-            EdgePointDealer.o.clearEdgePoints();
-
+            yield return Tracing.TracingController.o.play();
             PronouncingPhase.o.setArgsAfterTracing(this.letter, wordInfo);
             Phase.change(PronouncingPhase.o);
         }
@@ -120,30 +105,44 @@ namespace KidLetters
                 Destroy(oldStage.gameObject);
 
             currentStage = Instantiate(stagePrefab).GetComponent<TracingStage>();
+            currentStage.transform.position = letter.transform.position;
             currentStage.setup(this.tracingStages[index]);
 
+            currentStage.endSegmentOffset = TracingConfig.o.edgePointRadius;
             currentStage.transform.parent = transform;
             oldStage = currentStage;
             //call event
 
-            currentStage.onDone += () =>
-                {
-                    if (index >= doneStage)
-                    {
-                        doneStage++;
-                        currentStage = null;
-                    }
-                };
+            // currentStage.onSegmentChanged += (x) =>
+            // {
+            //     if (currentStage.state == TracingState.tracing)
+            //     {
+            //         var segmentIndex = currentStage.segmentIndex;
+            //         EdgePointDealer.o.onStartSegment(segmentIndex);
+            //         if (segmentIndex > 0)
+            //             EdgePointDealer.o.onEndSegment(segmentIndex - 1);
+            //     }
+            // };
+            // currentStage.onDone += () =>
+            // {
+            // currentStage.transform.DOScale(0, .5f).SetEase(Ease.InBack);
+            // EdgePointDealer.o.clearEdgePointsTween(.5f, .1f);
+            // if (index >= doneStage)
+            // {
+            // doneStage++;
+            // currentStage = null;
+            // }
+            // };
 
             onStageChanged?.Invoke(currentStage);
             //registering the removing event after calling onStageChanged because, so let the other entities register their events in an order before removing the reference of currentStage
-            currentStage.onDone += () =>
-                {
-                    if (index >= doneStage)
-                    {
-                        currentStage = null;
-                    }
-                };
+            // currentStage.onDone += () =>
+            // {
+            // if (index >= doneStage)
+            // {
+            // currentStage = null;
+            // }
+            // };
 
         }
         public bool canPlayStage(int index)
@@ -158,6 +157,7 @@ namespace KidLetters
     {
         public PatternCode patternCode;
         public bool autoTracing;
+        public bool showThinLetter;
     }
 }
 
