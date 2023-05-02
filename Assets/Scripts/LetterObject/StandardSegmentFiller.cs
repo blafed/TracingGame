@@ -13,18 +13,18 @@ namespace KidLetters.LetterFillers
         Path pathInstance = new Path();
         SpriteRenderer startEdgePoint;
         SpriteRenderer endEdgePoint;
-        bool isInit;
-        protected override void Awake()
+        void Awake()
         {
             shapeController = GetComponentInChildren<SpriteShapeController>();
         }
-        protected override void onMoved()
+
+
+        public override void onMoved()
         {
-            init();
             if (!isDot)
-                moveSpline(shapeController, movedDistance, width, pathInstance);
+                moveSpline(shapeController, movedDistance, pathInstance);
             else
-                moveSpline(shapeController, 0, 0, pathInstance);
+                moveSpline(shapeController, 0, pathInstance);
 
             startEdgePoint.transform.position = getPoint(0);
             if (!isDot)
@@ -36,18 +36,16 @@ namespace KidLetters.LetterFillers
 
         }
 
-        void init()
+
+        protected override void onSetup()
         {
-            if (isInit)
-                return;
+            base.onSetup();
 
-            isInit = true;
-
-            startEdgePoint = Instantiate(roundEdgePoint, transform.parent).GetComponentInChildren<SpriteRenderer>();
+            startEdgePoint = Instantiate(roundEdgePoint, transform).GetComponentInChildren<SpriteRenderer>();
             startEdgePoint.transform.localScale = new Vector3(width, width, 1) * (isDot ? 2 : 1);
             if (!isDot)
             {
-                endEdgePoint = Instantiate(roundEdgePoint, transform.parent).GetComponentInChildren<SpriteRenderer>();
+                endEdgePoint = Instantiate(roundEdgePoint, transform).GetComponentInChildren<SpriteRenderer>();
                 endEdgePoint.transform.localScale = new Vector3(width, width, 1);
             }
         }
@@ -61,7 +59,6 @@ namespace KidLetters.LetterFillers
 
         public override void setColor(Color color)
         {
-            init();
             shapeController.spriteShapeRenderer.color = color;
             if (startEdgePoint)
                 startEdgePoint.color = color;
@@ -71,7 +68,6 @@ namespace KidLetters.LetterFillers
 
         public override void setAlpha(float alpha)
         {
-            init();
             var color = shapeController.spriteShapeRenderer.color;
             color.a = alpha;
             shapeController.spriteShapeRenderer.color = color;

@@ -14,9 +14,6 @@ public class ObjectPattern : Pattern
     protected List<CreatedObject> objects = new();
 
 
-    public override float unitedTime => _unitedTime;
-
-
     [System.Serializable]
     public class CreatedObject
     {
@@ -33,7 +30,7 @@ public class ObjectPattern : Pattern
         var s = Instantiate(objectSource).GetComponent<SpriteRenderer>();
         s.gameObject.SetActive(true);
         s.transform.parent = transform;
-        s.transform.position = transform.position + (Vector3)segment.path.startPoint;
+        s.transform.position = transform.position + (Vector3)startPoint;
         s.color = colors[objects.Count % colors.Length];
         CreatedObject c;
         objects.Add(c = new CreatedObject
@@ -91,12 +88,14 @@ public class ObjectPattern : Pattern
         }
     }
 
-    public override void whileUnited(float time)
+    public override bool whileUnited(float time)
     {
         base.whileUnited(time);
         if (isDot)
-            return;
+            return false;
         moveAllObjectsAlong(unitedSpeed * time);
+
+        return time > _unitedTime;
     }
 
 

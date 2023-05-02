@@ -8,6 +8,28 @@ namespace KidLetters
     {
         public float edgePointRadius = .575f;
         public GameObject edgePointPrefab;
-        public GameObject sketchPatternPrefab;
+
+        [SerializeField]
+        PairList<PatternCode, GameObject> patternPrefabs = new PairList<PatternCode, GameObject>();
+
+
+        public GameObject getPatternPrefab(PatternCode code)
+        {
+            return patternPrefabs.get(code);
+        }
     }
+}
+
+
+public enum PatternCode
+{
+    none,
+    chains,
+    road,
+    rainbow,
+    butterfly,
+    candy,
+    sketch,
+    brush,
+    COUNT,
 }

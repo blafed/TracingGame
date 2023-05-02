@@ -10,15 +10,15 @@ namespace KidLetters
         public float estimatedWaitTime { get; set; }
 
 
-        public List<EdgePoint> spawnEdgePoints(GameObject prefab, Letter letter, Vector2? startPoint = null)
+        public List<EdgePoint> spawnEdgePoints(GameObject prefab, LetterFiller letter, Vector2? startPoint = null)
         {
             List<EdgePoint> result = new List<EdgePoint>(2 * letter.segmentCount);
 
-            var filler = letter.filler;
+            var filler = letter;
 
             for (int i = 0; i < filler.segmentCount; i++)
             {
-                var segment = filler[i];
+                var segment = filler.getSegment(i);
                 if (segment.isDot)
                     continue;
                 for (int j = 0; j < 2; j++)
@@ -62,7 +62,8 @@ namespace KidLetters
         {
             for (int i = segmentIndex * 2; i <= segmentIndex * 2 + 1; i++)
             {
-                currentEdgePoints[i].onStartTracing();
+                if (i < currentEdgePoints.Count)
+                    currentEdgePoints[i].onStartTracing();
 
 
             }

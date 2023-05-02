@@ -82,6 +82,11 @@ public class Path
         return center + BezierHelper.EvaluateCubic(points[j], points[j + 1], points[j + 2], points[j + 3], r);
 
     }
+    public void clip(float start, float end, Path other)
+    {
+        //TODO: implement
+        throw new System.NotImplementedException();
+    }
     public void lerpFast(float moved, Path other)
     {
         moved = Mathf.Max(moved, 0);

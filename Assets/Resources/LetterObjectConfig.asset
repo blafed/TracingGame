@@ -12,5 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07c5afa89566feb48ae6b319467fceb4, type: 3}
   m_Name: LetterObjectConfig
   m_EditorClassIdentifier: 
+  width: 0.5
+  dotRadius: 0.5
   standardLetterFillerPrefab: {fileID: 8175795091896567025, guid: b4c76d5636799684ab3053e9b7b111dd, type: 3}
   blankLetterFillerPrefab: {fileID: 8175795091896567025, guid: 2068f6129e8291c41848771dc63fcd94, type: 3}

@@ -1,3 +1,4 @@
+using KidLetters.Home;
 using System.Collections;
 using UnityEngine;
 
@@ -7,10 +8,12 @@ namespace KidLetters
     {
         public bool skip = false;
         public int letterIndexInWord => wordInfo.indexOfLetter(letterId);
-        public int letterId => this.letter.letterId;
-        public Letter letter { get; private set; }
+        public int letterId { get; private set; }
+        // public LetterRaw letter { get; private set; }
         public WordInfo wordInfo { get; private set; }
         public bool isAfterTracing { get; private set; }
+
+        public LetterFiller letter { get; private set; }
 
 
         public void playLetterAudio(int letterId)
@@ -26,37 +29,36 @@ namespace KidLetters
         }
 
 
-        public void setArgs(Letter letter)
+        public void setArgs(int letterId)
         {
             this.isAfterTracing = false;
-            this.letter = letter;
-            wordInfo = WordList.o.getWordByStartingLetter(letter.letterId);
+            this.letterId = letterId;
+            wordInfo = WordList.o.getWordByStartingLetter(letterId);
         }
-        public void setArgsAfterTracing(Letter letter, WordInfo wordInfo)
+        public void setArgsAfterTracing(int letterId, WordInfo wordInfo)
         {
             this.isAfterTracing = true;
-            this.letter = letter;
+            this.letterId = letterId;
             this.wordInfo = wordInfo;
         }
 
 
         protected override void onEnter()
         {
+            letter = LetterFiller.createStandardFiller(LetterContainer.o.getLetter(letterId));
             StartCoroutine(cycle());
         }
         protected override void onExit()
         {
             StopAllCoroutines();
-            letter.gameObject.SetActive(true);
-            letter.setColor(Color.white);
-            letter.setTextEnabled(true);
+            Destroy(letter.gameObject);
         }
         IEnumerator cycle()
         {
             Home.LetterContainer.o.setActiveLetters(false, x => x == PronouncingPhase.o.letter);
             if (skip && !isAfterTracing)
             {
-                TracingPhase.o.setArgs(letter, wordInfo);
+                TracingPhase.o.setArgs(letterId, wordInfo);
                 Phase.change(TracingPhase.o);
                 yield break;
             }
@@ -69,13 +71,13 @@ namespace KidLetters
             if (isAfterTracing)
             {
                 yield return Pronouncing.LeadPronouncingToHome.o.play();
-                HomePhase.o.setArgs(letter);
+                HomePhase.o.setArgs(letterId);
                 Phase.change(HomePhase.o);
             }
             else
             {
                 yield return Pronouncing.TerminatePronouncing.o.play();
-                TracingPhase.o.setArgs(letter, wordInfo);
+                TracingPhase.o.setArgs(letterId, wordInfo);
                 Phase.change(TracingPhase.o);
             }
         }

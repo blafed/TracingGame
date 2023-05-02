@@ -40,7 +40,7 @@ namespace KidLetters.Pronouncing
 
 
 
-        List<Letter> letters = new();
+        List<LetterFiller> letters = new();
         float width;
 
         private void Start()
@@ -63,7 +63,7 @@ namespace KidLetters.Pronouncing
             {
                 // var dif = i - indexOfTargetLetter;
                 var letterId = wordInfo.getLetterId(i);
-                var c = Instantiate(LetterPrefabContainer.o.getLetterPrefab(letterId)).GetComponent<Letter>();
+                var c = LetterFiller.createStandardFiller(LetterContainer.o.getLetter(letterId));
                 nextPosition.x += c.relativeViewRect.size.x / 2;
 
                 this.letters.Add(c);
@@ -124,7 +124,7 @@ namespace KidLetters.Pronouncing
                 if (i != 0)
                     yield return new WaitForSeconds(letterDelay);
 
-                var letterId = x.letterId;
+                var letterId = wordInfo.getLetterId(i);
 
                 var playAudio = wordInfo.spellingClips[actualI];
                 if (wordInfo.isDigraph(i))
@@ -143,7 +143,7 @@ namespace KidLetters.Pronouncing
 
         }
 
-        IEnumerator playLetter(Letter letter, AudioClip playAudio, float customWait = 0)
+        IEnumerator playLetter(LetterFiller letter, AudioClip playAudio, float customWait = 0)
         {
             letter.gameObject.SetActive(true);
             letter.setColor(glowOptions.normalColor);
@@ -162,7 +162,7 @@ namespace KidLetters.Pronouncing
         }
 
 
-        public IEnumerator fadeOutLetters(float duration, System.Predicate<Letter> except = null)
+        public IEnumerator fadeOutLetters(float duration, System.Predicate<LetterFiller> except = null)
         {
             foreach (var x in letters)
             {

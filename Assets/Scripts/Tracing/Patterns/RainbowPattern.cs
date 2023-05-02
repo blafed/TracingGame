@@ -41,9 +41,9 @@ public class RainbowPattern : SplinePattern
         {
             var s = Instantiate(shines.getRandom(), getPoint(movedDistance), default);
             s.SetActive(true);
-            var normal = currentPath.simpleNormal(movedDistance);
+            var normal = pathInstance.simpleNormal(movedDistance);
             var r = Random.Range(-1f, 1).signOrZero();
-            s.transform.position += normal.toVector3() * r * splineHeight * spacing;
+            s.transform.position += normal.toVector3() * r * spacing;
             s.transform.parent = transform;
             shineTimer = rate.random;
             tweenShine(s.transform);

@@ -100,7 +100,7 @@ namespace KidLetters.Tracing
                     }
                     else
                     {
-                        var leftDistance = pattern.segment.totalLength - totalAddedDistance;
+                        var leftDistance = pattern.pathLength - totalAddedDistance;
                         var diff = Mathf.Clamp(leftDistance + addingSpeed, 0, addingSpeed);
                         // addedDistanceAt = totalAddedDistance;
                         totalAddedDistance += diff * Time.deltaTime;

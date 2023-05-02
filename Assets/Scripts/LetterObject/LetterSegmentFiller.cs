@@ -1,21 +1,22 @@
 using UnityEngine;
 using UnityEngine.U2D;
+using KidLetters.Tracing;
 namespace KidLetters
 {
     public class LetterSegmentFiller : MonoBehaviour
     {
         public virtual float width => letterFiller.width;
         public LetterFiller letterFiller { get; private set; }
-        LetterSegment segment { get; set; }
+        // LetterRawSegment segment { get; set; }
 
 
-        public bool isDot => segment.isDot;
-        public virtual Path targetPath => segment.path;
-        protected virtual float pathScale => 1;
+        public bool isDot { get; private set; }
+        public Path targetPath { get; private set; }
 
 
         public Vector2 startPoint => getPoint(0);
         public Vector2 endPoint => getPoint(pathLength);
+        public Vector2 currentPoint => getPoint(movedDistance);
 
         public float progress
         {
@@ -27,27 +28,40 @@ namespace KidLetters
             get => _movedDistance;
             set
             {
-                _movedDistance = value;
+                _movedDistance = Mathf.Clamp(value, 0, pathLength);
                 onMoved();
             }
         }
+        public virtual float addedLength => 0;
 
-        float _movedDistance;
 
-        public float pathLength => segment.isDot ? segment.dotRadius * 2 : segment.totalLength;
+        public float dotRadius => LetterObjectConfig.o.dotRadius;
+
+        public float pathLength => isDot ? dotRadius * 2 : _pathLength;
         public bool isProgressCompleted => progress >= 1;
 
 
-        public void setup(LetterFiller letterFiller, LetterSegment segment)
+        float _pathLength;
+        float _movedDistance;
+
+
+        public void setup(LetterFiller letterFiller, GlyphSegment segment)
         {
             this.letterFiller = letterFiller;
-            this.segment = segment;
+            this.isDot = segment.isDot;
+            this.targetPath = segment.path;
+            _pathLength = segment.pathLegnth;
+            onSetup();
+        }
+
+        protected virtual void onSetup()
+        {
+
         }
 
         public Vector2 getPoint(float movedDistance)
         {
-            movedDistance /= pathScale;
-            return transform.position + targetPath.evaluate(movedDistance).toVector3() * pathScale;
+            return transform.position + targetPath.evaluate(movedDistance).toVector3();
         }
         protected void moveObjectAlong(Transform obj, float movedDistance)
         {
@@ -61,7 +75,7 @@ namespace KidLetters
             var a = getPoint(movedDistance);
             var t = movedDistance * 1.01f;
             bool isInverse = false;
-            if (t > segment.totalLength)
+            if (t > pathLength)
             {
                 t = movedDistance / 1.01f;
                 isInverse = true;
@@ -79,6 +93,7 @@ namespace KidLetters
         public void initSpline(float splineHeight, SpriteShapeController shapeController)
         {
 
+            shapeController.splineDetail = 64;
             SplineControlPoint factory()
             {
                 return new SplineControlPoint
@@ -93,13 +108,19 @@ namespace KidLetters
 
             path.points[0] = path.points[1] = splineHeight * Vector2.up;
             path.points[3] = path.points[2] = -splineHeight * Vector2.up;
-            shapeController.transform.localScale = 2f.vector();
+            // shapeController.transform.localScale = 2f.vector();
             SplinePathHelper.pathToSpline(path, shapeController.spline, factory);
         }
 
-        public void moveSpline(SpriteShapeController shapeContrller, float movedDistance, float splineHeight, Path pathInstance)
+        public void moveSpline(SpriteShapeController shapeContrller, float movedDistance, Path pathInstance)
         {
-            targetPath.lerpFast(movedDistance / splineHeight, pathInstance);
+            targetPath.lerpFast(movedDistance, pathInstance);
+            SplinePathHelper.pathToSpline(pathInstance, shapeContrller.spline, splineControlPointFactory);
+            // moveSplineAdvanced(shapeContrller, 0, movedDistance, splineHeight, pathInstance);
+        }
+        public void moveSplineAdvanced(SpriteShapeController shapeContrller, float startAtDistance, float endAtDistance, Path pathInstance)
+        {
+            targetPath.lerpFast(movedDistance, pathInstance);
             SplinePathHelper.pathToSpline(pathInstance, shapeContrller.spline, splineControlPointFactory);
         }
 
@@ -113,10 +134,8 @@ namespace KidLetters
                 cornerMode = Corner.Automatic,
             };
         }
-        protected virtual void Start() { }
-        protected virtual void Awake() { }
 
-        protected virtual void onMoved()
+        public virtual void onMoved()
         {
         }
 

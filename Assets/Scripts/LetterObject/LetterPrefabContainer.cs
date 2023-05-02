@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace KidLetters
 {
+    /// <summary>
+    /// Contains all the letter prefabs
+    /// </summary>
     [CreateAssetMenu(fileName = "LetterPrefabContainer", menuName = "KidLetters/LetterPrefabContainer", order = 0)]
     public class LetterPrefabContainer : Config<LetterPrefabContainer>
     {

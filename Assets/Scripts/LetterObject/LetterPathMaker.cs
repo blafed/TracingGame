@@ -5,6 +5,10 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
+
+/// <summary>
+/// Advanced path maker that can generate complex pathes
+/// </summary>
 [DefaultExecutionOrder(1)]
 public class LetterPathMaker : MonoBehaviour, IPathProvider
 {

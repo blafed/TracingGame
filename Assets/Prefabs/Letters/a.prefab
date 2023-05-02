@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8833489775330217622}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0.0000000147177035}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.041, y: 0, z: 0}
+  m_LocalScale: {x: 0.97, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8833489776627266187}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDot: 0
+  dotRadius: 0.4
 --- !u!114 &494669758347324035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,7 +64,7 @@ MonoBehaviour:
   height: 1
   diameter: 3.63
   circularity: 1
-  absense: 0.1
+  absense: 0
   centerAbsense: 1
   _path:
     center: {x: 0, y: 0}
@@ -130,6 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDot: 0
+  dotRadius: 0.4
 --- !u!114 &3105044670111484636
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +381,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 4, y: 4}
-  _viewRectCenter: {x: 0, y: 0}
-  _viewRectSize: {x: 4, y: 4}
+  _viewRect:
+    serializedVersion: 2
+    x: -2
+    y: -2
+    width: 4
+    height: 4
   useCustomPattern: 0
   customPatterns: 

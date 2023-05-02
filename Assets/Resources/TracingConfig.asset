@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a66b90c3a5b106e45a6953b64723e99b, type: 3}
   m_Name: TracingConfig
   m_EditorClassIdentifier: 
+  edgePointRadius: 0.575
   edgePointPrefab: {fileID: 5991077014488870945, guid: c58b6b0e83656a14282f95b6ec514807, type: 3}
-  sketchPatternPrefab: {fileID: 6503913184773429808, guid: 05bd48c52b2c29146b8cccb4f2959541, type: 3}
+  patternPrefabs:
+    items:
+    - key: 1
+      value: {fileID: 6503913184773429808, guid: 61a31fb3b2e32754b9d914086aaa9b00, type: 3}
+    - key: 2
+      value: {fileID: 6503913184773429808, guid: 03383a876bf0dac4ab5ba8bbb1892d93, type: 3}
+    - key: 3
+      value: {fileID: 6503913184773429808, guid: 6732d28aef6a3f045a691250bcd4285d, type: 3}
+    - key: 4
+      value: {fileID: 6503913184773429808, guid: fffb23617a5a98d45ba8f8564458f141, type: 3}
+    - key: 5
+      value: {fileID: 6503913184773429808, guid: fb70df8ed529e4844bdc9df7c256ab86, type: 3}
+    - key: 6
+      value: {fileID: 6503913184773429808, guid: 05bd48c52b2c29146b8cccb4f2959541, type: 3}
+    - key: 7
+      value: {fileID: 6503913184773429808, guid: c0132da39a8c2f947bbeadcd50b58f05, type: 3}

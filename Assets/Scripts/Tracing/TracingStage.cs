@@ -9,7 +9,7 @@ namespace KidLetters.Tracing
 
         //static
         static TracingPhase phase => TracingPhase.o;
-        static Letter letter => phase.letter;
+        static LetterFiller letter => phase.letter;
 
         //public properties
         public TracingStageInfo info { get; private set; }
@@ -41,7 +41,6 @@ namespace KidLetters.Tracing
 
         //fields
         [SerializeField] float animationSpeed = 2;
-        [SerializeField] List<Pattern> patternObjects = new List<Pattern>();
 
 
         public void setup(TracingStageInfo info)
@@ -50,13 +49,13 @@ namespace KidLetters.Tracing
         }
 
 
-        Pattern getPatternPrefab(PatternCode code)
+        GameObject getPatternPrefab(PatternCode code)
         {
-            return patternObjects.Find(x => x.code == code);
+            return TracingConfig.o.getPatternPrefab(code);
         }
         Pattern createPattern(PatternCode code)
         {
-            var go = patternObjects.Find(x => x.code == code).gameObject;
+            var go = getPatternPrefab(code);
             go = Instantiate(go);
             return go.GetComponent<Pattern>();
         }
@@ -77,7 +76,7 @@ namespace KidLetters.Tracing
                 Debug.LogError("Current Letter is not set", gameObject);
                 return;
             }
-            var patternPrefab = getPatternPrefab(info.patternCode);
+            var patternPrefab = getPatternPrefab(info.patternCode).GetComponent<Pattern>();
             if (!patternPrefab)
             {
                 Debug.LogError("No Pattern prefab " + info.patternCode);
@@ -86,7 +85,6 @@ namespace KidLetters.Tracing
             unitedTime = 0;
             state = TracingState.initial;
 
-            initialTime = patternPrefab.waitBeforeEnableTracing;
             hasSegmentChanged = true;
             foreach (var x in segments)
                 Destroy(x.gameObject);
@@ -95,11 +93,11 @@ namespace KidLetters.Tracing
             // letter.setTextEnabled(false);
             for (int i = 0; i < letter.segmentCount; i++)
             {
-                var seg = letter.get(i);
+                var seg = letter.getSegment(i);
                 var pattern = createPattern(info.patternCode);
                 pattern.transform.parent = transform;
                 pattern.transform.position = seg.transform.position;
-                pattern.setup(seg);
+                pattern.setup(letter, letter.glyph.get(i));
                 pattern.progress = 0;
                 pattern.onCreated();
                 segments.Add(pattern);
@@ -202,8 +200,9 @@ namespace KidLetters.Tracing
 
                     foreach (var x in segments)
                     {
-                        x.whileUnited(unitedTime);
-                        if (unitedTime > x.unitedTime)
+                        var isUnitedOver = x.whileUnited(unitedTime);
+
+                        if (isUnitedOver)
                         {
                             hasSegmentChanged = true;
                             foreach (var y in segments)

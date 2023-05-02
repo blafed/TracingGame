@@ -3,26 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.U2D;
+using SplinePathHelper = KidLetters.Tracing.SplinePathHelper;
 [DefaultExecutionOrder(0)]
-public class LetterSegment : MonoBehaviour
+public class LetterRawSegment : MonoBehaviour
 {
-    public Vector2 position
-    {
-        get => transform.position;
-        set => transform.position = value;
-    }
-    public Letter letter => this.cachedComponentInParent(ref _letter);
     public Path path { get; private set; }
-
-
-
-    public float totalLength { get; private set; }
+    public float pathLegnth { get; private set; }
 
     public bool isDot;
     public float dotRadius = .4f;
 
-
-    Letter _letter;
 
 
     private void Awake()
@@ -49,7 +39,7 @@ public class LetterSegment : MonoBehaviour
                     Debug.LogError("Segment doesn't have path", this);
             }
         }
-        totalLength = path.totalLength;
+        pathLegnth = path.totalLength;
 
         path.center = default;
 

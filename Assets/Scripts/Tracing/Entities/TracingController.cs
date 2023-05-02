@@ -6,7 +6,7 @@ namespace KidLetters.Tracing
     public class TracingController : Singleton<TracingController>
     {
         static TracingPhase phase => TracingPhase.o;
-        static Letter letter => phase.letter;
+        static LetterFiller letter => phase.letter;
 
 
         IEnumerator spawnEdgePoints()
@@ -32,13 +32,13 @@ namespace KidLetters.Tracing
                 if (stageInfo.showThinLetter)
                 {
                     phase.letter.setNormalWidth();
-                    phase.letter.setTextEnabled(true);
+                    phase.letter.setEnabled(true);
                     phase.letter.setColor(Color.white);
                     yield return letter.doWidth(.2f, .5f).WaitForCompletion();
                 }
                 else
                 {
-                    phase.letter.setTextEnabled(false);
+                    phase.letter.setEnabled(false);
                 }
                 if (i != 0)
                 {

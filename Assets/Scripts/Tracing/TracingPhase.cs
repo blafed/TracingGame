@@ -11,8 +11,9 @@ namespace KidLetters
 
         [SerializeField]
         TracingStageInfo[] overrideStages = new TracingStageInfo[0];
+        public int letterId { get; private set; }
         //properties
-        public Letter letter { get; private set; }
+        public LetterFiller letter { get; private set; }
         public WordInfo wordInfo { get; private set; }
         [System.Obsolete]
         public int doneStage { get; private set; } = 0;
@@ -62,6 +63,7 @@ namespace KidLetters
                 tracingStages[i] = i < overrideStages.Length ? overrideStages[i] : stg;
             }
 
+            letter = LetterFiller.createStandardFiller(Home.LetterContainer.o.getLetter(letterId));
             StartCoroutine(cycle());
         }
         protected override void onExit()
@@ -72,7 +74,7 @@ namespace KidLetters
             {
                 Destroy(oldStage.gameObject);
             }
-            letter.setTextEnabled(true);
+            letter.setEnabled(true);
             StopAllCoroutines();
             EdgePointDealer.o.clearEdgePoints();
             letter.setColor(Color.white);
@@ -88,14 +90,14 @@ namespace KidLetters
             yield return Tracing.FocusOnLetter.o.play();
             onFocused?.Invoke();
             yield return Tracing.TracingController.o.play();
-            PronouncingPhase.o.setArgsAfterTracing(this.letter, wordInfo);
+            PronouncingPhase.o.setArgsAfterTracing(letterId, wordInfo);
             Phase.change(PronouncingPhase.o);
         }
 
         //public functions
-        public void setArgs(Letter letter, WordInfo wordInfo)
+        public void setArgs(int letterId, WordInfo wordInfo)
         {
-            this.letter = letter;
+            this.letterId = letterId;
             this.wordInfo = wordInfo;
         }
         public void playStage(int index, StageButton stageButton)

@@ -15,71 +15,62 @@ public class SketchPattern : SplinePattern
     Transform startRoundEdge => roundEdges[0];
     Transform endRoundEdge => roundEdges[1];
 
-    void createRoundEdges()
+    protected override void onSetup()
     {
-        for (int j = 0; j < 2; j++)
-        {
-            var p = segment.path.startPoint;
-            if (j == 1)
-                p = segment.path.endPoint;
+        base.onSetup();
 
-            var x = Instantiate(_edgePointPrefab, p, default);
-            var edgePoint = x.transform;
-            roundEdges[j] = edgePoint;
-            x.transform.parent = transform.parent;
-            if (j == 1)
-                x.transform.position = transform.position.toVector2() + segment.path.endPoint;
-            else
-                x.transform.position = transform.position.toVector2() + segment.path.startPoint;
-        }
-    }
-
-    public override void onCreated()
-    {
-        base.onCreated();
         if (isDot)
             return;
         for (int j = 0; j < 2; j++)
         {
-            var p = segment.path.startPoint;
+            var p = startPoint;
             if (j == 1)
-                p = segment.path.endPoint;
+                p = endPoint;
 
             var x = Instantiate(_edgePointPrefab, p, default);
             var edgePoint = x.transform;
             roundEdges[j] = edgePoint;
             x.transform.parent = transform.parent;
             if (j == 1)
-                x.transform.position = transform.position.toVector2() + segment.path.endPoint;
+                x.transform.position = endPoint;
             else
-                x.transform.position = transform.position.toVector2() + segment.path.startPoint;
+                x.transform.position = startPoint;
         }
-
-        // if (startEdgePoint)
-        // startEdgePoint.gameObject.SetActive(false);
-        // if (endEdgePoint)
-        // endEdgePoint.gameObject.SetActive(false);
-
     }
 
-    public override void onStartTracing()
+    void createRoundEdges()
     {
-        base.onStartTracing();
+        for (int j = 0; j < 2; j++)
+        {
+            var p = startPoint;
+            if (j == 1)
+                p = endPoint;
+
+            var x = Instantiate(_edgePointPrefab, p, default);
+            var edgePoint = x.transform;
+            roundEdges[j] = edgePoint;
+            x.transform.parent = transform.parent;
+            if (j == 1)
+                x.transform.position = transform.position.toVector2() + endPoint;
+            else
+                x.transform.position = transform.position.toVector2() + startPoint;
+        }
     }
 
-
-
-
-
-    public override void whileTracing()
+    public override void onMoved()
     {
-        moveSpline();
-        if (endRoundEdge)
-            moveObjectAlong(endRoundEdge.transform, movedDistance);
+        base.onMoved();
+
+        if (isDot)
+            return;
+
+        startRoundEdge.transform.position = getPoint(0);
+        endRoundEdge.transform.position = getPoint(movedDistance);
+        foreach (var edge in roundEdges)
+        {
+            if (edge)
+                edge.localScale = new Vector3(width, width, 1);
+        }
     }
-    public override void onStartAnimation()
-    {
-        base.onStartAnimation();
-        progress = 1;
-    }
+
 }

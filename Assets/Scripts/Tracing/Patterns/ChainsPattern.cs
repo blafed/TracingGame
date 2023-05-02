@@ -15,15 +15,14 @@ public class ChainsPattern : SplinePattern
     bool isHookAnimationDone;
     bool isHookAnimationStarted;
 
-    public override float unitedTime => _unitedTime;
-    protected override float addedLength => isDot ? 0 : _hookLength;
+    // public override float unitedTime => _unitedTime;
 
 
 
     public override void onCreated()
     {
         base.onCreated();
-        followObject.localScale = splineHeight.vector();
+        followObject.localScale = width.vector();
     }
 
     public override void onStartTracing()
@@ -34,6 +33,8 @@ public class ChainsPattern : SplinePattern
         {
             followObject.gameObject.SetActive(false);
         }
+
+        movedDistance = Mathf.Max(_hookLength, movedDistance);
     }
     public override void onEndTracing()
     {

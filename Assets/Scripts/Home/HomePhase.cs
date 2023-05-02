@@ -5,22 +5,22 @@ namespace KidLetters
     using Home;
     public class HomePhase : Phase<HomePhase>
     {
-        public Letter selectedLetter { get; private set; }
-        Letter highlightCompletedLetter;
+        public LetterRaw selectedLetter { get; private set; }
+        LetterRaw highlightCompletedLetter;
 
 
-        public void setArgs(Letter highlightCompletedLetter)
+        public void setArgs(int letterId)
         {
-            this.highlightCompletedLetter = highlightCompletedLetter;
+            this.highlightCompletedLetter = LetterContainer.o.getLetter(letterId);
         }
 
 
-        public void selectLetter(Letter letter)
+        public void selectLetter(LetterRaw letter)
         {
             if (this.selectedLetter)
                 return;
             this.selectedLetter = letter;
-            PronouncingPhase.o.setArgs(letter);
+            PronouncingPhase.o.setArgs(letter.letterId);
             Phase.change(PronouncingPhase.o);
         }
 
