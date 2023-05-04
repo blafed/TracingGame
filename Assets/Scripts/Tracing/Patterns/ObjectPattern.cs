@@ -22,6 +22,9 @@ public class ObjectPattern : Pattern
         public SpriteRenderer renderer;
         public float delay;
         public int index;
+
+
+        public float randomParameter;
     }
 
 
@@ -38,7 +41,8 @@ public class ObjectPattern : Pattern
             gameObject = s.gameObject,
             renderer = s,
             delay = (movedDistance / spacing).floor() * spacing,
-            index = objects.Count
+            index = objects.Count,
+            randomParameter = Random.value
         });
         moveObjectAlong(s.transform, movedDistance);
 
@@ -64,9 +68,9 @@ public class ObjectPattern : Pattern
         base.onStartAnimation();
         progress = 1;
     }
-    public override void whileTracing()
+    public override void whileTracing(float movedDistance)
     {
-        base.whileTracing();
+        base.whileTracing(movedDistance);
 
         if (isDot)
         {

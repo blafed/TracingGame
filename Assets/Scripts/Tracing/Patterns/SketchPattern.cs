@@ -15,6 +15,10 @@ public class SketchPattern : SplinePattern
     Transform startRoundEdge => roundEdges[0];
     Transform endRoundEdge => roundEdges[1];
 
+
+    public override bool useAnimation => false;
+    public override bool useUnitedAnimation => false;
+
     protected override void onSetup()
     {
         base.onSetup();
@@ -30,33 +34,13 @@ public class SketchPattern : SplinePattern
             var x = Instantiate(_edgePointPrefab, p, default);
             var edgePoint = x.transform;
             roundEdges[j] = edgePoint;
-            x.transform.parent = transform.parent;
+            x.transform.parent = transform;
             if (j == 1)
                 x.transform.position = endPoint;
             else
                 x.transform.position = startPoint;
         }
     }
-
-    void createRoundEdges()
-    {
-        for (int j = 0; j < 2; j++)
-        {
-            var p = startPoint;
-            if (j == 1)
-                p = endPoint;
-
-            var x = Instantiate(_edgePointPrefab, p, default);
-            var edgePoint = x.transform;
-            roundEdges[j] = edgePoint;
-            x.transform.parent = transform.parent;
-            if (j == 1)
-                x.transform.position = transform.position.toVector2() + endPoint;
-            else
-                x.transform.position = transform.position.toVector2() + startPoint;
-        }
-    }
-
     public override void onMoved()
     {
         base.onMoved();
@@ -71,6 +55,16 @@ public class SketchPattern : SplinePattern
             if (edge)
                 edge.localScale = new Vector3(width, width, 1);
         }
+    }
+
+    public override void onStartAnimation()
+    {
+        newMovedDistance = pathLength;
+    }
+
+    public override bool whileUnited(float time)
+    {
+        return true;
     }
 
 }

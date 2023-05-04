@@ -23,14 +23,14 @@ public class RainbowPattern : SplinePattern
         followObject.gameObject.SetActive(false);
     }
 
-    public override void whileTracing()
+    public override void whileTracing(float movedDistance)
     {
-        base.whileTracing();
+        base.whileTracing(movedDistance);
         moveSpline();
     }
-    public override void whileAnimation()
+    public override void whileAnimation(float movedDistance)
     {
-        base.whileAnimation();
+        base.whileAnimation(movedDistance);
 
 
 

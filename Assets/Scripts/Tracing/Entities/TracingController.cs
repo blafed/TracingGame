@@ -9,6 +9,7 @@ namespace KidLetters.Tracing
         static LetterFiller letter => phase.letter;
 
 
+
         IEnumerator spawnEdgePoints()
         {
             EdgePointDealer.o.spawnEdgePoints(TracingConfig.o.edgePointPrefab, letter);
@@ -23,12 +24,11 @@ namespace KidLetters.Tracing
 
             // yield return letter.doColor(Backgrounds.o.getBackgroundColor(), .5f).WaitForCompletion();
             // letter.setTextEnabled(false);
-            phase.playStage(0, null);
             // Backgrounds.o.changeRandomly(BackgroundsList.forTracing);
 
-            for (int i = 0; i < phase.tracingStages.Length; i++)
+            for (int i = 0; i < phase.stageInfos.Count; i++)
             {
-                var stageInfo = phase.tracingStages[i];
+                var stageInfo = phase.stageInfos[i];
                 if (stageInfo.showThinLetter)
                 {
                     phase.letter.setNormalWidth();
@@ -38,7 +38,8 @@ namespace KidLetters.Tracing
                 }
                 else
                 {
-                    phase.letter.setEnabled(false);
+                    yield return letter.doColor(Backgrounds.o.getBackgroundColor(), .5f).WaitForCompletion();
+                    // phase.letter.setEnabled(false);
                 }
                 if (i != 0)
                 {
@@ -47,17 +48,18 @@ namespace KidLetters.Tracing
                     yield return spawnEdgePoints();
                     yield return new WaitForSeconds(.5f);
                 }
-                phase.playStage(i, null);
-                //waiting for Start() function to be called on TracingStage script, by waiting for the next frame
-                yield return new WaitForFixedUpdate();
-                yield return stageCycle();
+                yield return stageCycle(i);
             }
             EdgePointDealer.o.clearEdgePointsTween();
             yield return new WaitForSeconds(1f);
             letter.setNormalWidth();
         }
-        IEnumerator stageCycle()
+        IEnumerator stageCycle(int stageIndex)
         {
+            phase.playStage(stageIndex, null);
+            //waiting for Start() function to be called on TracingStage script, by waiting for the next frame
+            // yield return new WaitForFixedUpdate();
+
             var stage = phase.currentStage;
 
 
@@ -66,10 +68,11 @@ namespace KidLetters.Tracing
                 var segmentIndex = i;
                 yield return new WaitForSeconds(.5f);
                 EdgePointDealer.o.onStartSegment(segmentIndex);
-                yield return new WaitUntil(() => stage.segmentIndex != i);
-                EdgePointDealer.o.onEndSegment(segmentIndex);
+                yield return stage.play();
+                // yield return new WaitUntil(() => stage.segmentIndex != i);
+                // EdgePointDealer.o.onEndSegment(segmentIndex);
             }
-            EdgePointDealer.o.onEndSegment(stage.segmentCount - 1);
+            // EdgePointDealer.o.onEndSegment(stage.segmentCount - 1);
 
             yield return new WaitForSeconds(1f);
         }

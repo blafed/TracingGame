@@ -8,6 +8,7 @@ namespace KidLetters
     {
         public float edgePointRadius = .575f;
         public GameObject edgePointPrefab;
+        public GameObject edgePointDealerPrefab;
 
         [SerializeField]
         PairList<PatternCode, GameObject> patternPrefabs = new PairList<PatternCode, GameObject>();

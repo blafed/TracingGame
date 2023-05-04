@@ -56,6 +56,9 @@ namespace KidLetters
         // public float activeMovedDistance => activeSegment.movedDistance;
 
 
+        public IReadOnlyList<LetterSegmentFiller> segments => segmentFillers;
+
+
         List<LetterSegmentFiller> segmentFillers = new List<LetterSegmentFiller>();
         bool _didSetup;
 
@@ -252,11 +255,17 @@ namespace KidLetters
         }
 
 
-
-        public static LetterFiller createFiller(LetterRaw basedLetter, GameObject prefab)
+        public static LetterFiller createFiller(LetterRaw letterRaw, GameObject prefab)
         {
-            var letterFiller = Instantiate(prefab, basedLetter.transform.position, default).GetComponent<LetterFiller>();
-            letterFiller.setup(basedLetter.generateGlyph());
+            var letterFiller = createFiller(letterRaw.generateGlyph(), prefab);
+            letterFiller.transform.position = letterRaw.transform.position;
+
+            return letterFiller;
+        }
+        public static LetterFiller createFiller(Glyph glyph, GameObject prefab)
+        {
+            var letterFiller = Instantiate(prefab).GetComponent<LetterFiller>();
+            letterFiller.setup(glyph);
             letterFiller.setColor(Color.white);
             letterFiller.setAlpha(1);
             letterFiller.setTotalProgress(1);
@@ -266,6 +275,10 @@ namespace KidLetters
         public static LetterFiller createStandardFiller(LetterRaw basedLetter)
         {
             return createFiller(basedLetter, LetterObjectConfig.o.standardLetterFillerPrefab);
+        }
+        public static LetterFiller createStandardFiller(Glyph glyph)
+        {
+            return createFiller(glyph, LetterObjectConfig.o.standardLetterFillerPrefab);
         }
 
 

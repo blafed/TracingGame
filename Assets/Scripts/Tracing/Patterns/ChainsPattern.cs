@@ -41,9 +41,8 @@ public class ChainsPattern : SplinePattern
         base.onEndTracing();
         hookAnimate();
     }
-    public override void whileTracing()
+    public override void whileTracing(float movedDistance)
     {
-        base.whileTracing();
         moveSpline();
         moveObjectAlong(followObject, movedDistance);
         followObject.localEulerAngles += Vector3.forward * hookWaving.calculate(movedDistance);

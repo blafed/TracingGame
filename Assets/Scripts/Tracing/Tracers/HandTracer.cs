@@ -18,9 +18,6 @@ namespace KidLetters.Tracing
         static InputManager im => InputManager.o;
 
 
-        public TracingStage stage { get; private set; }
-
-
         protected override void Awake()
         {
             base.Awake();
@@ -36,14 +33,8 @@ namespace KidLetters.Tracing
         float totalAddedDistance;
         float addedDistanceAt;
         bool isDotPlotted;
+        float movedDistance;
 
-
-
-        public void setup(TracingStage stage)
-        {
-            this.stage = stage;
-            stage.onSegmentChanged += onSegmentPatternChange;
-        }
 
         void incorrectInput()
         {
@@ -51,72 +42,65 @@ namespace KidLetters.Tracing
         }
 
 
-        public void onSegmentPatternChange(Pattern pattern)
+
+        public override void flush()
         {
-            if (pattern)
-                totalAddedDistance = pattern.movedDistance;
+            totalAddedDistance = 0;
+            isDotPlotted = false;
         }
-        private void Update()
+
+        public override float getNewMovement(LetterSegmentFiller segment, float dt)
         {
             var p = im.point;
 
-            if (stage.state == TracingState.tracing && !stage.hasSegmentChanged)
+
+            if (segment.isDot)
             {
+                var boundingOnDot = new BoundingSphere(segment.transform.position, segment.dotRadius);
 
-                var pattern = stage.currentSegment;
-
-                if (pattern.isDot)
+                if (im.isEnter && boundingOnDot.contains(im.point))
                 {
-                    var boundingOnDot = new BoundingSphere(pattern.transform.position, pattern.dotRadius);
-
-                    if (im.isEnter && boundingOnDot.contains(im.point))
-                    {
-                        isDotPlotted = true;
-                    }
-
-
-                    if (isDotPlotted)
-                    {
-                        pattern.movedDistance += maxSpeed * Time.deltaTime;
-                    }
-
-                    return;
-                }
-
-                if (im.isEnter)
-                {
-                    var currentPoint = pattern.getPoint(totalAddedDistance);
-                    var inPoint = im.point;
-                    var dst = Vector2.Distance(currentPoint, inPoint);
-                    var dir = pattern.getDirection(totalAddedDistance);
-                    var point2 = currentPoint + dir * distanceThreshold;
-
-
-                    // var r = Rect.MinMaxRect(currentPoint.x, currentPoint.y, point2.x, point2.y);
-
-                    if (Vector2.Distance(currentPoint, inPoint) > distanceThreshold || Vector2.Distance(inPoint, point2) > distanceThreshold)
-                    {
-                        incorrectInput();
-                    }
-                    else
-                    {
-                        var leftDistance = pattern.pathLength - totalAddedDistance;
-                        var diff = Mathf.Clamp(leftDistance + addingSpeed, 0, addingSpeed);
-                        // addedDistanceAt = totalAddedDistance;
-                        totalAddedDistance += diff * Time.deltaTime;
-                    }
-
+                    isDotPlotted = true;
                 }
 
 
-                // pattern.movedDistance = Mathf.MoveTowards(pattern.movedDistance, totalAddedDistance, Time.deltaTime * maxSpeed);
-                pattern.movedDistance = Mathf.Lerp(pattern.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
-
-                // pattern.movedDistance = totalAddedDistance;
-
-                // var increment = Mathf.Clamp(totalAddedDistance - pattern.movedDistance, 0, maxSpeed) * Time.deltaTime;
-                // pattern.movedDistance += increment;
+                if (isDotPlotted)
+                {
+                    movedDistance += maxSpeed * Time.deltaTime;
+                }
             }
+            else
+            if (im.isEnter)
+            {
+                var currentPoint = segment.getPoint(totalAddedDistance);
+                var inPoint = im.point;
+                var dst = Vector2.Distance(currentPoint, inPoint);
+                var dir = segment.getDirection(totalAddedDistance);
+                var point2 = currentPoint + dir * distanceThreshold;
+
+
+                // var r = Rect.MinMaxRect(currentPoint.x, currentPoint.y, point2.x, point2.y);
+
+                if (Vector2.Distance(currentPoint, inPoint) > distanceThreshold || Vector2.Distance(inPoint, point2) > distanceThreshold)
+                {
+                    incorrectInput();
+                }
+                else
+                {
+                    var leftDistance = segment.pathLength - totalAddedDistance;
+                    var diff = Mathf.Clamp(leftDistance + addingSpeed, 0, addingSpeed);
+                    // addedDistanceAt = totalAddedDistance;
+                    totalAddedDistance += diff * Time.deltaTime;
+                }
+
+            }
+
+
+            movedDistance = Mathf.Lerp(segment.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
+
+
+            return movedDistance;
         }
+
     }
 }

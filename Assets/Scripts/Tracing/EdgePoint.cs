@@ -79,9 +79,9 @@ public class EdgePoint : MonoBehaviour
 
     public void startupTweening()
     {
-        if (TPhase.o.stageButton)
+        if (TPhase.o.spawnEdgesPointsAt.HasValue)
         {
-            spawnFromPoint(TPhase.o.stageButtonPosition);
+            spawnFromPoint(TPhase.o.spawnEdgesPointsAt.Value);
         }
         else
         {

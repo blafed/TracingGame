@@ -1,29 +1,30 @@
+using System.Collections;
 using System.Collections.Generic;
 namespace KidLetters.Tracing
 {
     using System;
     using UnityEngine;
 
+    [System.Serializable]
+    public struct TracingStageInfo
+    {
+        public PatternCode patternCode;
+        public bool autoTracing;
+        public bool showThinLetter;
+        public bool disableEdgePoints;
+    }
+
     public class TracingStage : MonoBehaviour
     {
-
-        //static
-        static TracingPhase phase => TracingPhase.o;
-        static LetterFiller letter => phase.letter;
 
         //public properties
         public TracingStageInfo info { get; private set; }
         public TracingState state { get; private set; }
-        public bool hasSegmentChanged { get; private set; }
         public bool isDone { get; private set; }
         public int segmentIndex { get; private set; } = 0;
-        public int tracedSegments { get; private set; }
-        public int segmentCount => segments.Count;
-        public Pattern oldSegment => segments.getOrDefault(segmentIndex - 1);
-        public Pattern currentSegment => segmentIndex < segments.Count ? segments[segmentIndex] : null;
+        public int segmentCount => filler.segmentCount;
 
 
-        public float endSegmentOffset = 0.5f;
         //events
         public event Action<TracingState> onStateChanged;
         public event Action<Pattern> onSegmentChanged;
@@ -33,195 +34,152 @@ namespace KidLetters.Tracing
         public event Action<Pattern> onSegmentTracingDone;
 
         //private variables
-        List<Pattern> segments = new List<Pattern>();
-        float initialTime = 0;
-        HandTracer handTracer;
-        AutoTracer autoTracer;
-        float unitedTime;
+
+        TracerBase tracer;
+        LetterFiller filler;
+        // List<Pattern> segments = new List<Pattern>();
 
         //fields
         [SerializeField] float animationSpeed = 2;
 
 
-        public void setup(TracingStageInfo info)
+        public void setup(TracingStageInfo info, Glyph glyph)
         {
             this.info = info;
+            tracer = info.autoTracing ? GetComponent<AutoTracer>() : GetComponent<HandTracer>();
+
+            filler = LetterFiller.createFiller(glyph, LetterObjectConfig.o.blankLetterFillerPrefab);
+            filler.transform.parent = transform;
+            filler.transform.position = transform.position;
+            filler.swapSegments(TracingConfig.o.getPatternPrefab(info.patternCode));
+
+            foreach (var x in filler.segments)
+            {
+                (x as Pattern).onCreated();
+                x.gameObject.SetActive(false);
+            }
+        }
+
+        Pattern getPattern(int segmentIndex)
+        {
+            return filler.getSegment(segmentIndex) as Pattern;
         }
 
 
-        GameObject getPatternPrefab(PatternCode code)
+        public IEnumerator play()
         {
-            return TracingConfig.o.getPatternPrefab(code);
-        }
-        Pattern createPattern(PatternCode code)
-        {
-            var go = getPatternPrefab(code);
-            go = Instantiate(go);
-            return go.GetComponent<Pattern>();
-        }
+            yield return tracingCycle();
+            yield return animationCycle();
+            yield return unitedCycle();
 
-
-        private void Start()
-        {
-            handTracer = GetComponent<HandTracer>();
-            autoTracer = GetComponent<AutoTracer>();
-            handTracer.setup(this);
-            autoTracer.setup(this);
-            handTracer.enabled = false;
-            autoTracer.enabled = false;
-
-
-            if (!letter)
-            {
-                Debug.LogError("Current Letter is not set", gameObject);
-                return;
-            }
-            var patternPrefab = getPatternPrefab(info.patternCode).GetComponent<Pattern>();
-            if (!patternPrefab)
-            {
-                Debug.LogError("No Pattern prefab " + info.patternCode);
-                return;
-            }
-            unitedTime = 0;
-            state = TracingState.initial;
-
-            hasSegmentChanged = true;
-            foreach (var x in segments)
-                Destroy(x.gameObject);
-            segments.Clear();
-            segmentIndex = 0;
-            // letter.setTextEnabled(false);
-            for (int i = 0; i < letter.segmentCount; i++)
-            {
-                var seg = letter.getSegment(i);
-                var pattern = createPattern(info.patternCode);
-                pattern.transform.parent = transform;
-                pattern.transform.position = seg.transform.position;
-                pattern.setup(letter, letter.glyph.get(i));
-                pattern.progress = 0;
-                pattern.onCreated();
-                segments.Add(pattern);
-                pattern.gameObject.SetActive(false);
-            }
+            foreach (var x in filler.segments)
+                (x as Pattern).onAllDone();
+            isDone = true;
 
         }
-
-        void enableTracers()
+        IEnumerator tracingCycle()
         {
-            autoTracer.enabled = info.autoTracing && state == TracingState.tracing;
-            handTracer.enabled = !info.autoTracing && state == TracingState.tracing;
-        }
-
-        private void FixedUpdate()
-        {
-            enableTracers();
-            if (segments.Count == 0)
-                return;
-            if (initialTime > 0)
+            for (int segmentIndex = 0; segmentIndex < segmentCount; segmentIndex++)
             {
-                initialTime -= Time.fixedDeltaTime;
-                return;
-            }
 
-            if (state == TracingState.initial)
-            {
-                state++;
-                onStateChanged?.Invoke(state);
-            }
+                tracer.flush();
+                var pattern = getPattern(segmentIndex);
+                pattern.gameObject.SetActive(true);
+                this.segmentIndex = segmentIndex;
 
+                var seg = filler.getSegment(segmentIndex);
+                var movedDistance = pattern.movedDistance = 0f;
+                pattern.onStartTracing();
 
-            if (hasSegmentChanged)
-            {
-                onSegmentChanged?.Invoke(currentSegment);
-                if (state == TracingState.tracing)
+                float tracingTime = 0;
+                float targetTracingLength = pattern.pathLength - (pattern.isDot || info.disableEdgePoints ? 0 : TracingConfig.o.edgePointRadius / 2f);
+
+                if (!pattern.isDot)
+                    EdgePointDealer.o.onStartSegment(segmentIndex);
+                while (!pattern.isProgressCompleted)
                 {
-                    currentSegment.progress = 0;
-                    currentSegment.gameObject.SetActive(true);
-                    currentSegment.onStartTracing();
+                    pattern.newMovedDistance = movedDistance;
+                    pattern.whileTracing(movedDistance);
+                    movedDistance = pattern.newMovedDistance;
+
+                    yield return new WaitForFixedUpdate();
+
+                    tracingTime += Time.fixedDeltaTime;
+                    movedDistance += tracer.getNewMovement(pattern, Time.fixedDeltaTime) - pattern.movedDistance;
+
+                    if (movedDistance >= targetTracingLength)
+                        movedDistance = pattern.pathLength;
                 }
-                else if (state == TracingState.animation)
-                {
-                    currentSegment.progress = 0;
-                    currentSegment.onStartAnimation();
-                }
-                else if (state == TracingState.united)
-                {
-                    foreach (var x in segments)
-                    {
-                        x.progress = 0;
-                        x.onStartUnited();
-                    }
-                }
-                else if (state == TracingState.done)
-                {
-                    foreach (var x in segments)
-                        x.onAllDone();
-                    onDone?.Invoke();
-                }
-                hasSegmentChanged = false;
+                pattern.whileTracing(movedDistance);
+
+                pattern.onEndTracing();
+                if (!pattern.isDot)
+                    EdgePointDealer.o.onEndSegment(segmentIndex);
             }
 
-
-            switch (state)
+        }
+        IEnumerator animationCycle()
+        {
+            for (var segmentIndex = 0; segmentIndex < segmentCount; segmentIndex++)
             {
-                case TracingState.tracing:
+                var pattern = getPattern(segmentIndex);
+                this.segmentIndex = segmentIndex;
 
-                    if (currentSegment.movedDistance >= currentSegment.pathLength - endSegmentOffset)
-                    {
-                        currentSegment.progress = 1;
-                    }
-                    currentSegment.whileTracing();
+                if (!pattern.useAnimation)
+                    continue;
 
-                    if (currentSegment.isProgressCompleted)
-                    {
-                        hasSegmentChanged = true;
-                        currentSegment.onEndTracing();
-                        segmentIndex++;
-                        onSegmentTracingDone?.Invoke(currentSegment);
-                    }
 
-                    break;
-                case TracingState.animation:
-                    currentSegment.whileAnimation();
-                    if (currentSegment.isProgressCompleted)
-                    {
-                        hasSegmentChanged = true;
-                        currentSegment.onEndAnimation();
-                        currentSegment.onDone();
-                        segmentIndex++;
-                    }
-                    else
-                    {
-                        currentSegment.movedDistance += animationSpeed * Time.fixedDeltaTime;
-                    }
-                    break;
-                case TracingState.united:
-                    unitedTime += Time.fixedDeltaTime;
+                float movedDistance = 0;
+                pattern.onStartAnimation();
+                float animationTime = 0;
 
-                    foreach (var x in segments)
-                    {
-                        var isUnitedOver = x.whileUnited(unitedTime);
+                if (!pattern.isDot)
+                    EdgePointDealer.o.onStartSegment(segmentIndex);
 
-                        if (isUnitedOver)
-                        {
-                            hasSegmentChanged = true;
-                            foreach (var y in segments)
-                            {
-                                y.onEndUnited();
-                                state = TracingState.done;
-                            }
-                            break;
-                        }
-                    }
-                    break;
+                while (movedDistance <= pattern.pathLength)
+                {
+                    pattern.newMovedDistance = movedDistance;
+                    pattern.whileAnimation(movedDistance);
+                    movedDistance = pattern.newMovedDistance;
+                    yield return new WaitForFixedUpdate();
+                    animationTime += Time.fixedDeltaTime;
+                    movedDistance += Time.fixedDeltaTime * animationSpeed;
+                }
+                pattern.whileAnimation(movedDistance);
+
+                pattern.onEndAnimation();
+                if (!pattern.isDot)
+                    EdgePointDealer.o.onEndSegment(segmentIndex);
             }
 
-            if (segmentIndex >= segments.Count)
+        }
+        IEnumerator unitedCycle()
+        {
+            for (var segmentIndex = 0; segmentIndex < segmentCount; segmentIndex++)
             {
-                segmentIndex = 0;
-                state++;
-                onStateChanged?.Invoke(state);
+                var pattern = getPattern(segmentIndex);
+                this.segmentIndex = segmentIndex;
+
+                if (!pattern.useUnitedAnimation)
+                    continue;
+
+                pattern.onStartUnited();
+
+                float time = 0;
+                while (true)
+                {
+                    var isDone = pattern.whileUnited(time);
+                    if (isDone)
+                        break;
+                    yield return new WaitForFixedUpdate();
+                    time += Time.fixedDeltaTime;
+                }
+
+                pattern.onEndUnited();
             }
         }
+
+
+
     }
 }
