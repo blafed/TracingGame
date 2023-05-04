@@ -5,6 +5,7 @@ namespace KidLetters.Tracing
 {
     public abstract class TracerBase : MonoBehaviour
     {
+        public bool isWrongTracing { get; protected set; }
         protected virtual void Awake() { }
 
 

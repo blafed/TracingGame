@@ -70,8 +70,27 @@ namespace KidLetters
         }
         public void onEndSegment(int segmentIndex)
         {
-            currentEdgePoints[segmentIndex * 2].onEndTracing();
-            currentEdgePoints[segmentIndex * 2 + 1].onEndTracing();
+            try
+            {
+                currentEdgePoints[segmentIndex * 2].onEndTracing();
+                currentEdgePoints[segmentIndex * 2 + 1].onEndTracing();
+            }
+            catch { }
+        }
+
+        public void onWrongSegment(int segmentIndex)
+        {
+            for (int i = 0; i < currentEdgePoints.Count; i++)
+            {
+                currentEdgePoints[i].onWrongTracing(segmentIndex == i / 2);
+            }
+            // try
+            // {
+            //     for (int i = segmentIndex * 2; i <= segmentIndex * 2 + 1; i++)
+            //         currentEdgePoints[i].onWrongTracing();
+
+            // }
+            // catch { }
         }
     }
 }

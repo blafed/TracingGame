@@ -19,12 +19,12 @@ public class ButterflyPattern : ObjectPattern
     }
 
 
-    void keepFlying(float movedDistance)
+    void animateObjects(float moved)
     {
         foreach (var x in objects)
         {
 
-            var total = movedDistance + x.delay;
+            var total = moved + x.delay;
 
 
             if (total > pathLength)
@@ -48,13 +48,13 @@ public class ButterflyPattern : ObjectPattern
     private void FixedUpdate()
     {
         if (keepAnimation)
-            keepFlying(pathLength);
+            animateObjects(pathLength);
     }
 
 
     public override void whileAnimation(float movedDistance)
     {
-        keepFlying(movedDistance);
+        animateObjects(movedDistance);
     }
 
     public override bool whileUnited(float time)

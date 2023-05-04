@@ -32,7 +32,7 @@ public class Pattern : LetterSegmentFiller
     public virtual void onStartUnited() { }
     public virtual bool whileUnited(float time)
     {
-        return time > 1;
+        return true;
     }
     public virtual void onEndUnited() { }
     protected virtual void OnDestroy() { }

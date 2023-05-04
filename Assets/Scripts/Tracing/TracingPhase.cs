@@ -22,7 +22,7 @@ namespace KidLetters
         public int stageIndex { get; private set; }
         public List<TracingStageInfo> stageInfos { get; private set; }
         public TracingStage currentStage { get; private set; }
-        public Vector2? spawnEdgesPointsAt { get; private set; }
+        public Vector2? spawnEdgesPointsFrom { get; private set; }
 
 
 
@@ -38,7 +38,7 @@ namespace KidLetters
         //overrides
         protected override void onEnter()
         {
-            spawnEdgesPointsAt = null;
+            spawnEdgesPointsFrom = null;
             stageIndex = 0;
             List<PatternCode> patternCodes = Enumerable.Range(1, (int)PatternCode.sketch - 1).Select(x => (PatternCode)x).ToList();
 
@@ -60,6 +60,8 @@ namespace KidLetters
                     stg.autoTracing = i == 0;
                     stg.patternCode = i == 0 ? PatternCode.sketch : PatternCode.brush;
                 }
+                stg.disableIndicating = stg.patternCode == PatternCode.brush;
+                stg.disableEdgePoints = stg.patternCode == PatternCode.sketch;
                 stg.showThinLetter = !(stg.patternCode == PatternCode.sketch || stg.patternCode == PatternCode.brush);
                 if (i < overrideStages.Length)
                     stg = overrideStages[i];
@@ -81,6 +83,10 @@ namespace KidLetters
             letter.setColor(Color.white);
 
             Destroy(letter.gameObject);
+
+
+            IndicatingArrow.o.hide();
+            IndicatingDot.o.hide();
 
         }
 
@@ -105,7 +111,7 @@ namespace KidLetters
         public void playStage(int index, Vector2? spawnEdgePointsAt = null)
         {
             stageIndex = index;
-            this.spawnEdgesPointsAt = spawnEdgePointsAt;
+            this.spawnEdgesPointsFrom = spawnEdgePointsAt;
             if (oldStage)
                 Destroy(oldStage.gameObject);
 

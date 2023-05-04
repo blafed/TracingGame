@@ -776,14 +776,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 57546260, guid: 8d9d199881446164ea1f84d239feb86a, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 51.960938
-      objectReference: {fileID: 0}
-    - target: {fileID: 57546260, guid: 8d9d199881446164ea1f84d239feb86a, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -41.686035
-      objectReference: {fileID: 0}
     - target: {fileID: 424338301923591299, guid: 8d9d199881446164ea1f84d239feb86a, type: 3}
       propertyPath: m_Name
       value: HomeMenu
@@ -1208,10 +1200,6 @@ PrefabInstance:
     - target: {fileID: 8930192752294569417, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8930192752294569418, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}
-      propertyPath: skip
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}

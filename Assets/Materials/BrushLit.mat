@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ChainsPatternLit
+  m_Name: BrushLit
   m_Shader: {fileID: 4800000, guid: e260cfa7296ee7642b167f1eb5be5023, type: 3}
   m_ValidKeywords:
   - ETC1_EXTERNAL_ALPHA
@@ -27,8 +27,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 2, y: 1}
-        m_Offset: {x: -1.34, y: 0}
+        m_Scale: {x: 0.3, y: 0.21}
+        m_Offset: {x: 30.2, y: -4.92}
     - _MaskTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}

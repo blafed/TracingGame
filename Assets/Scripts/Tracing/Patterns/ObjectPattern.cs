@@ -25,6 +25,7 @@ public class ObjectPattern : Pattern
 
 
         public float randomParameter;
+        public bool didExit;
     }
 
 

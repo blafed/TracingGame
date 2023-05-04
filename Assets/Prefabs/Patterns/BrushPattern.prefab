@@ -557,11 +557,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 029d5fe812964d84da2636e759d79082, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  code: 7
-  splineHeight: 0.4
   shapeController: {fileID: 6226746705933901862}
   followObject: {fileID: 0}
   dotSplineScale: 2
+  materialOffset: 0.5
+  disableRoundEdges: 0
   _edgePointPrefab: {fileID: 5991077014488870945, guid: 0c41654b52a9b9542ba13771456757d0, type: 3}
 --- !u!1 &7916280533875459109
 GameObject:

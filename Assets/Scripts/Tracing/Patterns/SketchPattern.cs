@@ -3,7 +3,7 @@ using UnityEngine;
 public class SketchPattern : SplinePattern
 {
     // protected override bool createEdgePointsByDefault => false;
-
+    public bool disableRoundEdges;
 
 
     [UnityEngine.Serialization.FormerlySerializedAs("edgePointPrefab")]
@@ -23,7 +23,7 @@ public class SketchPattern : SplinePattern
     {
         base.onSetup();
 
-        if (isDot)
+        if (isDot || disableRoundEdges)
             return;
         for (int j = 0; j < 2; j++)
         {
@@ -45,7 +45,7 @@ public class SketchPattern : SplinePattern
     {
         base.onMoved();
 
-        if (isDot)
+        if (isDot || disableRoundEdges)
             return;
 
         startRoundEdge.transform.position = getPoint(0);

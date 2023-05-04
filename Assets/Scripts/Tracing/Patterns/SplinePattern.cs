@@ -19,7 +19,7 @@ public class SplinePattern : Pattern
     public float materialOffset = .5f;
 
 
-    SpriteShapeRenderer spriteShapeRenderer;
+    protected SpriteShapeRenderer spriteShapeRenderer;
 
 
 
@@ -59,7 +59,7 @@ public class SplinePattern : Pattern
 
 
 
-    void initForDot()
+    protected virtual void initForDot()
     {
         SplineControlPoint factory()
         {
@@ -95,10 +95,12 @@ public class SplinePattern : Pattern
         var mask = Instantiate(Resources.Load<GameObject>("Prefabs/SplinePatternDotMask"));
         mask.transform.parent = transform;
         mask.transform.position = transform.position;
+
         //SCALE
         var scale = dotRadius * Vector2.one;
         mask.transform.localScale = scale;
-        renderer.transform.localScale = dotRadius * 2 * Vector2.one * dotSplineScale;
+        renderer.transform.localScale = dotRadius * 2 * Vector2.one * dotSplineScale * 2;
+        renderer.transform.localPosition = Vector2.up * dotRadius;
     }
 
 }

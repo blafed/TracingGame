@@ -94,7 +94,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3174265915278203472}
-  - component: {fileID: 341075784391559614}
+  - component: {fileID: 8389240391235552045}
   m_Layer: 0
   m_Name: CandyPattern
   m_TagString: Untagged
@@ -118,7 +118,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &341075784391559614
+--- !u!114 &8389240391235552045
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,10 +127,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6503913184773429808}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19a849a9fc491d24986ad77c0d8fb317, type: 3}
+  m_Script: {fileID: 11500000, guid: 12208ff8b475e2b4582bcb5da1c052f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  code: 5
   _unitedTime: 1.4
   unitedSpeed: 2
   spacing: 0.3
@@ -140,6 +139,9 @@ MonoBehaviour:
   - {r: 0.5529412, g: 0.6862745, b: 0, a: 1}
   - {r: 0.9568628, g: 0.40784317, b: 0, a: 1}
   - {r: 0.82745105, g: 0.27450982, b: 0.49803925, a: 1}
+  dotScale: 1
+  gravityScale: 2
+  maxAddForce: 5
 --- !u!1 &8064105182782528679
 GameObject:
   m_ObjectHideFlags: 0

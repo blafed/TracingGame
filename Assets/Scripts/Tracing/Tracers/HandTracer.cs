@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -14,6 +15,7 @@ namespace KidLetters.Tracing
 
         [SerializeField] float followLerpFactor = 5;
         [SerializeField] float followLerpMinDt = .02f;
+        [SerializeField] float plottingDistance = .5f;
 
         static InputManager im => InputManager.o;
 
@@ -33,15 +35,11 @@ namespace KidLetters.Tracing
         float totalAddedDistance;
         float addedDistanceAt;
         bool isDotPlotted;
-        float movedDistance;
+        // float movedDistance;
 
 
-        void incorrectInput()
-        {
 
-        }
-
-
+        List<Vector2> plottedPoints = new List<Vector2>();
 
         public override void flush()
         {
@@ -49,9 +47,16 @@ namespace KidLetters.Tracing
             isDotPlotted = false;
         }
 
+
         public override float getNewMovement(LetterSegmentFiller segment, float dt)
         {
+            isWrongTracing = false;
             var p = im.point;
+
+
+
+
+
 
 
             if (segment.isDot)
@@ -62,28 +67,42 @@ namespace KidLetters.Tracing
                 {
                     isDotPlotted = true;
                 }
+                else
+                {
+                    isWrongTracing = true;
+                }
 
 
                 if (isDotPlotted)
                 {
-                    movedDistance += maxSpeed * Time.deltaTime;
+                    return segment.movedDistance + maxSpeed * Time.deltaTime;
                 }
+                return segment.movedDistance;
             }
             else
             if (im.isEnter)
             {
+                //the current point where the segment filler ends
                 var currentPoint = segment.getPoint(totalAddedDistance);
+                //input point
                 var inPoint = im.point;
-                var dst = Vector2.Distance(currentPoint, inPoint);
-                var dir = segment.getDirection(totalAddedDistance);
-                var point2 = currentPoint + dir * distanceThreshold;
 
+                //direction where the tracer should go
+                var dir = segment.getDirection(totalAddedDistance);
+                //the goal point where should the tracer go
+                var goalPoint = currentPoint + dir * distanceThreshold;
+
+                var dstToCurrentPoint = Vector2.Distance(currentPoint, inPoint);
+                var dstToGoalPoint = Vector2.Distance(goalPoint, inPoint);
 
                 // var r = Rect.MinMaxRect(currentPoint.x, currentPoint.y, point2.x, point2.y);
 
-                if (Vector2.Distance(currentPoint, inPoint) > distanceThreshold || Vector2.Distance(inPoint, point2) > distanceThreshold)
+                if (dstToCurrentPoint > distanceThreshold || dstToGoalPoint > distanceThreshold)
                 {
-                    incorrectInput();
+                    if (dstToGoalPoint > distanceThreshold * 1.5f)
+                    {
+                        isWrongTracing = true;
+                    }
                 }
                 else
                 {
@@ -96,10 +115,8 @@ namespace KidLetters.Tracing
             }
 
 
-            movedDistance = Mathf.Lerp(segment.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
+            return Mathf.Lerp(segment.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
 
-
-            return movedDistance;
         }
 
     }

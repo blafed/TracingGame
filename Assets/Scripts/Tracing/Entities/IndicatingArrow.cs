@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace KidLetters.Tracing
 {
-    public class IndicatingArrow : PhaseSingletonEntity<IndicatingArrow, TracingPhase>
+    public class IndicatingArrow : Singleton<IndicatingArrow>
     {
         public enum Mode
         {
@@ -33,29 +33,29 @@ namespace KidLetters.Tracing
             base.Awake();
             spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         }
-        protected override void Start()
+        void Start()
         {
-            base.Start();
-            TracingPhase.o.onStageChanged += (stage) =>
-            {
-                hide();
-                stage.onSegmentChanged += (seg) =>
-                {
-                    if (!stage.info.autoTracing && !seg.isDot)
-                        showOnPattern(seg);
-                };
-            };
+            // base.Start();
+            // TracingPhase.o.onStageChanged += (stage) =>
+            // {
+            //     hide();
+            //     stage.onSegmentChanged += (seg) =>
+            //     {
+            //         if (!stage.info.autoTracing && !seg.isDot)
+            //             showOnPattern(seg);
+            //     };
+            // };
             gameObject.SetActive(false);
         }
 
-        protected override void onPhaseEnter()
-        {
-        }
+        // protected override void onPhaseEnter()
+        // {
+        // }
 
-        protected override void onPhaseExit()
-        {
-            hide();
-        }
+        // protected override void onPhaseExit()
+        // {
+        //     hide();
+        // }
 
         public void showOnPattern(Pattern pattern)
         {

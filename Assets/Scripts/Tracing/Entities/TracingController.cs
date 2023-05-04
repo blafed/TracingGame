@@ -12,6 +12,7 @@ namespace KidLetters.Tracing
 
         IEnumerator spawnEdgePoints()
         {
+
             EdgePointDealer.o.spawnEdgePoints(TracingConfig.o.edgePointPrefab, letter);
             yield return new WaitForSeconds(EdgePointDealer.o.estimatedWaitTime);
 
@@ -19,8 +20,7 @@ namespace KidLetters.Tracing
         public IEnumerator play()
         {
 
-            yield return spawnEdgePoints();
-            yield return new WaitForSeconds(.5f);
+
 
             // yield return letter.doColor(Backgrounds.o.getBackgroundColor(), .5f).WaitForCompletion();
             // letter.setTextEnabled(false);
@@ -28,7 +28,15 @@ namespace KidLetters.Tracing
 
             for (int i = 0; i < phase.stageInfos.Count; i++)
             {
+
                 var stageInfo = phase.stageInfos[i];
+
+                if (!stageInfo.disableEdgePoints)
+                {
+                    yield return spawnEdgePoints();
+                    yield return new WaitForSeconds(.5f);
+                }
+
                 if (stageInfo.showThinLetter)
                 {
                     phase.letter.setNormalWidth();
@@ -41,40 +49,66 @@ namespace KidLetters.Tracing
                     yield return letter.doColor(Backgrounds.o.getBackgroundColor(), .5f).WaitForCompletion();
                     // phase.letter.setEnabled(false);
                 }
-                if (i != 0)
+                yield return stageCycle(i);
+                letter.setNormalWidth();
+                letter.setColor(Color.white);
+                if (!stageInfo.disableEdgePoints)
                 {
                     EdgePointDealer.o.clearEdgePointsTween();
                     yield return new WaitForSeconds(.5f);
-                    yield return spawnEdgePoints();
-                    yield return new WaitForSeconds(.5f);
                 }
-                yield return stageCycle(i);
+
             }
             EdgePointDealer.o.clearEdgePointsTween();
             yield return new WaitForSeconds(1f);
             letter.setNormalWidth();
+            letter.setColor(Color.white);
         }
         IEnumerator stageCycle(int stageIndex)
         {
             phase.playStage(stageIndex, null);
-            //waiting for Start() function to be called on TracingStage script, by waiting for the next frame
-            // yield return new WaitForFixedUpdate();
-
             var stage = phase.currentStage;
 
+            stage.onStartSegment += onStartSegment;
+            stage.onEndSegment += onEndSegment;
+            stage.onWrongTracing += onWrongTracing;
 
-            for (int i = 0; i < stage.segmentCount; i++)
-            {
-                var segmentIndex = i;
-                yield return new WaitForSeconds(.5f);
-                EdgePointDealer.o.onStartSegment(segmentIndex);
-                yield return stage.play();
-                // yield return new WaitUntil(() => stage.segmentIndex != i);
-                // EdgePointDealer.o.onEndSegment(segmentIndex);
-            }
-            // EdgePointDealer.o.onEndSegment(stage.segmentCount - 1);
-
+            EdgePointDealer.o.onStartSegment(0);
+            yield return stage.play();
             yield return new WaitForSeconds(1f);
+
+            Destroy(stage.gameObject);
+
+        }
+
+        void onStartSegment()
+        {
+            var stage = phase.currentStage;
+            if (stage.state == TracingState.tracing && !stage.info.autoTracing && !stage.info.disableIndicating)
+            {
+                if (stage.currentSegment.isDot)
+                    IndicatingDot.o.showOnPattern(stage.currentSegment);
+                else
+                    IndicatingArrow.o.showOnPattern(stage.currentSegment);
+
+
+            }
+            else
+            {
+                IndicatingArrow.o.hide();
+                IndicatingDot.o.hide();
+            }
+        }
+
+        void onEndSegment()
+        {
+            IndicatingArrow.o.hide();
+            IndicatingDot.o.hide();
+        }
+        void onWrongTracing()
+        {
+            EdgePointDealer.o.onWrongSegment(phase.currentStage.segmentIndex);
         }
     }
+
 }

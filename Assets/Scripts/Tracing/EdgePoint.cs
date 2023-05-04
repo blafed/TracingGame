@@ -79,9 +79,9 @@ public class EdgePoint : MonoBehaviour
 
     public void startupTweening()
     {
-        if (TPhase.o.spawnEdgesPointsAt.HasValue)
+        if (TPhase.o.spawnEdgesPointsFrom.HasValue)
         {
-            spawnFromPoint(TPhase.o.spawnEdgesPointsAt.Value);
+            spawnFromPoint(TPhase.o.spawnEdgesPointsFrom.Value);
         }
         else
         {
@@ -124,6 +124,20 @@ public class EdgePoint : MonoBehaviour
         if (endTracingEffect)
             endTracingEffect.myActive();
         sortingGroup.sortingOrder--;
+    }
+
+    public void onWrongTracing(bool isCurrentSegment)
+    {
+        if (transitTween != null && transitTween.IsPlaying())
+            return;
+
+        if (isCurrentSegment)
+        {
+            transitTween = transform.DOPunchScale(.2f.vector(), .2f).SetDelay(isFirst ? 0 : .4f);
+        }
+        else
+        {
+        }
     }
 
     protected virtual Tween transitRenderer(State state)

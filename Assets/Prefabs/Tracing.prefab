@@ -655,8 +655,6 @@ MonoBehaviour:
   walkingDuration: 1
   walkingToButtonDuration: 0.5
   walkingToButtonDelay: 0.5
-  stars:
-    template: {fileID: 8516120053821737635}
 --- !u!1 &8516120054234942294
 GameObject:
   m_ObjectHideFlags: 0
