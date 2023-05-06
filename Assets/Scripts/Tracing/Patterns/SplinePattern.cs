@@ -15,6 +15,7 @@ public class SplinePattern : Pattern
     [SerializeField]
     float dotSplineScale = 1;
 
+
     protected Path pathInstance = new();
     public float materialOffset = .5f;
 

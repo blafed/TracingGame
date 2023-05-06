@@ -13,6 +13,8 @@ namespace KidLetters
         [SerializeField]
         PairList<PatternCode, GameObject> patternPrefabs = new PairList<PatternCode, GameObject>();
 
+        public float audioPitchFactor = 1.5f;
+
 
         public GameObject getPatternPrefab(PatternCode code)
         {

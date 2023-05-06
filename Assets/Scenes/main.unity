@@ -1144,6 +1144,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: Tracing
       objectReference: {fileID: 0}
+    - target: {fileID: 8516120054522995923, guid: 964bf59b67c37ed4aa1104358eb7fee7, type: 3}
+      propertyPath: overrideStages.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516120054522995923, guid: 964bf59b67c37ed4aa1104358eb7fee7, type: 3}
+      propertyPath: overrideStages.Array.data[0].patternCode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516120054522995923, guid: 964bf59b67c37ed4aa1104358eb7fee7, type: 3}
+      propertyPath: overrideStages.Array.data[1].patternCode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516120054522995923, guid: 964bf59b67c37ed4aa1104358eb7fee7, type: 3}
+      propertyPath: overrideStages.Array.data[0].showThinLetter
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516120054522995923, guid: 964bf59b67c37ed4aa1104358eb7fee7, type: 3}
+      propertyPath: overrideStages.Array.data[1].showThinLetter
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 964bf59b67c37ed4aa1104358eb7fee7, type: 3}
 --- !u!1001 &8930192751256087600
@@ -1200,6 +1220,10 @@ PrefabInstance:
     - target: {fileID: 8930192752294569417, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8930192752294569418, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}
+      propertyPath: skip
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e1c6c0e3869d404bb8d7f38975da360, type: 3}

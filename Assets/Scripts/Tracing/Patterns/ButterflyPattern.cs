@@ -4,21 +4,34 @@ using UnityEngine;
 
 public class ButterflyPattern : ObjectPattern
 {
+    //Fields
     public float flyingSpeed = 2;
-
     public float flyingRandomness = .5f;
     public float rotationSpeed = 720;
 
-
-
+    //Variables
     bool keepAnimation;
 
-    public override void onEndAnimation()
+    //Unity Events
+    private void FixedUpdate()
     {
-        keepAnimation = true;
+        if (keepAnimation)
+            animateObjects(pathLength);
     }
 
 
+    //Inherited functions
+    public override void onEndAnimation()
+    {
+        base.onEndAnimation();
+        keepAnimation = true;
+    }
+    public override void whileAnimation(float movedDistance)
+    {
+        animateObjects(movedDistance);
+    }
+
+    //functions
     void animateObjects(float moved)
     {
         foreach (var x in objects)
@@ -27,9 +40,13 @@ public class ButterflyPattern : ObjectPattern
             var total = moved + x.delay;
 
 
-            if (total > pathLength)
+            if (total > pathLength || isDot)
             {
-
+                if (!x.didExit)
+                {
+                    // x.transform.GetChild(0).parent = x.transform.parent;
+                }
+                x.didExit = true;
                 var flyDir = x.transform.right.toVector2();
 
                 var d = flyDir;
@@ -40,25 +57,11 @@ public class ButterflyPattern : ObjectPattern
             }
             else
             {
-                x.transform.position = getPoint(total);
+                moveObjectAlong(x.transform, total);
             }
         }
     }
 
-    private void FixedUpdate()
-    {
-        if (keepAnimation)
-            animateObjects(pathLength);
-    }
 
 
-    public override void whileAnimation(float movedDistance)
-    {
-        animateObjects(movedDistance);
-    }
-
-    public override bool whileUnited(float time)
-    {
-        return true;
-    }
 }

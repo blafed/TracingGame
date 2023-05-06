@@ -111,7 +111,10 @@ namespace KidLetters.Tracing
                     yield return new WaitForFixedUpdate();
 
                     tracingTime += Time.fixedDeltaTime;
-                    movedDistance += tracer.getNewMovement(pattern, Time.fixedDeltaTime) - pattern.movedDistance;
+                    var delta = tracer.getNewMovement(pattern, Time.fixedDeltaTime) - pattern.movedDistance;
+                    movedDistance += delta;
+
+                    pattern.onDistanceState(delta > Time.fixedDeltaTime);
 
                     if (movedDistance >= targetTracingLength)
                         movedDistance = pattern.pathLength;
@@ -122,6 +125,9 @@ namespace KidLetters.Tracing
                     }
                 }
                 pattern.whileTracing(movedDistance);
+                pattern.onDistanceState(false);
+
+                yield return new WaitForSeconds(pattern.waitTimeAfterTracing);
 
                 pattern.onEndTracing();
                 if (!pattern.isDot)

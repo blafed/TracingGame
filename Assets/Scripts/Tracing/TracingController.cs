@@ -9,6 +9,28 @@ namespace KidLetters.Tracing
         static LetterFiller letter => phase.letter;
 
 
+        [System.Serializable]
+        class BeginStage
+        {
+            public float delay;
+            public AudioSource audio;
+        }
+
+        [System.Serializable]
+        class ThinLetter
+        {
+            public AudioSource audio;
+        }
+        [System.Serializable]
+        class FadeLetter
+        {
+            public AudioSource audio;
+        }
+
+
+        [SerializeField] BeginStage beginStage = new BeginStage();
+        [SerializeField] ThinLetter thinLetter = new ThinLetter();
+        [SerializeField] FadeLetter fadeLetter = new FadeLetter();
 
         IEnumerator spawnEdgePoints()
         {
@@ -28,17 +50,16 @@ namespace KidLetters.Tracing
 
             for (int i = 0; i < phase.stageInfos.Count; i++)
             {
-
+                if (beginStage.audio)
+                    beginStage.audio.Play();
+                yield return new WaitForSeconds(beginStage.delay);
                 var stageInfo = phase.stageInfos[i];
 
-                if (!stageInfo.disableEdgePoints)
-                {
-                    yield return spawnEdgePoints();
-                    yield return new WaitForSeconds(.5f);
-                }
 
                 if (stageInfo.showThinLetter)
                 {
+                    if (thinLetter.audio)
+                        thinLetter.audio.Play();
                     phase.letter.setNormalWidth();
                     phase.letter.setEnabled(true);
                     phase.letter.setColor(Color.white);
@@ -46,8 +67,17 @@ namespace KidLetters.Tracing
                 }
                 else
                 {
+                    if (fadeLetter.audio)
+                        fadeLetter.audio.Play();
                     yield return letter.doColor(Backgrounds.o.getBackgroundColor(), .5f).WaitForCompletion();
                     // phase.letter.setEnabled(false);
+                }
+
+
+                if (!stageInfo.disableEdgePoints)
+                {
+                    yield return spawnEdgePoints();
+                    yield return new WaitForSeconds(.5f);
                 }
                 yield return stageCycle(i);
                 letter.setNormalWidth();

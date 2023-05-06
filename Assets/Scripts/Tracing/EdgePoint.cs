@@ -72,9 +72,14 @@ public class EdgePoint : MonoBehaviour
         Append(transform.DOPunchScale(Vector3.one * .5f, .25f, 1, 0)).
         Append(transform.DOScale(1f.vector(), .5f))
         .SetDelay(delay);
+        Invoke(nameof(playStartupAudio), delay);
+        transitRenderer(State.paused);
+    }
+
+    void playStartupAudio()
+    {
         if (startupAudio)
             startupAudio.Play();
-        transitRenderer(State.paused);
     }
 
     public void startupTweening()

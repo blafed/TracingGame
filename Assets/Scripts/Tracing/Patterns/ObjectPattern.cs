@@ -11,6 +11,11 @@ public class ObjectPattern : Pattern
     [SerializeField]
     float dotScale = 1;
 
+    [Space]
+    public AudioSource placementAudio;
+
+
+
     protected List<CreatedObject> objects = new();
 
 
@@ -26,6 +31,7 @@ public class ObjectPattern : Pattern
 
         public float randomParameter;
         public bool didExit;
+        public bool removed;
     }
 
 
@@ -109,6 +115,9 @@ public class ObjectPattern : Pattern
         var s = obj.transform.localScale;
         obj.transform.localScale = Vector3.zero;
         obj.transform.DOScale(s, .5f);
+
+        if (placementAudio)
+            placementAudio.Play();
     }
 
 }

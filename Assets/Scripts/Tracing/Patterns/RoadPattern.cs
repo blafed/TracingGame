@@ -7,7 +7,6 @@ public class RoadPattern : SplinePattern
     {
         base.onCreated();
         followObject.gameObject.SetActive(false);
-
     }
     public override void whileTracing(float movedDistance)
     {

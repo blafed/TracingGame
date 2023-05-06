@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SketchPattern : SplinePattern
 {
+    [SerializeField] AudioSource tracingEndAudio;
+    [SerializeField] GameObject tracingEndEffect;
     // protected override bool createEdgePointsByDefault => false;
     public bool disableRoundEdges;
 
@@ -65,6 +67,20 @@ public class SketchPattern : SplinePattern
     public override bool whileUnited(float time)
     {
         return true;
+    }
+
+
+    public override void onEndTracing()
+    {
+        base.onEndTracing();
+
+        if (tracingEndEffect)
+        {
+            tracingEndEffect.transform.position = endPoint;
+            tracingEndEffect.SetActive(true);
+        }
+        if (tracingEndAudio)
+            tracingEndAudio.Play();
     }
 
 }

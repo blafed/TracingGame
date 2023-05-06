@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class ChainsPattern : SplinePattern
 {
+
+    //fields
+    [SerializeField] AudioSource hookAppearAudio;
+    [SerializeField] AudioSource hookFetchAudio;
     [SerializeField] float unitedTime = 2f;
     [SerializeField] float unitedMotionSpeed = 3;
     [Space]
@@ -16,37 +20,20 @@ public class ChainsPattern : SplinePattern
 
 
 
-    // public override float unitedTime => _unitedTime;
+    //inheritance properties
+    public override float waitTimeAfterTracing => hookDuration;
 
 
 
+    //variables
     bool didHookAppearAnimation;
     bool didHookFetchAnimation;
-
     float animationRunningTime = 0;
 
 
 
-    void addMaterialOffset(float amount)
-    {
-        foreach (var mat in spriteShapeRenderer.materials)
-        {
-            var offset = mat.mainTextureOffset;
-            offset.x += amount;
-            mat.mainTextureOffset = offset;
-        }
-    }
-    void setMaterialOffset(float amount)
-    {
-        foreach (var mat in spriteShapeRenderer.materials)
-        {
-            var offset = mat.mainTextureOffset;
-            offset.x = amount;
-            mat.mainTextureOffset = offset;
-        }
-    }
 
-
+    //inheritance functions
     public override void onCreated()
     {
         base.onCreated();
@@ -65,6 +52,7 @@ public class ChainsPattern : SplinePattern
 
         // movedDistance = Mathf.Max(_hookLength, movedDistance);
     }
+
     public override void whileTracing(float movedDistance)
     {
         base.whileTracing(movedDistance);
@@ -73,8 +61,6 @@ public class ChainsPattern : SplinePattern
             setMaterialOffset(movedDistance * materialOffsetFactor);
         }
     }
-
-
 
     public override void onMoved()
     {
@@ -149,9 +135,29 @@ public class ChainsPattern : SplinePattern
 
         return p >= 1;
     }
-
+    //functions
+    void addMaterialOffset(float amount)
+    {
+        foreach (var mat in spriteShapeRenderer.materials)
+        {
+            var offset = mat.mainTextureOffset;
+            offset.x += amount;
+            mat.mainTextureOffset = offset;
+        }
+    }
+    void setMaterialOffset(float amount)
+    {
+        foreach (var mat in spriteShapeRenderer.materials)
+        {
+            var offset = mat.mainTextureOffset;
+            offset.x = amount;
+            mat.mainTextureOffset = offset;
+        }
+    }
     void hookAppearAnimation()
     {
+        if (hookAppearAudio)
+            hookAppearAudio.Play();
         animationRunningTime = Time.time;
         var dir = getDirection(hookLength);
         var targetRotation = Vector3.forward * Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -161,6 +167,8 @@ public class ChainsPattern : SplinePattern
 
     void hookFetchAnimation()
     {
+        if (hookFetchAudio)
+            hookFetchAudio.Play();
         var dir = getDirection(pathLength - hookLength);
         var targetRotation = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
