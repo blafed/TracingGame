@@ -17,6 +17,17 @@ public static class StartingLetters
             return letterToWords[letter];
         return new List<string>();
     }
+    public static List<string> getStartingLetters(string word)
+    {
+        init();
+        var result = new List<string>();
+        foreach (var x in letterToWords)
+        {
+            if (x.Value.Contains(word))
+                result.Add(x.Key);
+        }
+        return result;
+    }
     public static void init()
     {
         if (isInit)

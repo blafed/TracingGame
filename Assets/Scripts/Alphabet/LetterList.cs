@@ -28,6 +28,11 @@ public class LetterList : ScriptableObject
         return letterInfos[letterId].clip;
     }
 
+    public IReadOnlyList<LetterInfo> getLetterInfos()
+    {
+        return letterInfos;
+    }
+
 #if UNITY_EDITOR
     [ContextMenu("AutoSetup")]
     void AutoSetup()
@@ -54,5 +59,4 @@ public class LetterInfo
 {
     public int letterId;
     public AudioClip clip;
-    public List<string> words = new List<string>();
 }

@@ -5,6 +5,7 @@ public class HomeUI : MonoBehaviour
 {
     public static HomeUI o;
     public Button backButton;
+    // public Button previewerButton;
 
 
     private void Awake()
@@ -19,6 +20,11 @@ public class HomeUI : MonoBehaviour
         backButton.gameObject.SetActive(true);
         backButton.transform.localScale = !value ? Vector3.one : Vector3.zero;
         backButton.transform.DOScale(value ? 1 : 0, .5f).SetEase(Ease.InOutBack);
+    }
+
+    public void setPreviewerButtonEnabled(bool value)
+    {
+        // previewerButton.gameObject.SetActive(value);
     }
 
 }

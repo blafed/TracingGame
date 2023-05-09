@@ -41,9 +41,10 @@ namespace KidLetters.Pronouncing
         public IEnumerator play()
         {
             audioSource.Play();
-            PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
+            // PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
             CameraControl.o.move(PronouncingPhase.o.letter.transform.position, duration, moveEase);
-            yield return CameraControl.o.zoom(cameraZoom, duration, zoomEase).WaitForCompletion();
+            CameraControl.o.zoom(cameraZoom, duration, zoomEase).WaitForCompletion();
+            yield return new WaitForSeconds(duration);
             yield return new WaitForSeconds(.25f);
             PronouncingPhase.o.letter.transform.DOPunchScale(.2f.vector(), .2f);
             yield return GeneralAudioPlayer.o.playWaitFinish(LetterList.o.getAudioClip(PronouncingPhase.o.letterId));

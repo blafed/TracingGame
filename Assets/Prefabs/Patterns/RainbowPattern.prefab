@@ -321,11 +321,11 @@ SpriteShapeRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.8}
   m_MaskInteraction: 0
   m_ShapeTexture: {fileID: 2800000, guid: 537ddfab65ed23f4b823553ced13bf26, type: 3}
   m_Sprites:
-  - {fileID: 21300000, guid: f9682c4316e7f0d43a22c9ab0812d57a, type: 3}
+  - {fileID: 21300000, guid: 00b52da6821aaa847ac28e521d7d46e1, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
@@ -336,7 +336,7 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 2, y: 0.52, z: 0}
+    m_Extent: {x: 2, y: 0.42499998, z: 0}
 --- !u!114 &1273902072224175926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -605,6 +605,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tracingAudio: {fileID: 7406098247176931373}
+  animationAudio: {fileID: 0}
+  unitedAudio: {fileID: 0}
   shapeController: {fileID: 1273902072224175926}
   followObject: {fileID: 7594972995226743790}
   dotSplineScale: 1

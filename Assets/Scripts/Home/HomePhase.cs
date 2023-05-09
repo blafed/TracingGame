@@ -31,11 +31,13 @@ namespace KidLetters
             LetterContainer.o.adjustCamera();
             LetterContainer.o.setActiveLetters(true);
             Backgrounds.o.changeRandomly(BackgroundsList.forHome);
+            HomeUI.o.setPreviewerButtonEnabled(true);
             HomeUI.o.setBackButtonEnabled(false);
         }
         protected override void onExit()
         {
             HomeUI.o.setBackButtonEnabled(true);
+            HomeUI.o.setPreviewerButtonEnabled(false);
         }
 
     }

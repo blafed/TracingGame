@@ -388,10 +388,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12208ff8b475e2b4582bcb5da1c052f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioModule:
-    main: {fileID: 0}
-    start: {fileID: 0}
-    finsish: {fileID: 0}
+  tracingAudio: {fileID: 0}
+  animationAudio: {fileID: 8822367585856181971}
+  unitedAudio: {fileID: 0}
   _unitedTime: 1.4
   unitedSpeed: 2
   spacing: 0.3
@@ -403,10 +402,12 @@ MonoBehaviour:
   - {r: 0.82745105, g: 0.27450982, b: 0.49803925, a: 1}
   dotScale: 1
   placementAudio: {fileID: 1375817219335326772}
-  animationAudio: {fileID: 8822367585856181971}
   gravityScale: 2
   maxAddForce: 5
   maxAddTorque: 8
+  decayDelay:
+    min: 0
+    max: 0.2
 --- !u!1 &8064105182782528679
 GameObject:
   m_ObjectHideFlags: 0

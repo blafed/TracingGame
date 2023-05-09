@@ -4,9 +4,11 @@ using UnityEngine;
 public class CandyPattern : ObjectPattern
 {
     //fields
+    [Space]
     public float gravityScale = 1;
     public float maxAddForce = 10;
     public float maxAddTorque = 8;
+    public MinMaxF decayDelay = new MinMaxF(.5f, .7f);
     bool keepAnimation;
 
 
@@ -19,14 +21,10 @@ public class CandyPattern : ObjectPattern
     }
 
     //inherited functions
-    public override void onStartAnimation()
-    {
-        base.onStartAnimation();
-        animationAudio.Play();
-    }
 
     public override void onEndAnimation()
     {
+        //not inherited to not stop audio instantly
         keepAnimation = true;
 
         Invoke(nameof(stopAudio), 2);
@@ -70,7 +68,8 @@ public class CandyPattern : ObjectPattern
                     rb.AddForce(Random.insideUnitCircle * maxAddForce * x.randomParameter, ForceMode2D.Impulse);
                     rb.AddTorque(maxAddTorque * x.randomParameter, ForceMode2D.Impulse);
 
-                    x.transform.DOScale(0, .5f).SetDelay(2 + Random.value * 2);
+                    x.transform.DOScale(0, .5f).SetDelay(decayDelay.random);
+
                 }
                 x.didExit = true;
 

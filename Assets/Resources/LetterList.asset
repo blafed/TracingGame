@@ -15,83 +15,53 @@ MonoBehaviour:
   letterInfos:
   - letterId: 0
     clip: {fileID: 8300000, guid: 1e1eceaf99910114f9a0086a02b1eaea, type: 3}
-    words:
-    - cat
   - letterId: 1
     clip: {fileID: 8300000, guid: 5de8805f532e314408bbbdded51a5dca, type: 3}
-    words:
-    - ball
-    - buzz
-    - buzz
   - letterId: 2
     clip: {fileID: 8300000, guid: c92e9a326ff4aec40ba5eac53840a87b, type: 3}
-    words: []
   - letterId: 3
     clip: {fileID: 8300000, guid: ba15fdd76126c1c42a90477bbf60fa92, type: 3}
-    words: []
   - letterId: 4
     clip: {fileID: 8300000, guid: 4e32ed7e754bd0040ac89e676a1c3178, type: 3}
-    words: []
   - letterId: 5
     clip: {fileID: 8300000, guid: d4fe3b73b4a811d41b0fc12146a0ee15, type: 3}
-    words: []
   - letterId: 6
     clip: {fileID: 8300000, guid: 5881eec1e0c52f541a24c8e96e372a70, type: 3}
-    words: []
   - letterId: 7
     clip: {fileID: 8300000, guid: 73a9402c35da9e647bcc467c18493e30, type: 3}
-    words: []
   - letterId: 8
     clip: {fileID: 8300000, guid: 68e6a29cc62ab1b4495bfadd7586663e, type: 3}
-    words: []
   - letterId: 9
     clip: {fileID: 8300000, guid: 0844e144378dadb4a8eb0598580802e4, type: 3}
-    words: []
   - letterId: 10
     clip: {fileID: 8300000, guid: e33c81d0187295a4a8536c9ad06c8e71, type: 3}
-    words: []
   - letterId: 11
     clip: {fileID: 8300000, guid: 426c2cb82355ddf4584eef50bbfea375, type: 3}
-    words: []
   - letterId: 12
     clip: {fileID: 8300000, guid: b4aee4ab5c7943949a73d4d5503e95f8, type: 3}
-    words: []
   - letterId: 13
     clip: {fileID: 8300000, guid: 68255084f79fa384f868fc6ceceecc85, type: 3}
-    words: []
   - letterId: 14
     clip: {fileID: 8300000, guid: b8278cfd2af07824b84d644cbff11e0d, type: 3}
-    words: []
   - letterId: 15
     clip: {fileID: 8300000, guid: 318a6c81611c55249b2e92561da3c10c, type: 3}
-    words: []
   - letterId: 16
     clip: {fileID: 8300000, guid: fe7ed0c963590c847af16cc45a9b846a, type: 3}
-    words: []
   - letterId: 17
     clip: {fileID: 8300000, guid: 42229099aa7fb284290723876d7dd117, type: 3}
-    words: []
   - letterId: 18
     clip: {fileID: 8300000, guid: 75a275b84602033479962f000a27ba2c, type: 3}
-    words: []
   - letterId: 19
     clip: {fileID: 8300000, guid: cf24c1304f56c4746bb7c700b4c04b5d, type: 3}
-    words: []
   - letterId: 20
     clip: {fileID: 8300000, guid: c361e8c7407969540833a454659a18f5, type: 3}
-    words: []
   - letterId: 21
     clip: {fileID: 8300000, guid: 6562178be7ac3c64786bca29b232dc27, type: 3}
-    words: []
   - letterId: 22
     clip: {fileID: 8300000, guid: 30aa428a9e01fda4eb2d26b19f912d70, type: 3}
-    words: []
   - letterId: 23
     clip: {fileID: 8300000, guid: 6a3ad386f4cbc18449d1dfb7313bd4f6, type: 3}
-    words: []
   - letterId: 24
     clip: {fileID: 8300000, guid: efe275e58d49dde448242df18b18fffe, type: 3}
-    words: []
   - letterId: 25
     clip: {fileID: 8300000, guid: b45b839515c8cdd4fa80624d710f8da1, type: 3}
-    words: []

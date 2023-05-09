@@ -10,6 +10,7 @@ public class Pattern : LetterSegmentFiller
     [SerializeField] protected AudioSource tracingAudio;
     [SerializeField] protected AudioSource animationAudio;
     [SerializeField] protected AudioSource unitedAudio;
+    [SerializeField] protected GameObject endTracingEffect;
     #endregion
 
     #region PROPERTIES
@@ -35,6 +36,12 @@ public class Pattern : LetterSegmentFiller
     {
         if (tracingAudio)
             tracingAudio.Stop();
+
+        if (endTracingEffect)
+        {
+            endTracingEffect.transform.position = isDot ? getPoint(.5f) : getPoint(pathLength);
+            endTracingEffect.myActive();
+        }
     }
     public virtual void onStartAnimation()
     {

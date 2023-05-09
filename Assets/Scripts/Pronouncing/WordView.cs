@@ -14,6 +14,7 @@ namespace KidLetters.Pronouncing
             public float zoom = 10;
             public Vector2 offset = new Vector2(0, 6);
             public float duration = .5f;
+            public float moveUnderDuration = .3f;
         }
         [System.Serializable]
         class GlowOptions
@@ -139,7 +140,7 @@ namespace KidLetters.Pronouncing
                 actualI++;
             }
             yield return new WaitForSeconds(paddingTimeEnd);
-            yield return CameraControl.o.move(cameraOptions.offset + focusPos, cameraOptions.duration, Ease.InOutQuad).WaitForCompletion();
+            yield return CameraControl.o.move(cameraOptions.offset + focusPos, cameraOptions.moveUnderDuration, Ease.InOutQuad).WaitForCompletion();
 
         }
 

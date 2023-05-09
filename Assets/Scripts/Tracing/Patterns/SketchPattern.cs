@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class SketchPattern : SplinePattern
 {
     [SerializeField] AudioSource tracingEndAudio;
@@ -16,6 +17,10 @@ public class SketchPattern : SplinePattern
 
     Transform startRoundEdge => roundEdges[0];
     Transform endRoundEdge => roundEdges[1];
+
+
+
+
 
 
     public override bool useAnimation => false;

@@ -89,7 +89,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 3de11bab9ff860e42b6658faf14db1ff, type: 3}
     - {fileID: 8300000, guid: 23b4e8e1ceadfdf4da9b65c5a2fcf4f7, type: 3}
   - word: jump
-    prefab: {fileID: 0}
+    prefab: {fileID: 8575807750777953563, guid: 79aa81513fa871e4eb9354dfdebd343d, type: 3}
     picture: {fileID: 21300000, guid: 6694b2f98bfab334cb13b18bb0bb7330, type: 3}
     clip: {fileID: 8300000, guid: 2ea7519d0ddf2ba46a89e25514da0950, type: 3}
     spellingClips:
@@ -98,7 +98,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 27f4bda45f459954f9018958cf208a7a, type: 3}
     - {fileID: 8300000, guid: 2154d16e739bca04c886bb0e472f3a4f, type: 3}
   - word: kick
-    prefab: {fileID: 0}
+    prefab: {fileID: 169436338574038570, guid: b2c23229a7f8add48a442842a54caa70, type: 3}
     picture: {fileID: 21300000, guid: d123e2ff86c403c47ba2008401bb9d7b, type: 3}
     clip: {fileID: 8300000, guid: 4d92857065bdafa498629c2238ffbd5d, type: 3}
     spellingClips:
@@ -106,7 +106,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 1dccf63666401fd45ac19250d9cbffb7, type: 3}
     - {fileID: 8300000, guid: a49e84f44a4bc0646a7d5ff567129c86, type: 3}
   - word: lick
-    prefab: {fileID: 0}
+    prefab: {fileID: 8502123895985910893, guid: d30f0ace869bc924584ad606b6ea7630, type: 3}
     picture: {fileID: 21300000, guid: f37be46bb985f204c951c01a598e3a1e, type: 3}
     clip: {fileID: 8300000, guid: bd2f56c1c22cc6d4cbc7dd44e66bb9df, type: 3}
     spellingClips:
@@ -140,7 +140,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: c056eff83e189784398cce7a1bfb8138, type: 3}
     - {fileID: 8300000, guid: 3f48d103b5cf401498787423a847218c, type: 3}
   - word: run
-    prefab: {fileID: 0}
+    prefab: {fileID: 7290119700396476516, guid: ee139b3d1df8af44fbdab6984e28eee2, type: 3}
     picture: {fileID: 21300000, guid: c15f4d5785d102346916e1b3aadc9852, type: 3}
     clip: {fileID: 8300000, guid: cfda3cd26f88f76439957c4a339d4864, type: 3}
     spellingClips:
@@ -182,7 +182,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 776650980a427ed46b4d518b32423946, type: 3}
     - {fileID: 8300000, guid: 3faf99dd302697b4abef9e8cb4a8bd0d, type: 3}
   - word: wet
-    prefab: {fileID: 0}
+    prefab: {fileID: 1155542749896166222, guid: c8206aeba9035484084fd106581d6c63, type: 3}
     picture: {fileID: 21300000, guid: 30cc66eea2e16aa4b8e42547bb1039c9, type: 3}
     clip: {fileID: 8300000, guid: 72e69b1f161f71f4ba1b24eb250037f6, type: 3}
     spellingClips:
@@ -190,7 +190,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: b4c4f55f31ad7e04bb9cc8db43fe9703, type: 3}
     - {fileID: 8300000, guid: b26bd48037898c648bf6ac81090bdbba, type: 3}
   - word: yes
-    prefab: {fileID: 0}
+    prefab: {fileID: 268429228346484875, guid: 9660a5b83d86d14459a5da8223dea4b8, type: 3}
     picture: {fileID: 21300000, guid: 38287b6b9e6c5774e9fd9090b0fba741, type: 3}
     clip: {fileID: 8300000, guid: a040ad78f14bf664f83a40d81133fd33, type: 3}
     spellingClips:

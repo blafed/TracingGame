@@ -26,6 +26,11 @@ public class ButterflyPattern : ObjectPattern
         base.onEndAnimation();
         keepAnimation = true;
     }
+    public override bool whileUnited(float time)
+    {
+        return true;
+    }
+
     public override void whileAnimation(float movedDistance)
     {
         animateObjects(movedDistance);
