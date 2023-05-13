@@ -21,7 +21,7 @@ public class WordList : ScriptableObject
     };
 
 
-    public List<WordInfo> listAll()
+    public IReadOnlyList<WordInfo> listAll()
     {
         return wordInfos;
     }

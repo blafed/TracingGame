@@ -15,8 +15,8 @@ namespace KidLetters.Tracing
         public IEnumerator play()
         {
             var letter = TracingPhase.o.letter;
-            letter.text.color = Color.white;
-            letter.text.alpha = 1;
+            letter.setColor(Color.white);
+            letter.setAlpha(1);
             CameraControl.o.zoom(cameraZoom, duration, ease);
             CameraControl.o.move(TracingPhase.o.letter.transform.position, duration, ease);
             yield return new WaitForSeconds(duration);

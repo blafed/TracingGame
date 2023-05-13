@@ -11,10 +11,12 @@ public class ObjectPattern : Pattern
     [SerializeField]
     float dotScale = 1;
 
+    [Space]
+    public AudioSource placementAudio;
+
+
+
     protected List<CreatedObject> objects = new();
-
-
-    public override float unitedTime => _unitedTime;
 
 
     [System.Serializable]
@@ -25,6 +27,11 @@ public class ObjectPattern : Pattern
         public SpriteRenderer renderer;
         public float delay;
         public int index;
+
+
+        public float randomParameter;
+        public bool didExit;
+        public bool removed;
     }
 
 
@@ -33,7 +40,7 @@ public class ObjectPattern : Pattern
         var s = Instantiate(objectSource).GetComponent<SpriteRenderer>();
         s.gameObject.SetActive(true);
         s.transform.parent = transform;
-        s.transform.position = transform.position + (Vector3)segment.path.startPoint;
+        s.transform.position = transform.position + (Vector3)startPoint;
         s.color = colors[objects.Count % colors.Length];
         CreatedObject c;
         objects.Add(c = new CreatedObject
@@ -41,7 +48,8 @@ public class ObjectPattern : Pattern
             gameObject = s.gameObject,
             renderer = s,
             delay = (movedDistance / spacing).floor() * spacing,
-            index = objects.Count
+            index = objects.Count,
+            randomParameter = Random.value
         });
         moveObjectAlong(s.transform, movedDistance);
 
@@ -67,9 +75,9 @@ public class ObjectPattern : Pattern
         base.onStartAnimation();
         progress = 1;
     }
-    public override void whileTracing()
+    public override void whileTracing(float movedDistance)
     {
-        base.whileTracing();
+        base.whileTracing(movedDistance);
 
         if (isDot)
         {
@@ -91,12 +99,14 @@ public class ObjectPattern : Pattern
         }
     }
 
-    public override void whileUnited(float time)
+    public override bool whileUnited(float time)
     {
         base.whileUnited(time);
         if (isDot)
-            return;
+            return false;
         moveAllObjectsAlong(unitedSpeed * time);
+
+        return time > _unitedTime;
     }
 
 
@@ -105,6 +115,9 @@ public class ObjectPattern : Pattern
         var s = obj.transform.localScale;
         obj.transform.localScale = Vector3.zero;
         obj.transform.DOScale(s, .5f);
+
+        if (placementAudio)
+            placementAudio.Play();
     }
 
 }

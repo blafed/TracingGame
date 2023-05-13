@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,19 +9,22 @@ namespace KidLetters
     public class TracingPhase : Phase<TracingPhase>
     {
 
+        //fields
         [SerializeField]
         TracingStageInfo[] overrideStages = new TracingStageInfo[0];
+
+
         //properties
-        public Letter letter { get; private set; }
+        public int letterId { get; private set; }
+        public LetterFiller letter { get; private set; }
         public WordInfo wordInfo { get; private set; }
-        public int doneStage { get; private set; } = 0;
-        public TracingStageInfo[] tracingStages { get; private set; }
+
+        public int stageIndex { get; private set; }
+        public List<TracingStageInfo> stageInfos { get; private set; }
         public TracingStage currentStage { get; private set; }
-        public Vector2 stageButtonPosition => stageButton.transform.position;
-        public StageButton stageButton { get; private set; }
+        public Vector2? spawnEdgesPointsFrom { get; private set; }
 
 
-        public event System.Action onFocused;
 
         //events
         public event System.Action<TracingStage> onStageChanged;
@@ -34,114 +38,101 @@ namespace KidLetters
         //overrides
         protected override void onEnter()
         {
-            stageButton = null;
-            doneStage = 0;
+            spawnEdgesPointsFrom = null;
+            stageIndex = 0;
             List<PatternCode> patternCodes = Enumerable.Range(1, (int)PatternCode.sketch - 1).Select(x => (PatternCode)x).ToList();
 
-            if (overrideStages.Length > 0)
-                tracingStages = overrideStages;
-            else
-                tracingStages = new TracingStageInfo[3];
+            stageInfos = new();
 
-            for (int i = 0; i < tracingStages.Length; i++)
+            for (int i = 0; i < 3; i++)
             {
                 var stg = new TracingStageInfo();
-                if (i != 0)
+                if (i == 1)
                 {
                     var patternCode = patternCodes.getRandom();
                     patternCodes.Remove(patternCode);
                     stg.patternCode = patternCode;
+                    stg.showThinLetter = true;
 
                 }
                 else
                 {
-                    stg.autoTracing = true;
-                    stg.patternCode = PatternCode.sketch;
+                    stg.autoTracing = i == 0;
+                    stg.patternCode = i == 0 ? PatternCode.sketch : PatternCode.brush;
                 }
-                tracingStages[i] = stg;
+                stg.disableIndicating = stg.patternCode == PatternCode.brush;
+                stg.disableEdgePoints = stg.patternCode == PatternCode.sketch;
+                stg.showThinLetter = !(stg.patternCode == PatternCode.sketch || stg.patternCode == PatternCode.brush);
+                if (i < overrideStages.Length)
+                    stg = overrideStages[i];
+                stageInfos.Add(stg);
             }
 
+            letter = LetterFiller.createStandardFiller(Home.LetterContainer.o.getLetter(letterId));
             StartCoroutine(cycle());
         }
         protected override void onExit()
         {
-            // StageButtonContainer.o.hide();
-            // MinorStarContainer.o.hide();
             if (oldStage)
             {
                 Destroy(oldStage.gameObject);
             }
-            letter.setTextEnabled(true);
+            letter.setEnabled(true);
             StopAllCoroutines();
+            EdgePointDealer.o.clearEdgePoints();
+            letter.setColor(Color.white);
+
+            Destroy(letter.gameObject);
+
+
+            IndicatingArrow.o.hide();
+            IndicatingDot.o.hide();
 
         }
+
+
 
 
         //private functions
         IEnumerator cycle()
         {
             yield return Tracing.FocusOnLetter.o.play();
-            onFocused?.Invoke();
-
-
-
-            yield return new WaitUntil(() => doneStage >= tracingStages.Length);
-            PronouncingPhase.o.setArgsAfterTracing(this.letter, wordInfo);
+            yield return Tracing.TracingController.o.play();
+            PronouncingPhase.o.setArgsAfterTracing(letterId, wordInfo);
             Phase.change(PronouncingPhase.o);
         }
 
         //public functions
-        public void setArgs(Letter letter, WordInfo wordInfo)
+        public void setArgs(int letterId, WordInfo wordInfo)
         {
-            this.letter = letter;
+            this.letterId = letterId;
             this.wordInfo = wordInfo;
         }
-        public void playStage(int index, StageButton stageButton)
+        public void playStage(int index, Vector2? spawnEdgePointsAt = null)
         {
-            this.stageButton = stageButton;
+            stageIndex = index;
+            this.spawnEdgesPointsFrom = spawnEdgePointsAt;
             if (oldStage)
                 Destroy(oldStage.gameObject);
 
             currentStage = Instantiate(stagePrefab).GetComponent<TracingStage>();
-            currentStage.setup(this.tracingStages[index]);
+            currentStage.transform.position = letter.transform.position;
+            currentStage.setup(this.stageInfos[index], letter.glyph);
 
             currentStage.transform.parent = transform;
             oldStage = currentStage;
-            //call event
-
-            currentStage.onDone += () =>
-                {
-                    if (index >= doneStage)
-                    {
-                        doneStage++;
-                        currentStage = null;
-                    }
-                };
 
             onStageChanged?.Invoke(currentStage);
-            //registering the removing event after calling onStageChanged because, so let the other entities register their events in an order before removing the reference of currentStage
-            currentStage.onDone += () =>
-                {
-                    if (index >= doneStage)
-                    {
-                        currentStage = null;
-                    }
-                };
-
-        }
-        public bool canPlayStage(int index)
-        {
-            return index <= doneStage;
         }
 
     }
-
-    [System.Serializable]
-    public struct TracingStageInfo
+    public enum TracingState
     {
-        public PatternCode patternCode;
-        public bool autoTracing;
+        initial,
+        tracing,
+        animation,
+        united,
+        done,
     }
 }
-
 

@@ -8,6 +8,7 @@ namespace KidLetters.Pronouncing
     public class WordPicturePlayer : Singleton<WordPicturePlayer>
     {
         [SerializeField] Transform container;
+        [SerializeField] float containerScale = 2;
         // [SerializeField] float scaleDuration = .5f;
 
         [SerializeField]
@@ -18,6 +19,10 @@ namespace KidLetters.Pronouncing
         };
         [SerializeField] float endPaddingTime = 1;
         [SerializeField] float startScaleDuration = .5f;
+        [SerializeField] float audioPlayDelay = .5f;
+        [SerializeField] float enterDuration = 1;
+        [SerializeField] float exitDuration = 1;
+        [SerializeField] float stayDuration = 1;
         [SerializeField] float exitTime = 1;
         // [SerializeField] Vector2 offset = new Vector2(0, 6);
 
@@ -37,7 +42,7 @@ namespace KidLetters.Pronouncing
         }
 
         GameObject _createdWordPictureGameObject;
-        WordPictureAnimation createWordPictureAnimation(WordInfo wordInfo)
+        WordArtAnimation createWordPictureAnimation(WordInfo wordInfo)
         {
             if (!wordInfo.prefab)
                 return null;
@@ -46,10 +51,13 @@ namespace KidLetters.Pronouncing
             p.transform.localScale = Vector3.one;
             p.transform.localPosition = new Vector3();
             _createdWordPictureGameObject = p;
-            var a = p.GetComponent<WordPictureAnimation>();
+            var a = p.GetComponent<WordArtAnimation>();
+
+            a.enterDuration = enterDuration;
+            a.exitDuration = exitDuration;
             return a;
         }
-        WordPictureAnimation createWordPictureAnimation()
+        WordArtAnimation createWordPictureAnimation()
         {
             var wordInfo = PronouncingPhase.o.wordInfo;
             if (!wordInfo.prefab && wordInfo.picture)
@@ -74,22 +82,25 @@ namespace KidLetters.Pronouncing
 
 
             var animation = createWordPictureAnimation();
-            container.localScale = Vector3.zero;
-            container.DOScale(1, startScaleDuration);
-            yield return new WaitForSeconds(startScaleDuration);
+            animation.onEnter();
+            //wait for enter animation
+            yield return new WaitForSeconds(enterDuration);
 
-            var m = animation && animation.overrideMeta ? animation.meta : defaultPlayingMeta;
+            // var m = animation && animation.overrideMeta ? animation.meta : defaultPlayingMeta;
             StartCoroutine(WordView.o.setHighlightAll(true));
+            animation.playAnimation();
 
 
-
-
-            yield return new WaitForSeconds(m.audioPlayDelay);
+            //wait a delay before playing the audio
+            yield return new WaitForSeconds(audioPlayDelay);
 
             GeneralAudioPlayer.o.play(wordInfo.clip);
-            yield return new WaitForSeconds(m.duration - m.audioPlayDelay);
-            yield return new WaitForSeconds(endPaddingTime);
-            yield return container.DOScale(0, exitTime).WaitForCompletion();
+            //wait for the animation to end
+            yield return new WaitForSeconds(animation.duration - audioPlayDelay);
+            //stay with the art for a while
+            yield return new WaitForSeconds(stayDuration);
+            animation.onExit();
+            yield return new WaitForSeconds(exitDuration);
 
             // yield return container.transform.DOScale(Vector3.one, scaleDuration).WaitForCompletion();
 

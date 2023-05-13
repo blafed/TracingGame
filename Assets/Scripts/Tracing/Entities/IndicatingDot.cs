@@ -2,7 +2,7 @@ using DG.Tweening;
 namespace KidLetters.Tracing
 {
     using UnityEngine;
-    public class IndicatingDot : PhaseSingletonEntity<IndicatingDot, TracingPhase>
+    public class IndicatingDot : Singleton<IndicatingDot>
     {
         [SerializeField]
         GameObject effect;
@@ -24,37 +24,37 @@ namespace KidLetters.Tracing
             //     x.transform.localPosition = new Vector3();
             // });
         }
-        protected override void Start()
+        void Start()
         {
-            base.Start();
-            TracingPhase.o.onStageChanged += (stage) =>
-            {
-                hide();
-                stage.onSegmentChanged += (seg) =>
-                {
-                    if (!stage.info.autoTracing && seg.isDot)
-                        showOnPattern(seg);
-                };
-            };
+            // base.Start();
+            // TracingPhase.o.onStageChanged += (stage) =>
+            // {
+            //     hide();
+            //     stage.onSegmentChanged += (seg) =>
+            //     {
+            //         if (!stage.info.autoTracing && seg.isDot)
+            //             showOnPattern(seg);
+            //     };
+            // };
             hide();
         }
 
-        void showOnPattern(Pattern pattern)
+        public void showOnPattern(Pattern pattern)
         {
             transform.position = pattern.transform.position;
             show();
             this.pattern = pattern;
         }
-        protected override void onPhaseExit()
-        {
-            hide();
-        }
+        // protected override void onPhaseExit()
+        // {
+        //     hide();
+        // }
 
         void show()
         {
             effect.gameObject.SetActive(true);
         }
-        void hide()
+        public void hide()
         {
             effect.gameObject.SetActive(false);
             pattern = null;

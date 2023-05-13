@@ -47,13 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationSpeed: 2
-  patternObjects:
-  - {fileID: 341075784391559614, guid: fffb23617a5a98d45ba8f8564458f141, type: 3}
-  - {fileID: 341075784391559614, guid: fb70df8ed529e4844bdc9df7c256ab86, type: 3}
-  - {fileID: 7811810815110988914, guid: 61a31fb3b2e32754b9d914086aaa9b00, type: 3}
-  - {fileID: 7605648207159524934, guid: 6732d28aef6a3f045a691250bcd4285d, type: 3}
-  - {fileID: 8877065510831761988, guid: 03383a876bf0dac4ab5ba8bbb1892d93, type: 3}
-  - {fileID: 119844721391818874, guid: 05bd48c52b2c29146b8cccb4f2959541, type: 3}
 --- !u!114 &7029430527555634161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,11 +59,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16626ce2bd895784dbce8ea60ee9c938, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceThreshold: 1
+  distanceThreshold: 0.75
   addingSpeed: 5
   maxSpeed: 8
   followLerpFactor: 5
   followLerpMinDt: 0.02
+  plottingDistance: 0.5
 --- !u!114 &7029430527555634160
 MonoBehaviour:
   m_ObjectHideFlags: 0

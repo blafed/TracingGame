@@ -29,6 +29,42 @@ public static class BezierHelper
         return (chord + contNet) / 2;
     }
 
+    public static float BezierSingleLength(Vector3[] points)
+    {
+        var p0 = points[0] - points[1];
+        var p1 = points[2] - points[1];
+        var p2 = new Vector3();
+        var p3 = points[3] - points[2];
+
+        var l0 = p0.magnitude;
+        var l1 = p1.magnitude;
+        var l3 = p3.magnitude;
+        if (l0 > 0) p0 /= l0;
+        if (l1 > 0) p1 /= l1;
+        if (l3 > 0) p3 /= l3;
+
+        p2 = -p1;
+        var a = Mathf.Abs(Vector3.Dot(p0, p1)) + Mathf.Abs(Vector3.Dot(p2, p3));
+        if (a > 1.98f || l0 + l1 + l3 < (4 - a) * 8) return l0 + l1 + l3;
+
+        var bl = new Vector3[4];
+        var br = new Vector3[4];
+
+        bl[0] = points[0];
+        bl[1] = (points[0] + points[1]) * 0.5f;
+
+        var mid = (points[1] + points[2]) * 0.5f;
+
+        bl[2] = (bl[1] + mid) * 0.5f;
+        br[3] = points[3];
+        br[2] = (points[2] + points[3]) * 0.5f;
+        br[1] = (br[2] + mid) * 0.5f;
+        br[0] = (br[1] + bl[2]) * 0.5f;
+        bl[3] = br[0];
+
+        return BezierSingleLength(bl) + BezierSingleLength(br);
+    }
+
     public static Vector2 EvaluateCubicWithControls(Vector2 a, Vector2 b, Vector2 c, Vector2 d, float t
     , out Vector2 newB, out Vector2 newC
     )

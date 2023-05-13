@@ -15,27 +15,22 @@ namespace KidLetters.Home
         }
 
 
-        List<Letter> letters = new List<Letter>();
+        List<LetterRaw> letters = new List<LetterRaw>();
 
 
         [SerializeField] CameraOptions cameraOptions = new CameraOptions();
 
 
-        protected override void Awake()
-        {
-            base.Awake();
-            letters = new List<Letter>(GetComponentsInChildren<Letter>());
-            foreach (var x in letters)
-            {
-                var col = x.gameObject.AddComponent<BoxCollider>();
-                col.isTrigger = true;
-                col.size = x.size;
-                x.onClick += () => selectLetter(x);
-            }
-        }
         private void Start()
         {
-            // HomePhase.o.onEnterEvent += onPhaseEnter;
+            letters = new List<LetterRaw>(GetComponentsInChildren<LetterRaw>());
+            foreach (var x in letters)
+            {
+                var col = x.gameObject.AddComponent<LetterButton>();
+                var filler = LetterFiller.createStandardFiller(x);
+                filler.transform.parent = x.transform;
+
+            }
         }
 
 
@@ -53,12 +48,12 @@ namespace KidLetters.Home
 
 
 
-        public void selectLetter(Letter letter)
+        public void selectLetter(LetterRaw letter)
         {
             HomePhase.o.selectLetter(letter);
         }
 
-        public void setActiveLetters(bool active, System.Predicate<Letter> except = null)
+        public void setActiveLetters(bool active, System.Predicate<LetterRaw> except = null)
         {
             foreach (var x in letters)
             {
@@ -69,9 +64,15 @@ namespace KidLetters.Home
         }
 
 
-        public Letter getLetter(int letterId)
+        public LetterRaw getLetter(int letterId)
         {
             return letters.Find(x => x.letterId == letterId);
+        }
+
+
+        public LetterRaw instantiateLetter(int letterId)
+        {
+            return Instantiate(LetterPrefabContainer.o.getLetterPrefab(letterId), getLetter(letterId).transform.position, default).GetComponent<LetterRaw>();
         }
 
     }

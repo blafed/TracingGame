@@ -2,250 +2,98 @@ using DG.Tweening;
 using System.Collections.Generic;
 using UnityEngine.U2D;
 using UnityEngine;
+using KidLetters;
 
-// public enum PatternState
-// {
-//     unknown,
-//     tracing,
-//     animation,
-//     done
-
-// }
-
-// static partial class Extensions
-// {
-//     public static bool isAnimation(this PatternState s) => s == PatternState.animation;
-//     public static bool isTracingDone(this PatternState s) => s.isAnimation() || s.isDone();
-//     public static bool isTracing(this PatternState s) => s == PatternState.tracing;
-//     public static bool isDone(this PatternState s) => s == PatternState.done;
-
-// }
-public class Pattern : MonoBehaviour
+public class Pattern : LetterSegmentFiller
 {
-    public PatternCode code;
+    #region FIELDS
+    [SerializeField] protected AudioSource tracingAudio;
+    [SerializeField] protected AudioSource animationAudio;
+    [SerializeField] protected AudioSource unitedAudio;
+    [SerializeField] protected GameObject endTracingEffect;
+    #endregion
 
-    EdgePoint[] edgePoints = new EdgePoint[2];
-    public EdgePoint startEdgePoint => edgePoints.getOrDefault(0);
-    public EdgePoint endEdgePoint => edgePoints.getOrDefault(1);
-    public LetterSegment segment { get; private set; }
-
-
-    public virtual float waitBeforeEnableTracing => 1;
-    public virtual float unitedTime => 0;
-
-    public bool isDot => segment.isDot;
-    public float dotRadius => segment.dotRadius;
-    public bool isProgressCompleted => progress >= 1;
-    protected virtual bool createEdgePointsByDefault => true;
+    #region PROPERTIES
+    public float newMovedDistance { get; set; }
+    public virtual float waitTimeAfterTracing => 0;
+    public virtual bool useAnimation => true;
+    public virtual bool useUnitedAnimation => true;
+    #endregion
 
 
-    protected virtual float addedLength => 0;
+    #region FIELDS
+    float tracingAudioVolume = -1;
+    #endregion
 
-
-    public virtual void onCreated()
+    #region FUNCTIONS
+    public virtual void onCreated() { }
+    public virtual void onStartTracing() { }
+    public virtual void whileTracing(float movedDistance)
     {
-        if (isDot)
-        {
-            edgePoints = new EdgePoint[0];
-            return;
-        }
-        if (createEdgePointsByDefault)
-            createEdgePoints();
-    }
-    public virtual void onStartTracing()
-    {
-        foreach (var x in edgePoints)
-            x.setPlaying();
-    }
-
-    public virtual void whileTracing()
-    {
-        foreach (var x in edgePoints)
-            x.rotateByDistance();
+        this.movedDistance = movedDistance;
     }
     public virtual void onEndTracing()
     {
-        foreach (var x in edgePoints)
+        if (tracingAudio)
+            tracingAudio.Stop();
+
+        if (endTracingEffect)
         {
-            x.rotateToOrigin();
-            x.setStopped();
+            endTracingEffect.transform.position = isDot ? getPoint(.5f) : getPoint(pathLength);
+            endTracingEffect.myActive();
         }
     }
     public virtual void onStartAnimation()
     {
-        foreach (var x in edgePoints)
-            x.setPlaying();
+        if (animationAudio)
+            animationAudio.Play();
     }
-    public virtual void whileAnimation()
+    public virtual void whileAnimation(float movedDistance)
     {
     }
     public virtual void onEndAnimation()
     {
-
+        if (animationAudio)
+            animationAudio.Stop();
     }
-    /// <summary>
     /// called after animation is done
-    /// </summary>
-    public virtual void onDone()
-    {
-        foreach (var x in edgePoints)
-            x.setCompleted();
-    }
-    /// <summary>
+    public virtual void onDone() { }
     /// called after all segments are completed
-    /// </summary>
     public virtual void onAllDone() { }
-    public virtual void onStartUnited() { }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="time"></param>
-    /// <returns>true to break the united loop, false to keep running</returns>
-    public virtual void whileUnited(float time) { }
+    public virtual void onStartUnited()
+    {
+        if (unitedAudio)
+            unitedAudio.Play();
+    }
+    public virtual bool whileUnited(float time) => true;
     public virtual void onEndUnited() { }
-
-
-    protected virtual void OnDestroy()
+    protected virtual void OnDestroy() { }
+    //called when moved distance added each frame
+    public virtual void onDistanceState(bool didMoved)
     {
-        foreach (var x in edgePoints)
-            if (x)
-                Destroy(x.gameObject);
+        playTracingAudio(didMoved);
     }
 
-
-
-
-    float _movedDistance;
-
-    /// <summary>
-    /// progress from 0 to 1
-    /// </summary>
-    public float progress
+    void playTracingAudio(bool didMoved)
     {
-        get => (movedDistance / pathLength).clamp01();
-        set => movedDistance = value.clamp01() * pathLength;
-    }
-
-    /// <summary>
-    /// setup the pattern instance with required fields (call this after instantiate)
-    /// </summary>
-    /// <param name="segment"></param>
-    public void setup(LetterSegment segment)
-    {
-        this.segment = segment;
-    }
-    /// <summary>
-    /// amount of unscaled distance
-    /// </summary>
-    public float movedDistance
-    {
-        get => _movedDistance + addedLength;
-        set => _movedDistance = Mathf.Max(value - addedLength, addedLength);
-    }
-    /// <summary>
-    /// the target path that pattern should follow (scaled)
-    /// </summary>
-    protected virtual Path targetPath => segment.path;
-    /// <summary>
-    /// how much does the targetPath scale
-    /// </summary>
-    protected virtual float pathScale => 1;
-    /// <summary>
-    /// path absolute length
-    /// </summary>
-    public float pathLength => isDot ? dotRadius * 2 : segment.totalLength;
-
-
-    /// <summary>
-    /// evaluate the point at absolute moved distancec
-    /// </summary>
-    /// <param name="movedDistance"></param>
-    /// <returns></returns>
-    public Vector2 getPoint(float movedDistance)
-    {
-        movedDistance /= pathScale;
-        return transform.position + targetPath.evaluate(movedDistance).toVector3() * pathScale;
-    }
-    /// <summary>
-    /// move the object and the same time make it takes the same direction of path
-    /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="movedDistance"></param>
-    protected void moveObjectAlong(Transform obj, float movedDistance)
-    {
-        obj.transform.position = getPoint(movedDistance);
-        var dir = getDirection(movedDistance);
-        obj.right = dir;
-    }
-    /// <summary>
-    /// gets the direction at moved distance
-    /// </summary>
-    /// <param name="movedDistance"></param>
-    /// <returns></returns>
-    public virtual Vector2 getDirection(float movedDistance)
-    {
-        // movedDistance /= pathScale;
-        var a = getPoint(movedDistance);
-        var t = movedDistance * 1.01f;
-        bool isInverse = false;
-        if (t > segment.totalLength)
+        if (tracingAudio)
         {
-            t = movedDistance / 1.01f;
-            isInverse = true;
+            if (tracingAudioVolume < 0)
+                tracingAudioVolume = tracingAudio.volume;
+            if (!tracingAudio.isPlaying)
+                tracingAudio.Play();
         }
-        var b = getPoint(t);
-        var d = b - a;
-        if (isInverse)
-            d = a - b;
-        return d.normalized;
-    }
-
-    protected virtual GameObject edgePointPrefab
-    {
-        get
-        {
-            return TracingManager.o.options.edgePointPrefab.gameObject;
-        }
-    }
-    protected void createEdgePoints(System.Action<EdgePoint> callback = null)
-    {
-        var prefab = edgePointPrefab;
-        for (int j = 0; j < 2; j++)
-        {
-            var p = segment.path.startPoint;
-            if (j == 1)
-                p = segment.path.endPoint;
-
-            var x = Instantiate(prefab, p, default);
-            var edgePoint = x.GetComponent<EdgePoint>();
-            edgePoint.setup(this);
-            edgePoints[j] = edgePoint;
-            x.transform.parent = transform.parent;
-            if (j == 1)
+        if (tracingAudio && !isDot)
+            if (didMoved)
             {
-                x.transform.position = transform.position.toVector2() + segment.path.endPoint;
+                tracingAudio.volume = Mathf.MoveTowards(tracingAudio.volume, tracingAudioVolume, Time.fixedDeltaTime * 4 * tracingAudioVolume);
             }
             else
             {
-                x.transform.position = transform.position.toVector2() + segment.path.startPoint;
+                tracingAudio.volume = Mathf.MoveTowards(tracingAudio.volume, 0, Time.fixedDeltaTime * 4 * tracingAudioVolume);
             }
-
-            callback?.Invoke(edgePoint);
-        }
     }
+    #endregion
 
 
-}
-
-
-public enum PatternCode
-{
-    none,
-    chains,
-    road,
-    rainbow,
-    butterfly,
-    candy,
-    sketch,
-    COUNT,
 }

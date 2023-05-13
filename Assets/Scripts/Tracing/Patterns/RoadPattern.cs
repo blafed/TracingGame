@@ -3,35 +3,43 @@ using DG.Tweening;
 public class RoadPattern : SplinePattern
 {
 
+    public AudioSource startAnimationAudio;
+    public float holdingDistance = .5f;
+
     public override void onCreated()
     {
         base.onCreated();
         followObject.gameObject.SetActive(false);
-
     }
-    // public override void onStartTracing()
-    // {
-    //     base.onStartTracing();
-    //     if (isDot)
-    //     {
-    //     }
-    // }
-    public override void whileTracing()
+    public override void whileTracing(float movedDistance)
     {
-        base.whileTracing();
+        base.whileTracing(movedDistance);
         moveSpline();
 
     }
-    public override void whileAnimation()
+    public override void whileAnimation(float movedDistance)
     {
-        base.whileAnimation();
-        moveObjectAlong(followObject, movedDistance);
+        base.whileAnimation(movedDistance);
+
+        if (movedDistance > holdingDistance)
+        {
+            var f = (movedDistance - holdingDistance) / (pathLength - holdingDistance);
+            moveObjectAlong(followObject, f * pathLength);
+        }
+        else
+        {
+            moveObjectAlong(followObject, 0.1f);
+        }
+
     }
 
 
     public override void onStartAnimation()
     {
         base.onStartAnimation();
+
+        if (startAnimationAudio != null)
+            startAnimationAudio.Play();
         if (isDot)
         {
             followObject.gameObject.SetActive(false);

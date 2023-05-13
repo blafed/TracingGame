@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -14,11 +15,9 @@ namespace KidLetters.Tracing
 
         [SerializeField] float followLerpFactor = 5;
         [SerializeField] float followLerpMinDt = .02f;
+        [SerializeField] float plottingDistance = .5f;
 
         static InputManager im => InputManager.o;
-
-
-        public TracingStage stage { get; private set; }
 
 
         protected override void Awake()
@@ -36,87 +35,89 @@ namespace KidLetters.Tracing
         float totalAddedDistance;
         float addedDistanceAt;
         bool isDotPlotted;
+        // float movedDistance;
 
 
 
-        public void setup(TracingStage stage)
+        List<Vector2> plottedPoints = new List<Vector2>();
+
+        public override void flush()
         {
-            this.stage = stage;
-            stage.onSegmentChanged += onSegmentPatternChange;
+            totalAddedDistance = 0;
+            isDotPlotted = false;
         }
 
-        void incorrectInput()
-        {
 
-        }
-
-
-        public void onSegmentPatternChange(Pattern pattern)
+        public override float getNewMovement(LetterSegmentFiller segment, float dt)
         {
-            if (pattern)
-                totalAddedDistance = pattern.movedDistance;
-        }
-        private void Update()
-        {
+            isWrongTracing = false;
             var p = im.point;
 
-            if (stage.state == TracingState.tracing && !stage.hasSegmentChanged)
+
+
+
+
+
+
+            if (segment.isDot)
             {
+                var boundingOnDot = new BoundingSphere(segment.transform.position, segment.dotRadius);
 
-                var pattern = stage.currentSegment;
-
-                if (pattern.isDot)
+                if (im.isEnter && boundingOnDot.contains(im.point))
                 {
-                    var boundingOnDot = new BoundingSphere(pattern.transform.position, pattern.dotRadius);
-
-                    if (im.isEnter && boundingOnDot.contains(im.point))
-                    {
-                        isDotPlotted = true;
-                    }
-
-
-                    if (isDotPlotted)
-                    {
-                        pattern.movedDistance += maxSpeed * Time.deltaTime;
-                    }
-
-                    return;
+                    isDotPlotted = true;
                 }
-
-                if (im.isEnter)
+                else
                 {
-                    var currentPoint = pattern.getPoint(totalAddedDistance);
-                    var inPoint = im.point;
-                    var dst = Vector2.Distance(currentPoint, inPoint);
-                    var dir = pattern.getDirection(totalAddedDistance);
-                    var point2 = currentPoint + dir * distanceThreshold;
-
-
-                    // var r = Rect.MinMaxRect(currentPoint.x, currentPoint.y, point2.x, point2.y);
-
-                    if (Vector2.Distance(currentPoint, inPoint) > distanceThreshold || Vector2.Distance(inPoint, point2) > distanceThreshold)
-                    {
-                        incorrectInput();
-                    }
-                    else
-                    {
-                        var leftDistance = pattern.segment.totalLength - totalAddedDistance;
-                        var diff = Mathf.Clamp(leftDistance + addingSpeed, 0, addingSpeed);
-                        // addedDistanceAt = totalAddedDistance;
-                        totalAddedDistance += diff * Time.deltaTime;
-                    }
-
+                    isWrongTracing = true;
                 }
 
 
-                // pattern.movedDistance = Mathf.MoveTowards(pattern.movedDistance, totalAddedDistance, Time.deltaTime * maxSpeed);
-                pattern.movedDistance = Mathf.Lerp(pattern.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
-
-                // pattern.movedDistance = totalAddedDistance;
-
-                // var increment = Mathf.Clamp(totalAddedDistance - pattern.movedDistance, 0, maxSpeed) * Time.deltaTime;
-                // pattern.movedDistance += increment;
+                if (isDotPlotted)
+                {
+                    return segment.movedDistance + maxSpeed * Time.deltaTime;
+                }
+                return segment.movedDistance;
             }
+            else
+            if (im.isEnter)
+            {
+                //the current point where the segment filler ends
+                var currentPoint = segment.getPoint(totalAddedDistance);
+                //input point
+                var inPoint = im.point;
+
+                //direction where the tracer should go
+                var dir = segment.getDirection(totalAddedDistance);
+                //the goal point where should the tracer go
+                var goalPoint = currentPoint + dir * distanceThreshold;
+
+                var dstToCurrentPoint = Vector2.Distance(currentPoint, inPoint);
+                var dstToGoalPoint = Vector2.Distance(goalPoint, inPoint);
+
+                // var r = Rect.MinMaxRect(currentPoint.x, currentPoint.y, point2.x, point2.y);
+
+                if (dstToCurrentPoint > distanceThreshold || dstToGoalPoint > distanceThreshold)
+                {
+                    if (dstToGoalPoint > distanceThreshold * 1.5f)
+                    {
+                        isWrongTracing = true;
+                    }
+                }
+                else
+                {
+                    var leftDistance = segment.pathLength - totalAddedDistance;
+                    var diff = Mathf.Clamp(leftDistance + addingSpeed, 0, addingSpeed);
+                    // addedDistanceAt = totalAddedDistance;
+                    totalAddedDistance += diff * Time.deltaTime;
+                }
+
+            }
+
+
+            return Mathf.Lerp(segment.movedDistance, totalAddedDistance, Time.deltaTime.max(followLerpMinDt) * followLerpFactor);
+
         }
+
     }
 }

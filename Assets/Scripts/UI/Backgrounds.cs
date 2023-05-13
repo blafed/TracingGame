@@ -20,6 +20,9 @@ public class Backgrounds : MonoBehaviour
 
     [SerializeField] PairList<BackgroundsList, Image[]> bgLists;
 
+
+    int currentBackgroundIndex = 0;
+
     private void Awake()
     {
         o = this;
@@ -32,8 +35,28 @@ public class Backgrounds : MonoBehaviour
 
     public void changeRandomly(BackgroundsList list)
     {
-        var randomColor = colors.getRandom();
+        int randomIndex = 0;
+        int _safeTries = 1000;
+        do
+        {
+            if (_safeTries <= 0)
+            {
+                Debug.LogError("Backgrounds:changeRandomly: safe tries exceeded");
+                break;
+            }
+            randomIndex = Random.Range(0, colors.Length);
+            _safeTries--;
+        } while (randomIndex == currentBackgroundIndex);
+        currentBackgroundIndex = randomIndex;
+
+        var randomColor = colors[randomIndex];
         colorImage.DOColor(randomColor, changeDuration);
+    }
+
+
+    public Color getBackgroundColor()
+    {
+        return colors[currentBackgroundIndex];
     }
 
 }

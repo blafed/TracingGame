@@ -14,6 +14,7 @@ namespace KidLetters.Pronouncing
             public float zoom = 10;
             public Vector2 offset = new Vector2(0, 6);
             public float duration = .5f;
+            public float moveUnderDuration = .3f;
         }
         [System.Serializable]
         class GlowOptions
@@ -40,7 +41,7 @@ namespace KidLetters.Pronouncing
 
 
 
-        List<Letter> letters = new();
+        List<LetterFiller> letters = new();
         float width;
 
         private void Start()
@@ -63,7 +64,7 @@ namespace KidLetters.Pronouncing
             {
                 // var dif = i - indexOfTargetLetter;
                 var letterId = wordInfo.getLetterId(i);
-                var c = Instantiate(LetterContainer.o.getLetter(letterId)).GetComponent<Letter>();
+                var c = LetterFiller.createStandardFiller(LetterContainer.o.getLetter(letterId));
                 nextPosition.x += c.relativeViewRect.size.x / 2;
 
                 this.letters.Add(c);
@@ -73,10 +74,11 @@ namespace KidLetters.Pronouncing
                 nextPosition.x += c.relativeViewRect.size.x / 2 + spacing;
 
 
-                if (c.text)
+                try
                 {
-                    c.text.color = glowOptions.normalColor;
+                    c.setColor(glowOptions.normalColor);
                 }
+                catch { }
                 c.transform.localScale = glowOptions.normalScale.vector();
                 c.gameObject.SetActive(indexOfTargetLetter == i);
 
@@ -89,20 +91,28 @@ namespace KidLetters.Pronouncing
         public IEnumerator play()
         {
             createLetters();
+
             WordInfo wordInfo = phase.wordInfo;
             Vector2 letterPos = phase.letter.transform.position;
             var letterIndex = wordInfo.indexOfLetter(phase.letterId);
             var relLetterPos = (Vector2)letters[letterIndex].transform.localPosition;
             transform.position = letterPos - relLetterPos;
+
             // phase.letter.text.DOColor(glowOptions.normalColor, glowOptions.duration);
             yield return new WaitForSeconds(paddingTimeStart);
-            phase.letter.text.DOFade(0, cameraOptions.duration);
+            phase.letter.doFade(0, cameraOptions.duration);
             var focusPos = -relLetterPos + letterPos + Vector2.right * width / 2f;
             CameraControl.o.move(focusPos, cameraOptions.duration, Ease.InOutQuad);
             CameraControl.o.zoom(cameraOptions.zoom, cameraOptions.duration);
             yield return new WaitForSeconds(cameraOptions.duration);
-            phase.letter.text.alpha = 1;
+
+            // letters[letterIndex].setColor(glowOptions.targetColor);
+            // letters[letterIndex].doColor(glowOptions.normalColor, glowOptions.duration);
+            phase.letter.setAlpha(1);
             phase.letter.gameObject.SetActive(false);
+
+
+
 
 
             yield return new WaitForSeconds(paddingTimeStart);
@@ -114,7 +124,8 @@ namespace KidLetters.Pronouncing
                 var x = this.letters[i];
                 if (i != 0)
                     yield return new WaitForSeconds(letterDelay);
-                var letterId = x.letterId;
+
+                var letterId = wordInfo.getLetterId(i);
 
                 var playAudio = wordInfo.spellingClips[actualI];
                 if (wordInfo.isDigraph(i))
@@ -129,15 +140,15 @@ namespace KidLetters.Pronouncing
                 actualI++;
             }
             yield return new WaitForSeconds(paddingTimeEnd);
-            yield return CameraControl.o.move(cameraOptions.offset + focusPos, cameraOptions.duration, Ease.InOutQuad).WaitForCompletion();
+            yield return CameraControl.o.move(cameraOptions.offset + focusPos, cameraOptions.moveUnderDuration, Ease.InOutQuad).WaitForCompletion();
 
         }
 
-        IEnumerator playLetter(Letter letter, AudioClip playAudio, float customWait = 0)
+        IEnumerator playLetter(LetterFiller letter, AudioClip playAudio, float customWait = 0)
         {
             letter.gameObject.SetActive(true);
-            letter.text.color = glowOptions.normalColor;
-            letter.text.DOColor(glowOptions.targetColor, glowOptions.duration);
+            letter.setColor(glowOptions.normalColor);
+            letter.doColor(glowOptions.targetColor, glowOptions.duration);
             letter.transform.DOScale(glowOptions.targetScale, glowOptions.duration);
             if (glowOptions.punchScale)
                 letter.transform.DOPunchScale(.2f.vector(), .2f);
@@ -147,18 +158,19 @@ namespace KidLetters.Pronouncing
                 yield return GeneralAudioPlayer.o.playWaitFinish(playAudio);
             if (customWait > 0)
                 yield return new WaitForSeconds(customWait);
-            letter.text.DOColor(glowOptions.normalColor, glowOptions.duration);
+            letter.doColor(glowOptions.normalColor, glowOptions.duration);
 
         }
 
 
-        public IEnumerator fadeOutLetters(float duration, System.Predicate<Letter> except = null)
+        public IEnumerator fadeOutLetters(float duration, System.Predicate<LetterFiller> except = null)
         {
             foreach (var x in letters)
             {
                 if (except != null && except(x))
                     continue;
-                x.text.DOFade(0, duration);
+                x.doColor(Backgrounds.o.getBackgroundColor(), duration);
+                // x.doFade(0, duration);
             }
             yield return new WaitForSeconds(duration);
         }
@@ -171,8 +183,9 @@ namespace KidLetters.Pronouncing
             var targetColor = highlighted ? glowOptions.targetColor : glowOptions.normalColor;
             foreach (var x in letters)
             {
-                x.text.color = fromColor;
-                x.text.DOColor(targetColor, duration).SetEase(Ease.InOutQuad);
+                x.setColor(fromColor);
+                x.doColor(targetColor, duration).SetEase(Ease.InOutQuad);
+                x.transform.DOPunchScale(.2f.vector(), .2f);
             }
             yield return new WaitForSeconds(duration);
         }
@@ -189,9 +202,9 @@ namespace KidLetters.Pronouncing
             StopAllCoroutines();
 
             phase.letter.gameObject.SetActive(true);
-            phase.letter.text.color = Color.white;
-            phase.letter.text.alpha = 1;
-            phase.letter.text.DOKill();
+            phase.letter.setColor(Color.white);
+            phase.letter.setAlpha(1);
+            phase.letter.doKill();
             phase.letter.DOKill();
         }
 
