@@ -80,7 +80,7 @@ SpriteShapeRenderer:
   m_MaskInteraction: 0
   m_ShapeTexture: {fileID: 2800000, guid: 537ddfab65ed23f4b823553ced13bf26, type: 3}
   m_Sprites:
-  - {fileID: 21300000, guid: f9682c4316e7f0d43a22c9ab0812d57a, type: 3}
+  - {fileID: 21300000, guid: 00b52da6821aaa847ac28e521d7d46e1, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
@@ -91,7 +91,7 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
     m_Center: {x: 0, y: 0, z: 0}
-    m_Extent: {x: 0.051999997, y: 0.2, z: 0}
+    m_Extent: {x: 0.0425, y: 0.2, z: 0}
 --- !u!114 &8486654080370097714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDot: 1
+  dotRadius: 0.4
 --- !u!1 &8833489775866497662
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +237,7 @@ SpriteShapeRenderer:
   m_MaskInteraction: 0
   m_ShapeTexture: {fileID: 2800000, guid: 537ddfab65ed23f4b823553ced13bf26, type: 3}
   m_Sprites:
-  - {fileID: 21300000, guid: f9682c4316e7f0d43a22c9ab0812d57a, type: 3}
+  - {fileID: 21300000, guid: 00b52da6821aaa847ac28e521d7d46e1, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
@@ -246,8 +247,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: -0.4079416, y: -0.7901566, z: 0}
-    m_Extent: {x: 0.4599416, y: 2.7901566, z: 0}
+    m_Center: {x: -0.63508743, y: -0.8671522, z: 0}
+    m_Extent: {x: 0.68413776, y: 2.86769, z: 0}
 --- !u!114 &8833489775866497657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -274,8 +275,8 @@ MonoBehaviour:
       corner: 1
       m_CornerMode: 1
     - position: {x: 0, y: -1.68, z: 0}
-      leftTangent: {x: 0, y: 0.80306965, z: 0}
-      rightTangent: {x: 0, y: -1.330058, z: 0}
+      leftTangent: {x: -0.037544105, y: 0.80219156, z: 0}
+      rightTangent: {x: 0.09088537, y: -1.9419154, z: 0}
       mode: 1
       height: 0.1
       bevelCutoff: 0
@@ -283,8 +284,8 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: -0.8537693, y: -3.5302653, z: 0}
-      leftTangent: {x: 0.7376952, y: 0.20803547, z: 0}
+    - position: {x: -1.3078016, y: -3.6939063, z: 0}
+      leftTangent: {x: 0.59332275, y: 0.1655736, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 2
       height: 0.1
@@ -322,6 +323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDot: 0
+  dotRadius: 0.4
 --- !u!1 &8833489775908375852
 GameObject:
   m_ObjectHideFlags: 0

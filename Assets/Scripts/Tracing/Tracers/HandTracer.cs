@@ -9,6 +9,7 @@ namespace KidLetters.Tracing
     {
 
         [SerializeField] float distanceThreshold = .5f;
+        [SerializeField] float dotBoundingRadius = .5f;
         [SerializeField] float addingSpeed = 5;
         [SerializeField] float maxSpeed = 4;
 
@@ -58,10 +59,9 @@ namespace KidLetters.Tracing
 
 
 
-
             if (segment.isDot)
             {
-                var boundingOnDot = new BoundingSphere(segment.transform.position, segment.dotRadius);
+                var boundingOnDot = new BoundingSphere(segment.transform.position, dotBoundingRadius);
 
                 if (im.isEnter && boundingOnDot.contains(im.point))
                 {

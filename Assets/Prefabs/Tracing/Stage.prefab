@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distanceThreshold: 0.75
+  dotBoundingRadius: 1.2
   addingSpeed: 5
   maxSpeed: 8
   followLerpFactor: 5

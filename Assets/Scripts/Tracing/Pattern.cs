@@ -27,7 +27,9 @@ public class Pattern : LetterSegmentFiller
 
     #region FUNCTIONS
     public virtual void onCreated() { }
-    public virtual void onStartTracing() { }
+    public virtual void onStartTracing()
+    {
+    }
     public virtual void whileTracing(float movedDistance)
     {
         this.movedDistance = movedDistance;
@@ -76,14 +78,17 @@ public class Pattern : LetterSegmentFiller
 
     void playTracingAudio(bool didMoved)
     {
+
         if (tracingAudio)
+        {
+
+        }
+        if (tracingAudio && !isDot)
         {
             if (tracingAudioVolume < 0)
                 tracingAudioVolume = tracingAudio.volume;
             if (!tracingAudio.isPlaying)
                 tracingAudio.Play();
-        }
-        if (tracingAudio && !isDot)
             if (didMoved)
             {
                 tracingAudio.volume = Mathf.MoveTowards(tracingAudio.volume, tracingAudioVolume, Time.fixedDeltaTime * 4 * tracingAudioVolume);
@@ -92,6 +97,7 @@ public class Pattern : LetterSegmentFiller
             {
                 tracingAudio.volume = Mathf.MoveTowards(tracingAudio.volume, 0, Time.fixedDeltaTime * 4 * tracingAudioVolume);
             }
+        }
     }
     #endregion
 

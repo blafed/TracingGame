@@ -45,6 +45,13 @@ namespace KidLetters
             {
                 x.Play();
             }
+
+            var rigidbodies = GetComponentsInChildren<Rigidbody2D>();
+
+            foreach (var x in rigidbodies)
+            {
+                x.simulated = true;
+            }
         }
 
     }

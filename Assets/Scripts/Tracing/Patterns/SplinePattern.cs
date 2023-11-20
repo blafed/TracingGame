@@ -76,7 +76,8 @@ public class SplinePattern : Pattern
 
         path.points[0] = path.points[1] = Vector2.up;
         path.points[3] = path.points[2] = -Vector2.up;
-        shapeController.transform.localScale = 2f.vector();
+        shapeController.transform.localScale = 3f.vector();
+        shapeController.transform.localPosition = Vector3.zero;
         SplinePathHelper.pathToSpline(path, shapeController.spline, factory);
 
         transform.localScale = new Vector3();
@@ -100,8 +101,8 @@ public class SplinePattern : Pattern
         //SCALE
         var scale = dotRadius * Vector2.one;
         mask.transform.localScale = scale;
-        renderer.transform.localScale = dotRadius * 2 * Vector2.one * dotSplineScale * 2;
-        renderer.transform.localPosition = Vector2.up * dotRadius;
+        renderer.transform.localScale = dotRadius * 6 * Vector2.one * dotSplineScale;
+        renderer.transform.localPosition = Vector2.zero;
     }
 
 }

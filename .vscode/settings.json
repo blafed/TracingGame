@@ -55,5 +55,6 @@
     "**/target": true
   },
   "files.autoSave": "onWindowChange",
-  "editor.formatOnType": true
+  "editor.formatOnType": true,
+  "dotnet.defaultSolution": "TracingGame.sln"
 }
